@@ -201,22 +201,14 @@ only import this one file.</p>
 <span id="custom-facts"></span><h2>Adding Custom Facts<a class="headerlink" href="#adding-custom-facts" title="Permalink to this headline">¶</a></h2>
 <p>The code for facts (see <a class="reference internal" href="facts.html#facts"><span class="std std-ref">Facts</span></a>) is in <a class="reference external" href="https://github.com/vespene-io/opsmop/blob/master/opsmop/facts/facts.py">opsmop.facts.facts.Fact</a></p>
 <p>If you write your own fact classes, you should make it available to template namespace by calling set:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">..</span> <span class="n">code</span><span class="o">-</span><span class="n">block</span><span class="p">::</span> <span class="n">python</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">set_resources</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">Resources</span><span class="p">(</span>
+         <span class="c1"># ...</span>
+         <span class="n">Set</span><span class="p">(</span><span class="n">site_facts</span><span class="o">=</span><span class="n">AcmeLabsCustomFacts</span><span class="p">())</span>
+         <span class="c1"># ...</span>
+    <span class="p">)</span>
 </pre></div>
 </div>
-<blockquote>
-<div><dl class="docutils">
-<dt>def set_resources(self):</dt>
-<dd><dl class="first docutils">
-<dt>return Resources(</dt>
-<dd># …
-Set(site_facts=AcmeLabsCustomFacts())
-# …</dd>
-</dl>
-<p class="last">)</p>
-</dd>
-</dl>
-</div></blockquote>
 <p>A future feature for custom facts in /etc/opsmop/facts.d is also pending development, which will allow string, JSON, or YAML facts as well as executable
 facts to be written in any language. See <a class="reference internal" href="facts.html#facts"><span class="std std-ref">Facts</span></a></p>
 </div>
@@ -232,22 +224,14 @@ they are functions!</p>
 the core distribution (probably then creating an opsmop.lookups package).</p>
 <p>Such a plugin could (and probably should) also memoize the value to prevent repeated computations.</p>
 <p>A quick reminder, lookups aren’t automatically available inside Jinja2, and to do that, use set:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">..</span> <span class="n">code</span><span class="o">-</span><span class="n">block</span><span class="p">::</span> <span class="n">python</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">set_resources</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">Resources</span><span class="p">(</span>
+         <span class="c1"># ...</span>
+         <span class="nb">set</span><span class="p">(</span><span class="n">ff01</span><span class="o">=</span><span class="n">CustomFeatureFlagLookup</span><span class="p">(</span><span class="s1">&#39;ff01&#39;</span><span class="p">))</span>
+         <span class="c1"># ..</span>
+    <span class="p">)</span>
 </pre></div>
 </div>
-<blockquote>
-<div><dl class="docutils">
-<dt>def set_resources(self):</dt>
-<dd><dl class="first docutils">
-<dt>return Resources(</dt>
-<dd># …
-set(ff01=CustomFeatureFlagLookup(‘ff01’))
-# ..</dd>
-</dl>
-<p class="last">)</p>
-</dd>
-</dl>
-</div></blockquote>
 </div>
 <div class="section" id="custom-callbacks">
 <span id="callbacks"></span><h2>Custom Callbacks<a class="headerlink" href="#custom-callbacks" title="Permalink to this headline">¶</a></h2>
@@ -255,10 +239,10 @@ set(ff01=CustomFeatureFlagLookup(‘ff01’))
 <p>You can easily customize OpsMop by replacing it with another plugin, potentially a subclass.</p>
 <p>Using a new callback would require subclassing cli.py and a new bin/opsmop, which is just a thin layer over cli.py
 We can easily consider reading the callback name from an environment variable or a CLI parameter as a feature upgrade.</p>
-<p>Future plans for <a class="reference internal" href="pull.html#pull"><span class="std std-ref">Pull Mode</span></a> and :ref:<a href="#id1"><span class="problematic" id="id2">`</span></a>push will also feature different types of callback classes or additional callbacks.</p>
+<p>Future plans for <a class="reference internal" href="pull.html#pull"><span class="std std-ref">Pull Mode</span></a> and <a class="reference internal" href="push.html#push"><span class="std std-ref">Push Mode</span></a> will also feature different types of callback classes or additional callbacks.</p>
 </div>
 <div class="section" id="roadmap">
-<span id="id3"></span><h2>Roadmap<a class="headerlink" href="#roadmap" title="Permalink to this headline">¶</a></h2>
+<span id="id1"></span><h2>Roadmap<a class="headerlink" href="#roadmap" title="Permalink to this headline">¶</a></h2>
 <p>While OpsMop has a fluid roadmap, at this stage of development TODO.md is illustrative of some near-term features.
 We want the best ideas at the moment to win, and a lot of our development time will also be devoted to shepherding
 incoming pull requests and ideas from folks like yourself.</p>

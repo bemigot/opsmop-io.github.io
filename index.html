@@ -83,9 +83,11 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">About</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#uses">Uses</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#features">Features</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#values">Values</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#run-modes">Run Modes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#project-values">Project Values</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#operating-systems">Operating Systems</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#status">Status</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#schedule">Schedule</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#license">License</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#github">GitHub</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#forum">Forum</a></li>
@@ -186,23 +188,29 @@
 <div class="section" id="features">
 <h2>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>Python 3 Declarative DSL</li>
-<li>A strong API toolkit for both humans and machines</li>
-<li>Optional imperative capabilities</li>
-<li>Strong object-oriented  model</li>
-<li>Formal Type / Provider plugin seperation</li>
-<li>Formal Plan vs Apply evaluation stages</li>
-<li>Early validation of configuration checks</li>
-<li>Implicit ordering with notification events</li>
+<li>Python 3 DSL</li>
+<li>Declarative resource model with imperative capabilities</li>
+<li>Type / Provider plugin seperation</li>
+<li>Implicit ordering (with handler notification)</li>
+<li>Formalized “Plan” vs “Apply” evaluation stages</li>
+<li>Early validation prior to runtime</li>
 <li>Programatically scoped variables</li>
-<li>Local configuration</li>
-<li>Pull configuration with pluggable transports (soon)</li>
-<li>Push configuration with multi-tier addressing (soon)</li>
-<li>Exceptional runtime speed</li>
+<li>Strong object-orientation</li>
+</ul>
+<p>See <a class="reference internal" href="language.html#language"><span class="std std-ref">Language</span></a> and <a class="reference internal" href="advanced.html#advanced"><span class="std std-ref">Language Part 2</span></a>.</p>
+</div>
+<div class="section" id="run-modes">
+<h2>Run Modes<a class="headerlink" href="#run-modes" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Seperate validate, check (“dry-run”), and apply modes</li>
+<li><a class="reference internal" href="local.html#local"><span class="std std-ref">Local</span></a></li>
+<li><a class="reference internal" href="pull.html#pull"><span class="std std-ref">Pull Mode</span></a> pluggable transports (soon)</li>
+<li><a class="reference internal" href="push.html#push"><span class="std std-ref">Push Mode</span></a> configuration with multi-tier addressing (soon)</li>
+<li>All aim for exceptional runtime speed</li>
 </ul>
 </div>
-<div class="section" id="values">
-<h2>Values<a class="headerlink" href="#values" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="project-values">
+<h2>Project Values<a class="headerlink" href="#project-values" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>Minimalism</li>
 <li>Flexibility</li>
@@ -223,19 +231,26 @@
 </div>
 <div class="section" id="status">
 <h2>Status<a class="headerlink" href="#status" title="Permalink to this headline">¶</a></h2>
-<p>Alpha.</p>
-<p>OpsMop is in language-preview phase, and we are still refactoring some minor
-parts and working on plugins. Existing modules/plugins are somewhat limited
-and features are not fully implemented in all cases, but the language itself
-is very well evolved.</p>
+<p>Alpha. OpsMop is in a tech-preview/feedback phase.</p>
+<p>We are still refactoring some minor parts and working on plugins. Existing modules/plugins are limited
+and features are not fully implemented in all cases. Still, the language itself is very well evolved
+and close to complete. We love new ideas, so stop by the forum and share your ideas and to talk
+about the things you want to configure with OpsMop. If you would like to get involved with development,
+now is the time to read up on OpsMop, and the floodgates will be open in December!</p>
+<p>See also: <a class="reference internal" href="development.html#development"><span class="std std-ref">Development Guide</span></a> and <a class="reference internal" href="community.html#community"><span class="std std-ref">Community</span></a></p>
+</div>
+<div class="section" id="schedule">
+<h2>Schedule<a class="headerlink" href="#schedule" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>We will be open to pull requests and bug reports starting December 1.</li>
-<li>Work after December 1 will be heavily focused towards modules and plugins, plus small language editions.</li>
+<li>Open for pull requests and bug reports starting December 1.</li>
+<li>December will be devoted almost exclusively to plugin development, helping new contributors, and small language tweaks</li>
+<li>Pull mode likely debuts in December 2018.</li>
 <li>Documentated language features will be locked in and largely stable by January 2019</li>
-<li>First tagged stable release in Feburary 2019</li>
+<li>First ‘tagged’ stable release in early Feburary 2019, but master branch usage is always encouraged</li>
 </ul>
 <p>If you like where this is going, now is the time to join up with thoughts
-and potentially code. See <a class="reference internal" href="community.html#community"><span class="std std-ref">Community</span></a> and <a class="reference internal" href="development.html#development"><span class="std std-ref">Development Guide</span></a>.</p>
+and potentially code. Read over <a class="reference internal" href="community.html#community"><span class="std std-ref">Community</span></a> and <a class="reference internal" href="development.html#development"><span class="std std-ref">Development Guide</span></a> for details
+and we would be glad to have you!</p>
 </div>
 <div class="section" id="license">
 <h2>License<a class="headerlink" href="#license" title="Permalink to this headline">¶</a></h2>
@@ -259,7 +274,7 @@ and potentially code. See <a class="reference internal" href="community.html#com
 <div class="section" id="twitter">
 <h2>Twitter<a class="headerlink" href="#twitter" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><cite>&#64;opsmop &lt;https://twitter.com/opsmop&gt;</cite></li>
+<li><a class="reference external" href="https://twitter.com/opsmop">&#64;opsmop</a></li>
 </ul>
 </div>
 </div>

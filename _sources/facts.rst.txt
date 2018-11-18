@@ -103,7 +103,7 @@ file, the response from that file will be interepreted as JSON.  Otherwise, the 
 
 In this way, facts can be implemented in any language.
 
-.. _note:
+.. note:
    Cloud Tip! It may be tempting to write a fact that asks AWS for instance tags, but if you are in a truly immutable
    system, you can also just bake /etc/opsmop/site.d/ facts into your images, which is faster and will not
    hit any rate caps. You can then write policy that is conditional on what your images are, without querying the
