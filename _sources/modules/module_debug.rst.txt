@@ -93,6 +93,10 @@ Here's a really easy way to see what the values of some variables are
     
     
 
+Demo On GitHub
+--------------
+* `debug.py <https://github.com/opsmop/opsmop-demo/blob/master/module_docs/debug.py>`_
+
 Type Implementations
 --------------------
 * `opsmop.types.debug <https://github.com/opsmop/opsmop/tree/master/opsmop/types/debug.py>`_

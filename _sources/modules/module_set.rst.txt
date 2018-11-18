@@ -77,6 +77,10 @@ Here we'll set some variables and show some values along the way.
     
     
 
+Demo On GitHub
+--------------
+* `set.py <https://github.com/opsmop/opsmop-demo/blob/master/module_docs/set.py>`_
+
 Type Implementations
 --------------------
 * `opsmop.types.set <https://github.com/opsmop/opsmop/tree/master/opsmop/types/set.py>`_

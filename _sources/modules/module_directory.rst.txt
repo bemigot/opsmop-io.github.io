@@ -116,6 +116,10 @@ This should be reasonably self explanatory...
     
     
 
+Demo On GitHub
+--------------
+* `directory.py <https://github.com/opsmop/opsmop-demo/blob/master/module_docs/directory.py>`_
+
 Type Implementations
 --------------------
 * `opsmop.types.directory <https://github.com/opsmop/opsmop/tree/master/opsmop/types/directory.py>`_

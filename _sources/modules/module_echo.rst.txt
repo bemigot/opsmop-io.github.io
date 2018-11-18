@@ -84,6 +84,10 @@ If you install cowsay and export "MOO=1" this example will be more entertaining.
     
     
 
+Demo On GitHub
+--------------
+* `echo.py <https://github.com/opsmop/opsmop-demo/blob/master/module_docs/echo.py>`_
+
 Type Implementations
 --------------------
 * `opsmop.types.echo <https://github.com/opsmop/opsmop/tree/master/opsmop/types/echo.py>`_

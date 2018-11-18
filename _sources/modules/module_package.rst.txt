@@ -104,6 +104,10 @@ Installing and removing a package.
     
     
 
+Demo On GitHub
+--------------
+* `package.py <https://github.com/opsmop/opsmop-demo/blob/master/module_docs/package.py>`_
+
 Type Implementations
 --------------------
 * `opsmop.types.package <https://github.com/opsmop/opsmop/tree/master/opsmop/types/package.py>`_

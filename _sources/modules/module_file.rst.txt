@@ -184,6 +184,10 @@ Ensure that a file does not exist
     
     
 
+Demo On GitHub
+--------------
+* `file.py <https://github.com/opsmop/opsmop-demo/blob/master/module_docs/file.py>`_
+
 Type Implementations
 --------------------
 * `opsmop.types.file <https://github.com/opsmop/opsmop/tree/master/opsmop/types/file.py>`_

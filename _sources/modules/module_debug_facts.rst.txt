@@ -74,6 +74,10 @@ Here's a really easy way to see what the values of some variables are
             )
     
 
+Demo On GitHub
+--------------
+* `debug_facts.py <https://github.com/opsmop/opsmop-demo/blob/master/module_docs/debug_facts.py>`_
+
 Type Implementations
 --------------------
 * `opsmop.types.debug_facts <https://github.com/opsmop/opsmop/tree/master/opsmop/types/debug_facts.py>`_

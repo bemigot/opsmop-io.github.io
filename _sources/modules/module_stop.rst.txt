@@ -86,6 +86,10 @@ Here is a really minimal stop example.
             )
     
 
+Demo On GitHub
+--------------
+* `stop.py <https://github.com/opsmop/opsmop-demo/blob/master/module_docs/stop.py>`_
+
 Type Implementations
 --------------------
 * `opsmop.types.stop <https://github.com/opsmop/opsmop/tree/master/opsmop/types/stop.py>`_

@@ -99,6 +99,10 @@ restarting.
     
     
 
+Demo On GitHub
+--------------
+* `service.py <https://github.com/opsmop/opsmop-demo/blob/master/module_docs/service.py>`_
+
 Type Implementations
 --------------------
 * `opsmop.types.service <https://github.com/opsmop/opsmop/tree/master/opsmop/types/service.py>`_
