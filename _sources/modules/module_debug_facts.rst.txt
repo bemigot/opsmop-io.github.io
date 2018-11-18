@@ -6,7 +6,7 @@
  .. Please do not send pull requests for this file directly.
 .. If you wish to update these examples send a pull request here:
 ..
- .. https://github.com/vespene-io/opsmop-demo/blob/master/module_docs/debug_facts.py
+ .. https://github.com/opsmop/opsmop-demo/blob/master/module_docs/debug_facts.py
 ..
 .. This comment only applies to the module documentation
 
@@ -76,11 +76,11 @@ Here's a really easy way to see what the values of some variables are
 
 Type Implementations
 --------------------
-* `opsmop.types.debug_facts <https://github.com/vespene-io/opsmop/tree/master/opsmop/types/debug_facts.py>`_
+* `opsmop.types.debug_facts <https://github.com/opsmop/opsmop/tree/master/opsmop/types/debug_facts.py>`_
 
 Provider Implementations
 ------------------------
-* `opsmop.providers.debug_facts <https://github.com/vespene-io/opsmop/tree/master/opsmop/providers/debug_facts.py>`_
+* `opsmop.providers.debug_facts <https://github.com/opsmop/opsmop/tree/master/opsmop/providers/debug_facts.py>`_
 
 Related Modules
 ---------------

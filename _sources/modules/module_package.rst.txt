@@ -6,7 +6,7 @@
  .. Please do not send pull requests for this file directly.
 .. If you wish to update these examples send a pull request here:
 ..
- .. https://github.com/vespene-io/opsmop-demo/blob/master/module_docs/package.py
+ .. https://github.com/opsmop/opsmop-demo/blob/master/module_docs/package.py
 ..
 .. This comment only applies to the module documentation
 
@@ -106,11 +106,11 @@ Installing and removing a package.
 
 Type Implementations
 --------------------
-* `opsmop.types.package <https://github.com/vespene-io/opsmop/tree/master/opsmop/types/package.py>`_
+* `opsmop.types.package <https://github.com/opsmop/opsmop/tree/master/opsmop/types/package.py>`_
 
 Provider Implementations
 ------------------------
-* `opsmop.providers.package.brew <https://github.com/vespene-io/opsmop/tree/master/opsmop/providers/package/brew.py>`_
+* `opsmop.providers.package.brew <https://github.com/opsmop/opsmop/tree/master/opsmop/providers/package/brew.py>`_
 
 Related Modules
 ---------------

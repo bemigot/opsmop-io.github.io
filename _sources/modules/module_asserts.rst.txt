@@ -6,7 +6,7 @@
  .. Please do not send pull requests for this file directly.
 .. If you wish to update these examples send a pull request here:
 ..
- .. https://github.com/vespene-io/opsmop-demo/blob/master/module_docs/asserts.py
+ .. https://github.com/opsmop/opsmop-demo/blob/master/module_docs/asserts.py
 ..
 .. This comment only applies to the module documentation
 
@@ -105,11 +105,11 @@ of this policy with an error.
 
 Type Implementations
 --------------------
-* `opsmop.types.asserts <https://github.com/vespene-io/opsmop/tree/master/opsmop/types/asserts.py>`_
+* `opsmop.types.asserts <https://github.com/opsmop/opsmop/tree/master/opsmop/types/asserts.py>`_
 
 Provider Implementations
 ------------------------
-* `opsmop.providers.asserts <https://github.com/vespene-io/opsmop/tree/master/opsmop/providers/asserts.py>`_
+* `opsmop.providers.asserts <https://github.com/opsmop/opsmop/tree/master/opsmop/providers/asserts.py>`_
 
 Related Modules
 ---------------

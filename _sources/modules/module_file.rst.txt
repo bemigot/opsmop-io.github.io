@@ -6,7 +6,7 @@
  .. Please do not send pull requests for this file directly.
 .. If you wish to update these examples send a pull request here:
 ..
- .. https://github.com/vespene-io/opsmop-demo/blob/master/module_docs/file.py
+ .. https://github.com/opsmop/opsmop-demo/blob/master/module_docs/file.py
 ..
 .. This comment only applies to the module documentation
 
@@ -186,11 +186,11 @@ Ensure that a file does not exist
 
 Type Implementations
 --------------------
-* `opsmop.types.file <https://github.com/vespene-io/opsmop/tree/master/opsmop/types/file.py>`_
+* `opsmop.types.file <https://github.com/opsmop/opsmop/tree/master/opsmop/types/file.py>`_
 
 Provider Implementations
 ------------------------
-* `opsmop.providers.file <https://github.com/vespene-io/opsmop/tree/master/opsmop/providers/file.py>`_
+* `opsmop.providers.file <https://github.com/opsmop/opsmop/tree/master/opsmop/providers/file.py>`_
 
 Related Modules
 ---------------

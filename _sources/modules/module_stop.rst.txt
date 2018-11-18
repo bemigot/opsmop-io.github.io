@@ -6,7 +6,7 @@
  .. Please do not send pull requests for this file directly.
 .. If you wish to update these examples send a pull request here:
 ..
- .. https://github.com/vespene-io/opsmop-demo/blob/master/module_docs/stop.py
+ .. https://github.com/opsmop/opsmop-demo/blob/master/module_docs/stop.py
 ..
 .. This comment only applies to the module documentation
 
@@ -88,11 +88,11 @@ Here is a really minimal stop example.
 
 Type Implementations
 --------------------
-* `opsmop.types.stop <https://github.com/vespene-io/opsmop/tree/master/opsmop/types/stop.py>`_
+* `opsmop.types.stop <https://github.com/opsmop/opsmop/tree/master/opsmop/types/stop.py>`_
 
 Provider Implementations
 ------------------------
-* `opsmop.providers.stop <https://github.com/vespene-io/opsmop/tree/master/opsmop/providers/stop.py>`_
+* `opsmop.providers.stop <https://github.com/opsmop/opsmop/tree/master/opsmop/providers/stop.py>`_
 
 Related Modules
 ---------------

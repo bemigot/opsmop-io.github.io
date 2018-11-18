@@ -6,7 +6,7 @@
  .. Please do not send pull requests for this file directly.
 .. If you wish to update these examples send a pull request here:
 ..
- .. https://github.com/vespene-io/opsmop-demo/blob/master/module_docs/set.py
+ .. https://github.com/opsmop/opsmop-demo/blob/master/module_docs/set.py
 ..
 .. This comment only applies to the module documentation
 
@@ -79,11 +79,11 @@ Here we'll set some variables and show some values along the way.
 
 Type Implementations
 --------------------
-* `opsmop.types.set <https://github.com/vespene-io/opsmop/tree/master/opsmop/types/set.py>`_
+* `opsmop.types.set <https://github.com/opsmop/opsmop/tree/master/opsmop/types/set.py>`_
 
 Provider Implementations
 ------------------------
-* `opsmop.providers.set <https://github.com/vespene-io/opsmop/tree/master/opsmop/providers/set.py>`_
+* `opsmop.providers.set <https://github.com/opsmop/opsmop/tree/master/opsmop/providers/set.py>`_
 
 Related Modules
 ---------------

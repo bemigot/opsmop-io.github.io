@@ -189,7 +189,7 @@ also edit the Type() code to surface any new parameters.</p>
 </div>
 <div class="section" id="writing-new-types">
 <span id="new-types"></span><h2>Writing New Types<a class="headerlink" href="#writing-new-types" title="Permalink to this headline">¶</a></h2>
-<p>All types extend from <a class="reference external" href="https://github.com/vespene-io/opsmop/blob/master/opsmop/types/type.py">opsmop.types.type.Type</a></p>
+<p>All types extend from <a class="reference external" href="https://github.com/opsmop/opsmop/blob/master/opsmop/types/type.py">opsmop.types.type.Type</a></p>
 <p>The best type to copy when writing your own type would be <a class="reference internal" href="modules/module_shell.html#module-shell"><span class="std std-ref">Shell Module</span></a> or <a class="reference internal" href="modules/module_package.html#module-package"><span class="std std-ref">Package Module</span></a>.</p>
 <p>If you want to find an example of a type that supports default providers for different platforms, and also allows the user to select
 their own types, we recommend <a class="reference internal" href="modules/module_package.html#module-package"><span class="std std-ref">Package Module</span></a> or <a class="reference internal" href="modules/module_service.html#module-service"><span class="std std-ref">Service Module</span></a>.</p>
@@ -199,7 +199,7 @@ only import this one file.</p>
 </div>
 <div class="section" id="adding-custom-facts">
 <span id="custom-facts"></span><h2>Adding Custom Facts<a class="headerlink" href="#adding-custom-facts" title="Permalink to this headline">¶</a></h2>
-<p>The code for facts (see <a class="reference internal" href="facts.html#facts"><span class="std std-ref">Facts</span></a>) is in <a class="reference external" href="https://github.com/vespene-io/opsmop/blob/master/opsmop/facts/facts.py">opsmop.facts.facts.Fact</a></p>
+<p>The code for facts (see <a class="reference internal" href="facts.html#facts"><span class="std std-ref">Facts</span></a>) is in <a class="reference external" href="https://github.com/opsmop/opsmop/blob/master/opsmop/facts/facts.py">opsmop.facts.facts.Fact</a></p>
 <p>If you write your own fact classes, you should make it available to template namespace by calling set:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">set_resources</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">Resources</span><span class="p">(</span>
@@ -214,7 +214,7 @@ facts to be written in any language. See <a class="reference internal" href="fac
 </div>
 <div class="section" id="adding-custom-lookups">
 <span id="lookups"></span><h2>Adding Custom Lookups<a class="headerlink" href="#adding-custom-lookups" title="Permalink to this headline">¶</a></h2>
-<p>Lookup Values are subclasses of <a class="reference external" href="https://github.com/vespene-io/opsmop/blob/master/opsmop/lookups/lookup.py">opsmop.lookups.Lookup</a>, and are functions
+<p>Lookup Values are subclasses of <a class="reference external" href="https://github.com/opsmop/opsmop/blob/master/opsmop/lookups/lookup.py">opsmop.lookups.Lookup</a>, and are functions
 that are lazy-evaluated at check or apply stage.  Ok, it’s not exactly true they are functions. They are black-magic metaclass stuff. But eventually
 they are functions!</p>
 <p>They are also easy to write, and you don’t need to know anything about Python metaclasses to do it.</p>
@@ -235,7 +235,7 @@ the core distribution (probably then creating an opsmop.lookups package).</p>
 </div>
 <div class="section" id="custom-callbacks">
 <span id="callbacks"></span><h2>Custom Callbacks<a class="headerlink" href="#custom-callbacks" title="Permalink to this headline">¶</a></h2>
-<p>CLI output is driven by a callback plugin, as shown in <a class="reference external" href="https://github.com/vespene-io/opsmop/blob/master/opsmop/client/callbacks.py">opsmop.client.callbacks</a>.</p>
+<p>CLI output is driven by a callback plugin, as shown in <a class="reference external" href="https://github.com/opsmop/opsmop/blob/master/opsmop/client/callbacks.py">opsmop.client.callbacks</a>.</p>
 <p>You can easily customize OpsMop by replacing it with another plugin, potentially a subclass.</p>
 <p>Using a new callback would require subclassing cli.py and a new bin/opsmop, which is just a thin layer over cli.py
 We can easily consider reading the callback name from an environment variable or a CLI parameter as a feature upgrade.</p>
