@@ -186,7 +186,7 @@ most commonly used classes:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">opsmop.core.easy</span> <span class="kn">import</span> <span class="o">*</span>
 </pre></div>
 </div>
-<p>If you had written your own types, or wanted to pull in any python library at all, you could also import them here.</p>
+<p>If you had written your own <em>Types</em>, or wanted to pull in any python library at all, you could also import them here.</p>
 <p>All <em>Policy</em> files must contain a ‘main()’ function which returns either a <em>Policy</em> object or a list of <em>Policy</em> objects.
 This main function does not need to be surrounded in the usual ‘if __name__’ pattern commonly found in Python files,
 because you should not be calling this function - the opsmop CLI (see <a class="reference internal" href="local.html#local"><span class="std std-ref">Local</span></a>) and corresponding API
@@ -249,7 +249,7 @@ is automatically possible for all <em>Policies</em> and <em>Roles</em>. Behold: 
 <p>Here we are doing something pretty basic, copying a file (see <a class="reference internal" href="modules/module_file.html#module-file"><span class="std std-ref">File Module</span></a>).</p>
 <p>Notice that we define resources in <em>Roles</em>, but you can’t assign a resource to a <em>Policy</em> directly. Opsmop mandates
 the usage of <em>Roles</em> as a mechanism of organization, but you can of course still only have one <em>Role</em> in a <em>Policy</em> you want.
-How fine grained should roles be?  It doesn’t matter.
+How fine grained should <em>Roles</em> be?  It doesn’t matter.
 Most frequently a <em>Role</em> would describe an application deployment, but it might also describe something like a common security configuration,
 setting up a user’s account (using parameterized <em>Roles</em>), and more.</p>
 <p>Parameterized <em>Roles</em> just involve passing key=value arguments to the <em>Role</em> constructor. Just to quickly
@@ -260,7 +260,7 @@ demo what this idea might look like, take a look at this:</p>
         <span class="n">role</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">apps</span> <span class="o">=</span> <span class="p">[</span> <span class="n">AppOne</span><span class="p">(),</span> <span class="n">AppTwo</span><span class="p">()</span> <span class="p">]</span>
         <span class="c1"># these might come from a config file, up to you!</span>
-        <span class="n">users</span> <span class="o">=</span> <span class="p">[</span> <span class="n">UserRole</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;mpdehaan&#39;</span><span class="p">),</span> <span class="n">UsesrRole</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;you&#39;</span><span class="p">)</span> <span class="p">]</span>
+        <span class="n">users</span> <span class="o">=</span> <span class="p">[</span> <span class="n">UserRole</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;mpdehaan&#39;</span><span class="p">),</span> <span class="n">UserRole</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;you&#39;</span><span class="p">)</span> <span class="p">]</span>
         <span class="n">roles</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">users</span><span class="p">)</span>
         <span class="n">roles</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">apps</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Roles</span><span class="p">(</span><span class="n">roles</span><span class="p">)</span>
@@ -277,7 +277,7 @@ We casually call them <em>Resources</em>, but technically the <em>Policy</em> an
 <p>What are <em>Types</em>?</p>
 <p>OpsMop modules are implemented in two parts: <em>Types</em> and <em>Providers</em>. <em>Types</em>, like “File()” above
 describe a configuration intent - what we want to do to the system.</p>
-<p><em>Providers</em> are implementations of the ‘how’, and work using the parameters passed to the providers.
+<p><em>Providers</em> are implementations of the ‘how’, and work using the parameters passed to the <em>Providers</em>.
 If writing OpsMop DSL language, you will be using <em>Types</em>. <em>Providers</em> are the beneveloent configuration
 spirits running behind the scenes. <em>Types</em> are what actually make the changes to systems happen.</p>
 <p>Here is another example of a File <em>Type</em>, this time not copying a file, but merely
@@ -290,13 +290,13 @@ adjusting metadata:</p>
 </div>
 <p>Here we are using the same <em>File</em> resource as above, but using a few more parameters.</p>
 <p>For those interested in <a class="reference internal" href="development.html#development"><span class="std std-ref">Development Guide</span></a>, when you browse the <a class="reference internal" href="modules/modules.html#modules"><span class="std std-ref">OpsMop Module Index</span></a>, each module page
-will link to the <em>Type</em> and <em>Provider</em> code (for all providers) on GitHub.  This makes it easy to understand
-what a type and provider does.</p>
-<p>While we are new and still refactoring things, we value exceptually clean code, and it is encouraged that types and providers rely on
+will link to the <em>Type</em> and <em>Provider</em> code (for all <em>Providers</em>) on GitHub.  This makes it easy to understand
+what a <em>Type</em> and <em>Provider</em> does.</p>
+<p>While we are new and still refactoring things, we value exceptually clean code, and it is encouraged that <em>Types</em> and <em>Providers</em> rely on
 other classes and inheritance to keep their implementations especially clean and readable.</p>
 <p>It is important to know that not all <em>Types</em> have just one <em>Provider</em> implementation.  For instance a <em>Package</em> could be installed
 by yum, apt, or maybe pip or npm.  For details on how that works, see <a class="reference internal" href="advanced.html#method"><span class="std std-ref">Provider Selection</span></a>.</p>
-<p>The <a class="reference internal" href="modules/modules.html#modules"><span class="std std-ref">OpsMop Module Index</span></a> documentation shows all of the types available in the core distribution.  Currently, this list is small
+<p>The <a class="reference internal" href="modules/modules.html#modules"><span class="std std-ref">OpsMop Module Index</span></a> documentation shows all of the <em>Types</em> available in the core distribution.  Currently, this list is small
 as OpsMop is under early (but extremely rapid) development.  Adding a new <em>Type</em> and <em>Provider</em> can often be done very quickly
 thanks to the object model behind OpsMop.</p>
 <p>When you review the module documentation, you will also see many common parameters exist on all <em>Types</em>, driving such features as conditionals, variable registration, and more.
@@ -311,7 +311,7 @@ executes that plan (if in apply mode).</p>
 <p>For example, if a <em>Type</em> talks about a file needing to have certain modes, and the config file also has incorrect content, the plan would involve creating
 the config file, but also adjusting the modes. Replacing a config file is a good example of an event that would need to trigger restarting a <em>Service</em>.  That’s the whole
 purpose of <em>Handlers</em> - causing actions only when changes occur.</p>
-<p>If actions are to be taken, all handlers that match the given signaled names will fire
+<p>If actions are to be taken, all <em>Handlers</em> that match the given signaled names will fire
 at the end of <em>Role</em> evaluation.</p>
 <p>This probably makes better sense with an example. Here is a change being notified by a ‘signal’ from a resource:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">set_resources</span><span class="p">():</span>
@@ -330,7 +330,7 @@ restart service ‘foo’. If the file was already correct, the service would no
 <p>See also <a class="reference internal" href="modules/module_file.html#module-file"><span class="std std-ref">File Module</span></a> and <a class="reference internal" href="modules/module_service.html#module-service"><span class="std std-ref">Service Module</span></a>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Currently one <em>Role</em> cannot define <em>Handlers</em> for events signaled by another role.  They are tightly
+<p class="last">Currently one <em>Role</em> cannot define <em>Handlers</em> for events signaled by another <em>Role</em>.  They are tightly
 namespaced and this is considered a feature.</p>
 </div>
 </div>
@@ -354,7 +354,7 @@ places variables can be set.</p>
 <p><a class="reference internal" href="facts.html#facts"><span class="std std-ref">Facts</span></a> are also another way to get dynamic information into the system. Technically, ref:<cite>facts</cite> are not variables,
 they are really functions - but they are like variables that are always accessible in templates and conditionals.
 You will see more about facts as you browse the examples in the ‘opsmop-demo’ repository.  Facts also play a very
-strong role in provider selection, as detailed in <a class="reference internal" href="advanced.html#method"><span class="std std-ref">Provider Selection</span></a>.</p>
+strong role in <em>Provider</em> selection, as detailed in <a class="reference internal" href="advanced.html#method"><span class="std std-ref">Provider Selection</span></a>.</p>
 </div>
 <div class="section" id="templates">
 <span id="id7"></span><h2>Templates<a class="headerlink" href="#templates" title="Permalink to this headline">¶</a></h2>
