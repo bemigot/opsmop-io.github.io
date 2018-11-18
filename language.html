@@ -1,0 +1,498 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Language &mdash; OpsMop  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Language Part 2" href="advanced.html" />
+    <link rel="prev" title="Local" href="local.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="contents.html" class="icon icon-home"> OpsMop
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Intro</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Setup Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="local.html">Using Local Mode</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Language</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#policy">Policy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#roles">Roles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#types-resources-intro">Types (Resources Intro)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#handlers">Handlers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#variables">Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#templates">Templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#in-summary">In Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#next-steps">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/modules.html">Module Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="facts.html">Facts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pull.html">Pull Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="push.html">Push/Orchestration Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development.html">Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="community.html">Community</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="contents.html">OpsMop</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="contents.html">Docs</a> &raquo;</li>
+        
+      <li>Language</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/language.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <img alt="OpsMop Logo" src="_images/opsmop.png" />
+<div class="section" id="language">
+<span id="id1"></span><h1>Language<a class="headerlink" href="#language" title="Permalink to this headline">¶</a></h1>
+<p>OpsMop configurations are written in a Python 3 DSL.</p>
+<p>You’ve hopefully already read “<a class="reference internal" href="local.html#local"><span class="std std-ref">Local</span></a>” to understand what the command line commands are
+and are ready to see what the language is about.</p>
+<p>In another tab, please open <a class="reference external" href="https://github.com/vespene-io/opsmop-demo/tree/master/content">the opsmop-demo repository</a>. In particular, see
+minimal <a class="reference external" href="https://github.com/vespene-io/opsmop-demo/blob/master/content/hello.py">hello.py</a>.  All of these examples are runnable
+on your computer from an OpsMop checkout.</p>
+<div class="section" id="policy">
+<span id="id2"></span><h2>Policy<a class="headerlink" href="#policy" title="Permalink to this headline">¶</a></h2>
+<p>Policies are the top level objects in OpsMop.  Policies describe what <a class="reference internal" href="#roles"><span class="std std-ref">Roles</span></a> get applied to a system being configured.</p>
+<p>Read <a class="reference external" href="https://github.com/vespene-io/opsmop-demo/blob/master/content/hello.py">hello.py</a> to see this structure in full.
+Below, we’ll talk about a few parts of that file.</p>
+<p>Since OpsMop is Python, we always start by importing some classes. The following import is syntactic sugar to import the
+most commonly used classes:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">opsmop.core.easy</span> <span class="kn">import</span> <span class="o">*</span>
+</pre></div>
+</div>
+<p>If you had written your own types, or wanted to pull in <em>any</em> python library at all, you could also do this here.</p>
+<p>All policy files must contain a ‘main’ function which returns either a <em>Policy</em> object or a list of <em>Policy</em> objects.
+This main function does <em>NOT</em> need to be surrounded in the usual ‘if __name__’ pattern commonly found in Python files,
+nor do you need to call this function.  The opsmop CLI (see <a class="reference internal" href="local.html#local"><span class="std std-ref">Local</span></a>) will call it for you.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Hello</span><span class="p">(</span><span class="n">Policy</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">set_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">set_roles</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Roles</span><span class="p">(</span><span class="n">HelloRole</span><span class="p">())</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">Hello</span><span class="p">(</span><span class="n">say</span><span class="o">=</span><span class="s1">&#39;Congratulations&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Take note of ‘set_variables’ and ‘set_roles’.  Assigning variables in a Policy declaration is optional, but roles are not.
+Why? A policy without roles has nothing to do!  We’ll get to <a class="reference internal" href="#roles"><span class="std std-ref">Roles</span></a> very shortly.</p>
+<p>Python developers should note that objects in OpsMop have “args, kwargs” constructors, which means
+you can pass a list of roles to the Roles() collection instead of listing them all inside the constructor.
+This means you can dynamically return a list of Roles from arbitrary code very easily:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">set_roles</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">roles</span> <span class="o">=</span> <span class="p">[</span> <span class="n">HelloRole</span><span class="p">()</span> <span class="p">]</span>
+    <span class="k">return</span> <span class="n">Roles</span><span class="p">(</span><span class="o">**</span><span class="n">roles_list</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>That example is critical to the purpose of OpsMop!  While some configuration management systems mostly
+interface with humans writing content for them, any point in OpsMop can be grafted cleverly into software.
+It is a cyborg automation system. So if you wanted to source your roles by talking to another system, you can do that.
+You aren’t limited to just using constructs provided by the Opsmop system.</p>
+<p>Let’s continue.</p>
+</div>
+<div class="section" id="roles">
+<span id="id4"></span><h2>Roles<a class="headerlink" href="#roles" title="Permalink to this headline">¶</a></h2>
+<p>Roles describe what a configuration really does, and are the reusable core of OpsMop.  Let’s look at a simple
+role now:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">HelloRole</span><span class="p">(</span><span class="n">Role</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">set_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">set_resources</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Resources</span><span class="p">(</span>
+            <span class="n">File</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;/tmp/foo.txt&quot;</span><span class="p">,</span> <span class="n">from_file</span><span class="o">=</span><span class="s2">&quot;files/foo.cfg&quot;</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">set_handlers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Handlers</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Here we are doing something pretty basic, copying a file (see <a class="reference internal" href="modules/module_file.html#module-file"><span class="std std-ref">File Module</span></a>). If we wanted to perform any
+actions explicitly when he file changed - and not if it did not change, we could use <a class="reference internal" href="#handlers"><span class="std std-ref">Handlers</span></a>, which are covered
+just a bit later.</p>
+<p>Notice that we define resources in roles, but you can’t assign a resource to a policy any other way. Opsmop mandates
+the usage of roles as a mechanism of organization, but you can of course still only have one role in a policy you want.</p>
+<p>Typically a role would describe an application, but it might also describe something like a common security policy, setting
+up a user, and more.  THere are really no required conventions.</p>
+</div>
+<div class="section" id="types-resources-intro">
+<span id="types"></span><h2>Types (Resources Intro)<a class="headerlink" href="#types-resources-intro" title="Permalink to this headline">¶</a></h2>
+<p>As shown above with “File()”, the set_resources() method in a role returns a collection of “Type” instances.
+We casually call them Resources, but technically the Policy and Roles are also resources.  Types are something
+more specific.</p>
+<p>What are Type instances?</p>
+<p>OpsMop plugins come in two parts: Types and Providers.  Types, like “File()” above
+describe a configuration intent - what we want to do to the system.</p>
+<p>Providers are implementations of the ‘how’, and fulfill the parameters passed to the providers.
+If writing OpsMop language, you will never see a provider.  They are beneveloent configuration
+spirits running behind the scenes.  They are what actually make the changes.</p>
+<p>Here is another example of a file resource, this time not copying a file, but merely
+adjusting metadata:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">set_resources</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">Resources</span><span class="p">(</span>
+        <span class="n">File</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;/tmp/foo.txt&quot;</span><span class="p">,</span> <span class="n">owner</span><span class="o">=</span><span class="s1">&#39;root&#39;</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="s1">&#39;wheel&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mh">0x755</span><span class="p">)</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<p>Here we are using the same File resource as above, but using a few more parameters.</p>
+<p>For those interested in <a class="reference internal" href="development.html#development"><span class="std std-ref">Development Guide</span></a>, the file type is “opsmop.types.file.File” and the implementation
+behind the code is “opsmop.providers.file.File”.  While technically the provider code COULD live in the same
+file, for any modules in the core distribution of OpsMop, that never happens.</p>
+<p>Another gotcha is of course that not all types have just one implementation.  For instance a Package could be installed
+by yum, apt, or maybe pip or npm.  For details on how that works, see <a class="reference internal" href="advanced.html#method"><span class="std std-ref">Provider Selection</span></a>.</p>
+<p>The <a class="reference internal" href="modules/modules.html#modules"><span class="std std-ref">OpsMop Module Index</span></a> documentation shows all of the types available in the core distribution.  Currently, this list is small
+as OpsMop is under early (but extremely rapid) development.  Adding a new type and provider can often be done very quickly
+thanks to the object model behind OpsMop.</p>
+<p>When you review the module documentation, you will also see many common parameters exist on all Types, driving such features as conditionals, variable registration, and more.
+These will be described in <a class="reference internal" href="advanced.html#advanced"><span class="std std-ref">Language Part 2</span></a> and also demoed and featured in the <a class="reference internal" href="modules/modules.html#modules"><span class="std std-ref">OpsMop Module Index</span></a> documentation.</p>
+</div>
+<div class="section" id="handlers">
+<span id="id5"></span><h2>Handlers<a class="headerlink" href="#handlers" title="Permalink to this headline">¶</a></h2>
+<p>Roles can also declare handlers. The Handlers section is just like the regular Resources section, except that handlers run only when resources
+are changed by OpsMop. When OpsMop evaluates a resource, it determines a plan for that resource (in check or apply mode), and then
+executes that plan (if in apply mode). Again, review <a class="reference internal" href="local.html#local"><span class="std std-ref">Local</span></a> for the differences in the CLI invocations for each.
+If actions are to be taken, all handlers that match the given signaled names will fire
+at the end of role evaluation.</p>
+<p>Here is a change being notified by a ‘signal’ from a resource:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">set_resources</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">Resources</span><span class="p">(</span>
+        <span class="n">File</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;/etc/foo.conf&quot;</span><span class="p">,</span> <span class="n">from_template</span><span class="o">=</span><span class="s2">&quot;templates/foo.conf.j2&quot;</span><span class="p">,</span> <span class="n">signals</span><span class="o">=</span><span class="s2">&quot;restart_foo&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">set_handlers</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">Handlers</span><span class="p">(</span>
+        <span class="n">Service</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="s1">&#39;restarted&#39;</span><span class="p">)</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<p>In the above example, if the file was different on disk than what the template wanted, we would
+restart service ‘foo’. If the file was already correct, the service would not be restarted.</p>
+<p>See also <a class="reference internal" href="modules/module_file.html#module-file"><span class="std std-ref">File Module</span></a> and <a class="reference internal" href="modules/module_service.html#module-service"><span class="std std-ref">Service Module</span></a>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Currently one role cannot define handlers for events signaled by another role.  They are tightly
+namespaced.</p>
+</div>
+</div>
+<div class="section" id="variables">
+<h2>Variables<a class="headerlink" href="#variables" title="Permalink to this headline">¶</a></h2>
+<p>The method ‘set_variables’ on a Resource or a Role can define variables, and roles can also be set as parameters
+when instantiating a Role:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">set_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>While simply returning a dictionary is fine, it’s also possible to consult any external system for loading
+up those variables.  This is, of course, a completely live Python function.  If you prefer to keep your
+variables in CSV or JSON or YAML or XML files - a database - or to fetch them from a REST call, it is always
+up to you.</p>
+<p>These variables are best showcased with a more involved example, so know that they exist, read on,
+and in a bit prepare to dig into the example on <a class="reference internal" href="advanced.html#var-scoping"><span class="std std-ref">Variable Scoping</span></a>, which goes fully in on all the different
+places variables can be set.</p>
+<p><a class="reference internal" href="facts.html#facts"><span class="std std-ref">Facts</span></a> are also another way to get dynamic information into the system. Technically, ref:<cite>facts</cite> are not variables,
+they are really functions - but they are like variables that are always accessible in templates and conditionals.
+You will see more about facts as you browse the examples in the ‘opsmop-demo’ repository.  Facts also play a very
+strong role in provider selection, as detailed in <a class="reference internal" href="advanced.html#method"><span class="std std-ref">Provider Selection</span></a>.</p>
+</div>
+<div class="section" id="templates">
+<span id="id6"></span><h2>Templates<a class="headerlink" href="#templates" title="Permalink to this headline">¶</a></h2>
+<p>The most common (but not only) way to use variables in OpsMop are with templates.</p>
+<p>Templates take variables and inject them into strings. Because Templates apply to not just
+the <a class="reference internal" href="modules/module_file.html#module-file"><span class="std std-ref">File Module</span></a>, but also other parts of OpsMop, they warrant a section in the language guide.</p>
+<p>OpsMop uses <a class="reference external" href="http://jinja.pocoo.org/docs/">Jinja2</a> for templating, which is a powerful
+templating language that has quite a few capabilities beyond simple substitution, conditions, and loops.</p>
+<p>The most basic use of Jinja2 is variable substitution, for instance in a config file it might look like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">marzlevanes</span><span class="o">=</span><span class="mi">6</span>
+<span class="n">defrobinicate</span><span class="o">=</span><span class="s2">&quot;{{ defrobnicate }}&quot;</span>
+<span class="n">realign_main_deflector_array</span><span class="o">=</span><span class="kc">True</span>
+<span class="n">excelsior</span><span class="o">=</span><span class="s2">&quot;{{ excelsior }}&quot;</span>
+</pre></div>
+</div>
+<p>There are also conditionals, loops, and more.</p>
+<p>The most common way of using templating is the <a class="reference internal" href="modules/module_file.html#module-file"><span class="std std-ref">File Module</span></a>:</p>
+<p>It is important to understand templating in OpsMop works differently than in some other config systems. It is more explicit.
+To avoid ambiguity, OpsMop does not automatically template every string. Only a few certain utility modules automatically assume their inputs are templates.
+One is <a class="reference internal" href="modules/module_echo.html#module-echo"><span class="std std-ref">Echo Module</span></a>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">set_resources</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">Resources</span><span class="p">(</span>
+        <span class="n">Echo</span><span class="p">(</span><span class="s2">&quot;My name is {{ name }}&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<p>To explictly template a string for some other parameter, we need to use ‘T()’:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">set_resources</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">Resources</span><span class="p">(</span>
+        <span class="n">Package</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;foo&quot;</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="n">T</span><span class="p">(</span><span class="s2">&quot;{{ major }}.{{ minor }}&quot;</span><span class="p">))</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<p>Any variable in the current scope is available to ‘T()’.
+However, python variables are actually not.  To make them available to OpsMop you would need to add
+them to the local scope:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">set_resources</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">Resources</span><span class="p">(</span>
+        <span class="n">Set</span><span class="p">(</span><span class="n">foo_version</span><span class="o">=</span><span class="n">foo_version</span><span class="p">),</span>
+        <span class="n">Package</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;foo&quot;</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="n">foo_version</span><span class="p">)</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Use of an undefined variable in a template will intentionally cause an error.
+This can be handled by using filters in Jinja2 if you need to supply a default.
+This feature, while it may seem annoying, is actually a very good thing - you don’t
+want an installation to continue with an improperly configured config file, when
+certain values are mysteriously blank.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Because template expressions are late binding, they will push some type-checking that would
+normally happen at validation to ‘check’ or ‘apply’ stages to runtime evaluation. To review,
+see <a class="reference internal" href="local.html#local"><span class="std std-ref">Local</span></a>. For example, if this
+file was missing, it might not be determined until halfway through the evaluation of a policy:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">File</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;/etc/foo.cfg&quot;</span><span class="p">,</span> <span class="n">from_file</span><span class="o">=</span><span class="n">T</span><span class="p">(</span><span class="s2">&quot;files/{{ platform }}.cfg&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p class="last">This is usually completely safe if you understand all possible values of the variable. In the worst case,
+it will produce a runtime error if the file could not be found.</p>
+</div>
+</div>
+<div class="section" id="in-summary">
+<h2>In Summary<a class="headerlink" href="#in-summary" title="Permalink to this headline">¶</a></h2>
+<p>Policies, Roles, Types, and Handlers - along with Variables and Templates - make up the key concepts of OpsMop.</p>
+<p>There are many advanced language features available, which you should skim to get a feel of what is possible beyond
+the simple examples here. See <a class="reference internal" href="advanced.html#advanced"><span class="std std-ref">Language Part 2</span></a> next.</p>
+<p>If you have not done so already, the ‘opsmop-demo’ repository is an excellent resource for learning
+the language, as is <a class="reference internal" href="modules/modules.html#modules"><span class="std std-ref">OpsMop Module Index</span></a>.  These examples will provide a better understanding when read
+along with this chapter.</p>
+<p>Additional language features in <a class="reference internal" href="advanced.html#advanced"><span class="std std-ref">Language Part 2</span></a> will help you understand how to do more detailed
+things with OpsMop, and are also best understood when referring to both the ‘opsmop-demo’ repository
+and the <a class="reference internal" href="modules/modules.html#modules"><span class="std std-ref">OpsMop Module Index</span></a>.</p>
+<p>If you want to know more about the internals, check out <a class="reference internal" href="development.html#development"><span class="std std-ref">Development Guide</span></a>.</p>
+<p>Should you have any specific questions, we’d also encourage you to stop by the <a class="reference internal" href="community.html#forum"><span class="std std-ref">Forum</span></a> as we would
+be glad to help.</p>
+</div>
+<div class="section" id="next-steps">
+<h2>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference internal" href="modules/modules.html#modules"><span class="std std-ref">OpsMop Module Index</span></a></li>
+<li><a class="reference internal" href="advanced.html#advanced"><span class="std std-ref">Language Part 2</span></a></li>
+<li><a class="reference internal" href="development.html#development"><span class="std std-ref">Development Guide</span></a></li>
+<li><a class="reference internal" href="community.html#community"><span class="std std-ref">Community</span></a></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="advanced.html" class="btn btn-neutral float-right" title="Language Part 2" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="local.html" class="btn btn-neutral" title="Local" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Michael DeHaan LLC.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>  
+  <style>
+    .wy-side-nav-search, .wy-nav-top {
+      background: #444444;
+    }
+    .wy-nav-side {
+      background: #444444;
+    }
+  </style>
+
+<!-- Global Site Tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-127828570-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-127828570-1');
+</script>
+
+
+
+</body>
+</html>

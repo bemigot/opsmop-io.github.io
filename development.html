@@ -1,0 +1,360 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Development Guide &mdash; OpsMop  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Community" href="community.html" />
+    <link rel="prev" title="Frequently Asked Questions" href="faq.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="contents.html" class="icon icon-home"> OpsMop
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Intro</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Setup Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="local.html">Using Local Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="language.html">Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/modules.html">Module Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="facts.html">Facts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pull.html">Pull Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="push.html">Push/Orchestration Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Development</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#adding-new-providers">Adding New Providers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#writing-new-types">Writing New Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adding-custom-facts">Adding Custom Facts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adding-custom-lookups">Adding Custom Lookups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#custom-callbacks">Custom Callbacks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#roadmap">Roadmap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="community.html">Community</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="contents.html">OpsMop</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="contents.html">Docs</a> &raquo;</li>
+        
+      <li>Development Guide</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/development.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <img alt="OpsMop Logo" src="_images/opsmop.png" />
+<div class="section" id="development-guide">
+<span id="development"></span><h1>Development Guide<a class="headerlink" href="#development-guide" title="Permalink to this headline">¶</a></h1>
+<p>There are lots of ways to customize OpsMop - especially so because the language is all Python.  You might also want to add some changes upstream.
+This guide will hopefully help you out in that quest! If you have any development questions, you are also welcome to stop by the <a class="reference internal" href="community.html#forum"><span class="std std-ref">Forum</span></a>.</p>
+<div class="section" id="adding-new-providers">
+<span id="new-providers"></span><h2>Adding New Providers<a class="headerlink" href="#adding-new-providers" title="Permalink to this headline">¶</a></h2>
+<p>Suppose you wanted to make opsmop be able to install a new kind of package or handle a new OS init system.  To do this, you would
+need to implement a new provider.</p>
+<p>All providers extend from opsmop.types.provider.Provider.</p>
+<dl class="docutils">
+<dt>The best provider to copy when writing your own provider would be looking at the providers for</dt>
+<dd><a class="reference internal" href="modules/module_shell.html#module-shell"><span class="std std-ref">Shell Module</span></a> or <a class="reference internal" href="modules/module_package.html#module-package"><span class="std std-ref">Package Module</span></a> - they are both simple and illustrative.</dd>
+</dl>
+<p>See <a class="reference internal" href="advanced.html#method"><span class="std std-ref">Provider Selection</span></a> for how to pick a provider inside  your policy file, rather than relying on the default.  By supplying the method
+parameter, you can easily attach any provider class to an existing type.</p>
+<p>Should you want to make your new provider the default for a particular OS though, that requires a tiny amount more work -
+subclassing the Type itself.  (See <a class="reference internal" href="#new-types"><span class="std std-ref">Writing New Types</span></a>)</p>
+<p>If you just want to add new parameters to support a new provider you are adding, it is usually acceptable to add those parameters
+to the Type itself - and if you are adding a new provider via a github pull request, it naturally makes sense that you would
+also edit the Type() code to surface any new parameters.</p>
+</div>
+<div class="section" id="writing-new-types">
+<span id="new-types"></span><h2>Writing New Types<a class="headerlink" href="#writing-new-types" title="Permalink to this headline">¶</a></h2>
+<p>All types extend from <a class="reference external" href="https://github.com/vespene-io/opsmop/blob/master/opsmop/types/type.py">opsmop.types.type.Type</a></p>
+<p>The best type to copy when writing your own type would be <a class="reference internal" href="modules/module_shell.html#module-shell"><span class="std std-ref">Shell Module</span></a> or <a class="reference internal" href="modules/module_package.html#module-package"><span class="std std-ref">Package Module</span></a>.</p>
+<p>If you want to find an example of a type that supports default providers for different platforms, and also allows the user to select
+their own types, we recommend <a class="reference internal" href="modules/module_package.html#module-package"><span class="std std-ref">Package Module</span></a> or <a class="reference internal" href="modules/module_service.html#module-service"><span class="std std-ref">Service Module</span></a>.</p>
+<p>If writing new types, you will need to import these types into your policy file. The “easy.py” shortcut shown in most examples in the ‘opsmop-demo’ directory
+only import this one file.</p>
+<p>Once again, if you’re wishing to contribute a new provider, and it requires a new parameter, please include both in the same pull request.</p>
+</div>
+<div class="section" id="adding-custom-facts">
+<span id="custom-facts"></span><h2>Adding Custom Facts<a class="headerlink" href="#adding-custom-facts" title="Permalink to this headline">¶</a></h2>
+<p>The code for facts (see <a class="reference internal" href="facts.html#facts"><span class="std std-ref">Facts</span></a>) is in <a class="reference external" href="https://github.com/vespene-io/opsmop/blob/master/opsmop/facts/facts.py">opsmop.facts.facts.Fact</a></p>
+<p>If you write your own fact classes, you should make it available to template namespace by calling set:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">..</span> <span class="n">code</span><span class="o">-</span><span class="n">block</span><span class="p">::</span> <span class="n">python</span>
+</pre></div>
+</div>
+<blockquote>
+<div><dl class="docutils">
+<dt>def set_resources(self):</dt>
+<dd><dl class="first docutils">
+<dt>return Resources(</dt>
+<dd># …
+Set(site_facts=AcmeLabsCustomFacts())
+# …</dd>
+</dl>
+<p class="last">)</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>A future feature for custom facts in /etc/opsmop/facts.d is also pending development, which will allow string, JSON, or YAML facts as well as executable
+facts to be written in any language. See <a class="reference internal" href="facts.html#facts"><span class="std std-ref">Facts</span></a></p>
+</div>
+<div class="section" id="adding-custom-lookups">
+<span id="lookups"></span><h2>Adding Custom Lookups<a class="headerlink" href="#adding-custom-lookups" title="Permalink to this headline">¶</a></h2>
+<p>Lookup Values are subclasses of <a class="reference external" href="https://github.com/vespene-io/opsmop/blob/master/opsmop/lookups/lookup.py">opsmop.lookups.Lookup</a>, and are functions
+that are lazy-evaluated at check or apply stage.  Ok, it’s not exactly true they are functions. They are black-magic metaclass stuff. But eventually
+they are functions!</p>
+<p>They are also easy to write, and you don’t need to know anything about Python metaclasses to do it.</p>
+<p>Take a look at any of the subclasses in the ‘opsmop.lookups’ directory.</p>
+<p>Examples of core Lookups include Eval() for string evaluation and T() for <a class="reference internal" href="language.html#templates"><span class="std std-ref">Templates</span></a>.</p>
+<p>An example of a future custom type might be a ‘Etcd’ or ‘Consul’ or even DNS record lookup plugin - and something like this would be something we’d gladly include in
+the core distribution (probably then creating an opsmop.lookups package).</p>
+<p>Such a plugin could (and probably should) also memoize the value to prevent repeated computations.</p>
+<p>A quick reminder, lookups aren’t automatically available inside Jinja2, and to do that, use set:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">..</span> <span class="n">code</span><span class="o">-</span><span class="n">block</span><span class="p">::</span> <span class="n">python</span>
+</pre></div>
+</div>
+<blockquote>
+<div><dl class="docutils">
+<dt>def set_resources(self):</dt>
+<dd><dl class="first docutils">
+<dt>return Resources(</dt>
+<dd># …
+set(ff01=CustomFeatureFlagLookup(‘ff01’))
+# ..</dd>
+</dl>
+<p class="last">)</p>
+</dd>
+</dl>
+</div></blockquote>
+</div>
+<div class="section" id="custom-callbacks">
+<span id="callbacks"></span><h2>Custom Callbacks<a class="headerlink" href="#custom-callbacks" title="Permalink to this headline">¶</a></h2>
+<p>CLI output is driven by a callback plugin, as shown in <a class="reference external" href="https://github.com/vespene-io/opsmop/blob/master/opsmop/client/callbacks.py">opsmop.client.callbacks</a>.</p>
+<p>You can easily customize OpsMop by replacing it with another plugin, potentially a subclass.</p>
+<p>Using a new callback would require subclassing cli.py and a new bin/opsmop, which is just a thin layer over cli.py
+We can easily consider reading the callback name from an environment variable or a CLI parameter as a feature upgrade.</p>
+<p>Future plans for <a class="reference internal" href="pull.html#pull"><span class="std std-ref">Pull Mode</span></a> and :ref:<a href="#id1"><span class="problematic" id="id2">`</span></a>push will also feature different types of callback classes or additional callbacks.</p>
+</div>
+<div class="section" id="roadmap">
+<span id="id3"></span><h2>Roadmap<a class="headerlink" href="#roadmap" title="Permalink to this headline">¶</a></h2>
+<p>While OpsMop has a fluid roadmap, at this stage of development TODO.md is illustrative of some near-term features.
+We want the best ideas at the moment to win, and a lot of our development time will also be devoted to shepherding
+incoming pull requests and ideas from folks like yourself.</p>
+<p>If you have questions (or would like to help with something specific, stop by the <a class="reference internal" href="community.html#forum"><span class="std std-ref">Forum</span></a>.</p>
+</div>
+<div class="section" id="see-also">
+<h2>See Also<a class="headerlink" href="#see-also" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference internal" href="api.html#api"><span class="std std-ref">API</span></a></li>
+<li><a class="reference internal" href="community.html#community"><span class="std std-ref">Community</span></a></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="community.html" class="btn btn-neutral float-right" title="Community" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="faq.html" class="btn btn-neutral" title="Frequently Asked Questions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Michael DeHaan LLC.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>  
+  <style>
+    .wy-side-nav-search, .wy-nav-top {
+      background: #444444;
+    }
+    .wy-nav-side {
+      background: #444444;
+    }
+  </style>
+
+<!-- Global Site Tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-127828570-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-127828570-1');
+</script>
+
+
+
+</body>
+</html>

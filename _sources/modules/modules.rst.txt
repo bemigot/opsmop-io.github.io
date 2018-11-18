@@ -1,0 +1,57 @@
+.. image:: ../opsmop.png
+   :alt: OpsMop Logo
+
+.. _modules:
+
+OpsMop Module Index
+===================
+
+Available modules by category:
+
+General
+-------
+.. list-table:: 
+    :header-rows: 1
+
+    * - Name
+      - Purpose
+    * - :ref:`Directory <module_directory>`
+      - creates directories, removes them, and modifies metadata
+    * - :ref:`File <module_file>`
+      - copies files, changes modes, renders templates, deletes files, slices, dices
+    * - :ref:`Package <module_package>`
+      - installs, removes, and upgrades packages
+    * - :ref:`Service <module_service>`
+      - starts/stops and enables/disables services
+    * - :ref:`Shell <module_shell>`
+      - runs arbitrary shell commands, with feeling
+
+
+Special
+-------
+.. list-table:: 
+    :header-rows: 1
+
+    * - Name
+      - Purpose
+    * - :ref:`Asserts <module_asserts>`
+      - fails policy application when certain conditions are not true
+    * - :ref:`Debug <module_debug>`
+      - shows the values of lots of variables at once
+    * - :ref:`DebugFacts <module_debug_facts>`
+      - shows the values of lots of variables at once
+    * - :ref:`Echo <module_echo>`
+      - prints strings and status to the user
+    * - :ref:`Set <module_set>`
+      - adds variables into the OpsMop namespace
+    * - :ref:`Stop <module_stop>`
+      - stop aborts an execution, sharing a specific message
+
+
+Something Missing ?
+-------------------
+
+No doubt there is.
+If you don't see what you want yet? Opsmop is very new and modules and capabilities are being added all the time!.
+Your needs matter to us. Think there should be a new module, a new parameter, or want to help build a new provider? You are welcome to stop by the :ref:`forum`.
+

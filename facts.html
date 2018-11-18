@@ -1,0 +1,349 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Facts &mdash; OpsMop  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Pull Mode" href="pull.html" />
+    <link rel="prev" title="OpsMop Module Index" href="modules/modules.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="contents.html" class="icon icon-home"> OpsMop
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Intro</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Setup Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="local.html">Using Local Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="language.html">Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/modules.html">Module Index</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Facts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#list-of-available-facts">List of Available Facts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fact-examples">Fact Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#custom-facts">Custom Facts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#want-to-add-new-facts">Want To Add New Facts?</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pull.html">Pull Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="push.html">Push/Orchestration Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development.html">Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="community.html">Community</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="contents.html">OpsMop</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="contents.html">Docs</a> &raquo;</li>
+        
+      <li>Facts</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/facts.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <img alt="OpsMop Logo" src="_images/opsmop.png" />
+<div class="section" id="facts">
+<span id="id1"></span><h1>Facts<a class="headerlink" href="#facts" title="Permalink to this headline">¶</a></h1>
+<p>Facts are truths about the system where OpsMop is being run, and are usable in templates and conditionals.
+To view most of the available facts and their values, see <a class="reference internal" href="modules/module_debug_facts.html#module-debug-facts"><span class="std std-ref">DebugFacts Module</span></a>, though a listing of available facts
+is also included below.</p>
+<p>Alternatively from the shell:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">opsmop</span><span class="o">.</span><span class="n">facts</span><span class="o">.</span><span class="n">facts</span>
+</pre></div>
+</div>
+<div class="section" id="list-of-available-facts">
+<h2>List of Available Facts<a class="headerlink" href="#list-of-available-facts" title="Permalink to this headline">¶</a></h2>
+<p>More facts will be added frequently.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>choice(a,b,c,d,e)</td>
+<td>randomly returns one of the parameters. Useful for chaos.</td>
+</tr>
+<tr class="row-odd"><td>default_package_provider()</td>
+<td>used internally by the Package type</td>
+</tr>
+<tr class="row-even"><td>default_service_provider()</td>
+<td>used internally by the Package type</td>
+</tr>
+<tr class="row-odd"><td>random()</td>
+<td>returns a float between 0 and 1. Useful for chaos.</td>
+</tr>
+<tr class="row-even"><td>release()</td>
+<td>from <a class="reference external" href="https://docs.python.org/3/library/platform.html">python’s platform module</a></td>
+</tr>
+<tr class="row-odd"><td>system()</td>
+<td>from <a class="reference external" href="https://docs.python.org/3/library/platform.html">python’s platform module</a></td>
+</tr>
+<tr class="row-even"><td>version()</td>
+<td>from <a class="reference external" href="https://docs.python.org/3/library/platform.html">python’s platform module</a></td>
+</tr>
+</tbody>
+</table>
+<p>It is possible not all facts are documented, always run the <a class="reference internal" href="modules/module_debug_facts.html#module-debug-facts"><span class="std std-ref">DebugFacts Module</span></a> example to check the facts available
+on your platform. Again please remember that facts that take parameters, such as ‘choice’, do not appear in the DebugFacts
+output.</p>
+</div>
+<div class="section" id="fact-examples">
+<h2>Fact Examples<a class="headerlink" href="#fact-examples" title="Permalink to this headline">¶</a></h2>
+<p>Facts are accessed by calling functions on the instance variable “Facts”, like “Facts.foo()”, and can be used anywhere.</p>
+<p>The following demos are complimentary with the <a class="reference internal" href="advanced.html#advanced"><span class="std std-ref">Language Part 2</span></a> language guide.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">set_resources</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">Resources</span><span class="p">(</span>
+        <span class="n">Echo</span><span class="p">(</span><span class="s2">&quot;The OS type is {{ Facts.system() }}&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<p>Or more simply:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">set_resources</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">Resources</span><span class="p">(</span>
+        <span class="n">Echo</span><span class="p">(</span><span class="n">Facts</span><span class="o">.</span><span class="n">system</span><span class="p">())</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<p>Or just to use the DebugFacts module and print them out:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">set_resources</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">Resources</span><span class="p">(</span>
+        <span class="n">DebugFacts</span><span class="p">()</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<p>To use a Fact in a conditional:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Echo</span><span class="p">(</span><span class="s2">&quot;Not Darwin&quot;</span><span class="p">,</span> <span class="n">when</span><span class="o">=</span><span class="p">(</span><span class="n">Facts</span><span class="o">.</span><span class="n">system</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;Darwin&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Or inside a Jinja2 template, anywhere in OpsMop, you can also use Facts as you would expect:</p>
+</div>
+<div class="section" id="custom-facts">
+<h2>Custom Facts<a class="headerlink" href="#custom-facts" title="Permalink to this headline">¶</a></h2>
+<p>While you cannot create your own facts per se, a custom ‘/etc/opsmop/facts.d’ feature will be provided in the near
+future. Once complete, each file in ‘facts.d’ will be loaded into a fact value, accessible as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">F</span><span class="o">.</span><span class="n">site_facts</span><span class="p">(</span><span class="s1">&#39;factname&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This will then look for a file /etc/opsmop/facts.d/factname</p>
+<p>If the fact is valid JSON or YAML, it will be returned as a complex data structure.  If the fact is an executable
+file, the response from that file will be interepreted as JSON.  Otherwise, the value will be returned as a string.</p>
+<p>In this way, facts can be implemented in any language.</p>
+</div>
+<div class="section" id="want-to-add-new-facts">
+<h2>Want To Add New Facts?<a class="headerlink" href="#want-to-add-new-facts" title="Permalink to this headline">¶</a></h2>
+<p>Contribution of new facts (particularly OS/hardware related facts) to the main fact code is quite welcome.
+See <a class="reference internal" href="development.html#development"><span class="std std-ref">Development Guide</span></a>. Thank you!</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="pull.html" class="btn btn-neutral float-right" title="Pull Mode" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="modules/modules.html" class="btn btn-neutral" title="OpsMop Module Index" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Michael DeHaan LLC.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>  
+  <style>
+    .wy-side-nav-search, .wy-nav-top {
+      background: #444444;
+    }
+    .wy-nav-side {
+      background: #444444;
+    }
+  </style>
+
+<!-- Global Site Tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-127828570-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-127828570-1');
+</script>
+
+
+
+</body>
+</html>
