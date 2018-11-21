@@ -69,7 +69,7 @@ Here's a really easy way to see what the values of some variables are
     
         def set_resources(self):
             return Resources(
-                Echo("I am a {{ Facts.system() }} system"),
+                Echo("I am a {{ Platform.system() }} system"),
                 DebugFacts(),
             )
     

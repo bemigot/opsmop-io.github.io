@@ -94,6 +94,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#ignore-errors">Ignore Errors</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#change-reporting-control">Change Reporting Control</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#failure-status-overrides">Failure Status Overrides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hooks">Hooks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#next-steps">Next Steps</a></li>
 </ul>
 </li>
@@ -185,10 +186,10 @@ configuration will want to use at least some of the features explained below.</p
 feel free to jump back and forth. The best way to understand these features is to consult
 the <a class="reference external" href="https://github.com/opsmop/opsmop-demo">opsmop-demo</a> repo on GitHub, and also as you
 read through <a class="reference internal" href="modules/modules.html#modules"><span class="std std-ref">OpsMop Module Index</span></a>, you will see some of these features used in the examples in context.</p>
-<p>Many of the examples below are contrived and don’t deploy real applications, but are constructed to teach
+<p>Many of the examples are contrived and don’t deploy real applications, but are constructed to teach
 lessons about things such as <a class="reference internal" href="#var-scoping"><span class="std std-ref">Variable Scoping</span></a> or <a class="reference internal" href="#conditionals"><span class="std std-ref">Conditions</span></a>.  Real OpsMop policies
 for deploying an application stack would be a bit longer and would use a larger mixture of modules in concert.</p>
-<p>By studying these examples though, you can quickly experiment and try to put
+<p>By studying these arbitrary examples though, you can quickly experiment and try to put
 them together in your own <a class="reference internal" href="language.html#policy"><span class="std std-ref">Policy</span></a> configurations.</p>
 <p>OpsMop does not believe you should need an extremely large library of example configurations, we want you to learn
 the tool and be able to easily construct your own.</p>
@@ -321,46 +322,31 @@ advice.</p>
 </div>
 </div>
 <div class="section" id="nested-scopes">
-<span id="nested"></span><h2>Nested Scopes<a class="headerlink" href="#nested-scopes" title="Permalink to this headline">¶</a></h2>
-<p>Nested Scopes created a quickly way of adding <a class="reference internal" href="#conditionals"><span class="std std-ref">Conditions</span></a> to a large number of resources:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">set_resources</span><span class="p">():</span>
-    <span class="k">return</span> <span class="n">Resources</span><span class="p">(</span>
-       <span class="n">Resources</span><span class="p">(</span>
-           <span class="n">Shell</span><span class="p">(</span><span class="s2">&quot;echo /tmp/motd&quot;</span><span class="p">),</span>
-           <span class="n">Shell</span><span class="p">(</span><span class="s2">&quot;uptime&quot;</span><span class="p">),</span>
-           <span class="n">Shell</span><span class="p">(</span><span class="s2">&quot;date&quot;</span><span class="p">),</span>
-           <span class="n">when</span><span class="o">=</span><span class="s1">&#39;F.is_linux()&#39;</span>
-       <span class="p">),</span>
-       <span class="n">Resources</span><span class="p">(</span>
-           <span class="n">Echo</span><span class="p">(</span><span class="s2">&quot;nope&quot;</span><span class="p">),</span>
-           <span class="n">Echo</span><span class="p">(</span><span class="s2">&quot;skipping this too&quot;</span><span class="p">),</span>
-           <span class="n">when</span><span class="o">=</span><span class="s1">&#39;not F.is_linux()&#39;</span>
-       <span class="p">)</span>
-    <span class="p">)</span>
-</pre></div>
-</div>
-<p>Nested scopes can also be used for variable handling, as
-demoed in ‘var_scoping’ in the opsmop-demo repository.</p>
+<span id="id3"></span><h2>Nested Scopes<a class="headerlink" href="#nested-scopes" title="Permalink to this headline">¶</a></h2>
+<p>Resources in OpsMop can be nested, to attach variables at different scopes.  This is best demoed by
+<a class="reference external" href="https://github.com/opsmop/opsmop-demo/blob/master/content/var_scoping.py">var_scoping.py</a> which is a very
+arbitrary demo but shows how it is done.</p>
 </div>
 <div class="section" id="registration">
-<span id="id3"></span><h2>Registration<a class="headerlink" href="#registration" title="Permalink to this headline">¶</a></h2>
-<p>The value of one command may be saved and fed into the output of another.</p>
-<p>This value is entered into local scope, and can be saved into global scope using SetGlobal(),
-which is described in a later chapter:</p>
+<span id="id5"></span><h2>Registration<a class="headerlink" href="#registration" title="Permalink to this headline">¶</a></h2>
+<p>The value of one command can easily be saved and fed into the output of another.</p>
+<p>This value is entered into local scope:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">resources</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">Resources</span><span class="p">(</span>
+    <span class="n">resources</span> <span class="o">=</span> <span class="n">Resources</span><span class="p">()</span>
+    <span class="n">resources</span><span class="o">.</span><span class="n">add</span><span class="p">([</span>
         <span class="n">Shell</span><span class="p">(</span><span class="s1">&#39;date&#39;</span><span class="p">,</span> <span class="n">register</span><span class="o">=</span><span class="s1">&#39;date&#39;</span><span class="p">),</span>
         <span class="n">Debug</span><span class="p">(</span><span class="s1">&#39;date&#39;</span><span class="p">),</span>
         <span class="n">Echo</span><span class="p">(</span><span class="s2">&quot;{{ date.rc }}&quot;</span><span class="p">),</span>
         <span class="n">Echo</span><span class="p">(</span><span class="s2">&quot;{{ date.data }})</span>
-    <span class="p">)</span>
+    <span class="p">])</span>
+    <span class="k">return</span> <span class="n">resources</span>
 </pre></div>
 </div>
 <p>Registration works well with coupled with <a class="reference internal" href="#conditionals"><span class="std std-ref">Conditions</span></a>, <a class="reference internal" href="#failed-when"><span class="std std-ref">Failure Status Overrides</span></a> and <a class="reference internal" href="#changed-when"><span class="std std-ref">Change Reporting Control</span></a>.
 Some of these examples are shown in the ‘opsmop-demo’ repo.</p>
 </div>
 <div class="section" id="ignore-errors">
-<span id="id4"></span><h2>Ignore Errors<a class="headerlink" href="#ignore-errors" title="Permalink to this headline">¶</a></h2>
+<span id="id6"></span><h2>Ignore Errors<a class="headerlink" href="#ignore-errors" title="Permalink to this headline">¶</a></h2>
 <p>Most commands will intentionally stop the execution of an OpsMop policy upon hitting an error. A common
 example would be Shell() return codes. This is avoidable, and quite useful in combination with the register
 command.  This is demoed in the <a class="reference internal" href="modules/module_shell.html#module-shell"><span class="std std-ref">Shell Module</span></a> documentation.</p>
@@ -374,7 +360,10 @@ command.  This is demoed in the <a class="reference internal" href="modules/modu
 </div>
 <div class="section" id="change-reporting-control">
 <span id="changed-when"></span><h2>Change Reporting Control<a class="headerlink" href="#change-reporting-control" title="Permalink to this headline">¶</a></h2>
-<p>NOTE: this is a pending feature - this feature will be released shortly.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This is a pending feature not quite yet in the codebase - this feature will be released shortly.</p>
+</div>
 <p>A resource will mark itself as containing changes if it performs any actions to the system.
 These changes are used to decide whether to notify <a class="reference internal" href="language.html#handlers"><span class="std std-ref">Handlers</span></a>.</p>
 <p>Sometimes, particularly for shell commands, this is not appropriate, and the changed status
@@ -388,35 +377,75 @@ happened, and that’s a good practice.</p>
 </div>
 <div class="section" id="failure-status-overrides">
 <span id="failed-when"></span><h2>Failure Status Overrides<a class="headerlink" href="#failure-status-overrides" title="Permalink to this headline">¶</a></h2>
-<p>NOTE: this is a pending feature - this feature will be released shortly</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This is a pending feature not quite yet in the codebase - this feature will be released shortly.</p>
+</div>
 <p>By default if a command returns a fatal error, the program will halt at this step.  This is not
 always good, as sometimes, failure should depend on something other than that error status.</p>
-<p>For instance, the following is equivalent to <a class="reference internal" href="#ignore-errors"><span class="std std-ref">Ignore Errors</span></a>:</p>
+<p>At the most basic level, ‘failed_when’ is equivalent to ‘ignore_errors’:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Shell</span><span class="p">(</span><span class="s2">&quot;/bin/foo --args&quot;</span><span class="p">,</span> <span class="n">register</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">failed_when</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>However, that’s a weird example! In a more practical example, suppose we have a shell command that
-is programmed incorrectly and returns 5 on success:</p>
+<p>In a more practical example, suppose we have a shell command that is programmed incorrectly and
+returns 5 on success. To deal with that, we might do this:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Shell</span><span class="p">(</span><span class="s2">&quot;/bin/foo --args&quot;</span><span class="p">,</span> <span class="n">register</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">failed_when</span><span class="o">=</span><span class="s2">&quot;x.rc != 5&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Ok, that’s ALSO a weird example.  What if we have a shell command that we should consider failed
-if it doesn’t contain the word “SUCCESS” in the output?  Easy:</p>
+<p>What if we have a shell command that we should consider failed if it doesn’t contain the word “SUCCESS” in the output?
+We might do this:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Shell</span><span class="p">(</span><span class="s2">&quot;/bin/foo --args&quot;</span><span class="p">,</span> <span class="n">register</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">failed_when</span><span class="o">=</span><span class="s2">&quot;not &#39;SUCCESS&#39; in data&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>It may also be clearer to save the conditional string to a class or
+<p>It may also be clearer to save that conditional string to a class or
 package variable and use it this way:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Shell</span><span class="p">(</span><span class="s2">&quot;/bin/foo --args&quot;</span><span class="p">,</span> <span class="n">register</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">failed_when</span><span class="o">=</span><span class="n">SUCCESS_IN_OUTPUT</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">SUCCESS_IN_OUTPUT</span> <span class="o">=</span> <span class="s2">&quot;not &#39;SUCCESS&#39; in data&quot;</span>
+<span class="c1"># ...</span>
+<span class="k">def</span> <span class="nf">set_resources</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="c1"># ...</span>
+    <span class="n">Shell</span><span class="p">(</span><span class="s2">&quot;/bin/foo --args&quot;</span><span class="p">,</span> <span class="n">register</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">failed_when</span><span class="o">=</span><span class="n">SUCCESS_IN_OUTPUT</span><span class="p">)</span>
+    <span class="c1"># ...</span>
 </pre></div>
 </div>
-<p>Because OpsMop is python it is very easy to do those things, and we recommend it assinging to variables
-for clarity when possible.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Because OpsMop is pure Python it is very easy to assign variables, so when possible do so
+to increase readability.</p>
+</div>
+</div>
+<div class="section" id="hooks">
+<span id="id7"></span><h2>Hooks<a class="headerlink" href="#hooks" title="Permalink to this headline">¶</a></h2>
+<p>Every single object in the OpsMop language may define some special methods. These are most useful on <em>Roles</em> and <em>Policies</em>
+but can also be used on any <em>Type</em> instance if you subclass the Type.</p>
+<div class="section" id="post">
+<span id="hooks-post"></span><h3>post()<a class="headerlink" href="#post" title="Permalink to this headline">¶</a></h3>
+<p>This method is called after a resource is evaluated.</p>
+<p>This is demoed in <a class="reference external" href="https://github.com/opsmop/opsmop-demo/blob/master/content/user_facts.py">user_facts.py</a> to
+demonstrate invalidating the facts cache (see <a class="reference internal" href="facts.html#facts"><span class="std std-ref">Facts</span></a>) in between role executions.</p>
+<p>Both pre and post can do literally anything you want.</p>
+<p>The return values are ignored.</p>
+</div>
+<div class="section" id="pre">
+<span id="hooks-pre"></span><h3>pre()<a class="headerlink" href="#pre" title="Permalink to this headline">¶</a></h3>
+<p>The opposite of post().</p>
+<p>A pre method would be called prior to evaluating a role in either check or apply mode.</p>
+<p>The most trivial use of pre might be to print a quick message when entering a role, without relying on <a class="reference internal" href="modules/module_echo.html#module-echo"><span class="std std-ref">Echo Module</span></a>.</p>
+</div>
+<div class="section" id="should-execute-when">
+<span id="hooks-should-execute-when"></span><h3>should_execute_when()<a class="headerlink" href="#should-execute-when" title="Permalink to this headline">¶</a></h3>
+<p>This is powerful. This method is called to decide whether a resource should be executed at all.</p>
+<p>In the example <cite>user_facts.py &lt;https://github.com/opsmop/opsmop-demo/blob/master/content/user_facts.py&gt;</cite>
+we cleverly use should_execute_when() to implement feature flags - a given <em>Role</em> skips entirely when a fact is not set.
+This is also an easy way to make a role that only runs on a certain platform.  Thus OS specific parts of a multi-OS deployment
+can be split up into different roles, while still retaining common roles in other parts.</p>
+<p>(See also <a class="reference internal" href="facts.html#facts"><span class="std std-ref">Facts</span></a>).</p>
+</div>
 </div>
 <div class="section" id="next-steps">
 <h2>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><a class="reference internal" href="modules/modules.html#modules"><span class="std std-ref">OpsMop Module Index</span></a></li>
+<li><a class="reference internal" href="facts.html#facts"><span class="std std-ref">Facts</span></a></li>
 <li><a class="reference internal" href="development.html#development"><span class="std std-ref">Development Guide</span></a></li>
 <li><a class="reference internal" href="api.html#api"><span class="std std-ref">API</span></a></li>
 </ul>

@@ -30,18 +30,6 @@ used for directories instead of files.
       - if true, delete the file/directory
       - bool
       - False
-    * - from_content
-      - use this string as source data instead of a file
-      - str
-      - None
-    * - from_file
-      - path to a source file
-      - str
-      - None
-    * - from_template
-      - path to a source Jinja2 template
-      - str
-      - None
     * - group
       - group name
       - str
@@ -54,14 +42,14 @@ used for directories instead of files.
       - path to the destination file
       - str
       - None
-    * - overwrite
-      - replace existing files
-      - bool
-      - True
     * - owner
       - owner name
       - str
       - None
+    * - recursive
+      - if true, owner, group, and mode become recursive and always run if set
+      - bool
+      - False
 
 
 .. list-table:: Common Parameters

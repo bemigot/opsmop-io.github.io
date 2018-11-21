@@ -245,8 +245,8 @@ is at runtime inside OpsMop.</p>
             <span class="n">Debug</span><span class="p">(),</span>
             <span class="c1"># just show some things</span>
             <span class="n">Debug</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">),</span>
-            <span class="c1"># also debug some evaluated results or Facts</span>
-            <span class="n">Debug</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="n">os_type</span><span class="o">=</span><span class="n">Facts</span><span class="o">.</span><span class="n">os_type</span><span class="p">(),</span> <span class="n">expr</span><span class="o">=</span><span class="n">Eval</span><span class="p">(</span><span class="s1">&#39;a + 1000&#39;</span><span class="p">))</span>
+            <span class="c1"># also debug some evaluated results and platform Facts</span>
+            <span class="n">Debug</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="n">os_type</span><span class="o">=</span><span class="n">Platform</span><span class="o">.</span><span class="n">system</span><span class="p">(),</span> <span class="n">expr</span><span class="o">=</span><span class="n">Eval</span><span class="p">(</span><span class="s1">&#39;a + 1000&#39;</span><span class="p">))</span>
         <span class="p">)</span>
 </pre></div>
 </div>
