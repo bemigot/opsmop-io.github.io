@@ -15,8 +15,8 @@
 Directory Module
 ================
 
-The Directory module has all of the capabilities of the file module, but is
-used for directories instead of files.
+The Directory module is very similar to the file module, but obviously
+for directories, and not files.
 
 
 .. list-table:: Module Parameters
@@ -114,11 +114,11 @@ Type Implementations
 
 Provider Implementations
 ------------------------
-* `opsmop.providers.file <https://github.com/opsmop/opsmop/tree/master/opsmop/providers/file.py>`_
+* `opsmop.providers.directory <https://github.com/opsmop/opsmop/tree/master/opsmop/providers/directory.py>`_
 
 Related Modules
 ---------------
-* :ref:`module_directory`
+* :ref:`module_file`
 
 See Also
 --------
