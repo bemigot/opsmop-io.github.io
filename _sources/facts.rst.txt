@@ -172,7 +172,7 @@ Example:
 
 Example (Jinja2 template):
 
-.. code_block:: python
+.. code-block:: python
 
     class Foo(Role):
 
