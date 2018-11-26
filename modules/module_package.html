@@ -255,10 +255,10 @@ pick an alternate provider.  See <a class="reference internal" href="../advanced
             <span class="c1"># more provider types are coming soon.</span>
             <span class="c1"># Package(name=&#39;pygments&#39;, method=&#39;pip&#39;),</span>
 
-            <span class="c1"># install</span>
+            <span class="c1"># uninstall</span>
             <span class="n">Package</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;cowsay&#39;</span><span class="p">,</span> <span class="n">absent</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
 
-            <span class="c1"># uninstall</span>
+            <span class="c1"># install</span>
             <span class="n">Package</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;cowsay&#39;</span><span class="p">)</span>
         <span class="p">)</span>
 </pre></div>
@@ -280,6 +280,7 @@ pick an alternate provider.  See <a class="reference internal" href="../advanced
 <h2>Provider Implementations<a class="headerlink" href="#provider-implementations" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><a class="reference external" href="https://github.com/opsmop/opsmop/tree/master/opsmop/providers/package/brew.py">opsmop.providers.package.brew</a></li>
+<li><a class="reference external" href="https://github.com/opsmop/opsmop/tree/master/opsmop/providers/package/yum.py">opsmop.providers.package.yum</a></li>
 </ul>
 </div>
 <div class="section" id="related-modules">

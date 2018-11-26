@@ -94,10 +94,10 @@ Installing and removing a package.
                 # more provider types are coming soon.
                 # Package(name='pygments', method='pip'),
     
-                # install
+                # uninstall
                 Package(name='cowsay', absent=True),
     
-                # uninstall
+                # install
                 Package(name='cowsay')
             )
     
@@ -115,6 +115,7 @@ Type Implementations
 Provider Implementations
 ------------------------
 * `opsmop.providers.package.brew <https://github.com/opsmop/opsmop/tree/master/opsmop/providers/package/brew.py>`_
+* `opsmop.providers.package.yum <https://github.com/opsmop/opsmop/tree/master/opsmop/providers/package/yum.py>`_
 
 Related Modules
 ---------------
