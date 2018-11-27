@@ -337,13 +337,11 @@ namespaced and this is considered a feature.</p>
 </div>
 <div class="section" id="variables">
 <h2>Variables<a class="headerlink" href="#variables" title="Permalink to this headline">¶</a></h2>
-<p>The method ‘set_variables’ on a <em>Resource</em> or a <em>Role</em> can define <em>variables</em>.</p>
-<blockquote>
-<div><dl class="docutils">
-<dt>def set_variables(self):</dt>
-<dd>return dict(a=1, b=2, c=3)</dd>
-</dl>
-</div></blockquote>
+<p>The method ‘set_variables’ on a <em>Resource</em> or a <em>Role</em> can define <em>variables</em>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">set_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
 <p>We have also shown some examples above of parameterizing <em>Roles</em> and <em>Policies</em> when they are instantiated.</p>
 <p>While simply returning a dict is fine, it’s also possible to consult any external system for loading
 up those variables.  This is, of course, a completely live Python program!  If you prefer to keep your

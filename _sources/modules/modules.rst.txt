@@ -25,6 +25,8 @@ General
       - starts/stops and enables/disables services
     * - :ref:`Shell <module_shell>`
       - runs arbitrary shell commands, with feeling
+    * - :ref:`User <module_user>`
+      - manages user accounts
 
 
 Special
