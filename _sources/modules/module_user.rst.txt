@@ -94,7 +94,7 @@ Example: Basic Example
 ----------------------
 
 
-Installing and removing a package.
+Creating and removing some users
 
 .. code-block:: python
 

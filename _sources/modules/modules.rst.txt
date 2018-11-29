@@ -19,6 +19,8 @@ General
       - creates directories, removes them, and modifies metadata
     * - :ref:`File <module_file>`
       - copies files, changes modes, renders templates, deletes files, slices, dices
+    * - :ref:`Group <module_group>`
+      - manages user groups
     * - :ref:`Package <module_package>`
       - installs, removes, and upgrades packages
     * - :ref:`Service <module_service>`
