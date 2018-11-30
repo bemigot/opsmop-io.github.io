@@ -175,19 +175,19 @@ loads a policy file and runs it.</p>
 <p>Check mode runs a policy and reports on actions that should be changed, but does not
 make any changes (use <a class="reference internal" href="#apply"><span class="std std-ref">Apply Mode</span></a> to make changes).  This is often called a ‘dry-run’ mode,
 and dry-run support is a first-class citizen of OpsMop:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">opsmop</span> <span class="n">check</span> <span class="n">opsmop</span><span class="o">-</span><span class="n">demo</span><span class="o">/</span><span class="n">content</span><span class="o">/</span><span class="n">hello</span><span class="o">.</span><span class="n">py</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">opsmop</span> <span class="o">--</span><span class="n">check</span> <span class="n">opsmop</span><span class="o">-</span><span class="n">demo</span><span class="o">/</span><span class="n">content</span><span class="o">/</span><span class="n">hello</span><span class="o">.</span><span class="n">py</span>
 </pre></div>
 </div>
 <p id="validate">To just look for missing files and bad parameters, without running the full check mode,
 you can also run:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">opsmop</span> <span class="n">validate</span> <span class="n">opsmop</span><span class="o">-</span><span class="n">demo</span><span class="o">/</span><span class="n">content</span><span class="o">/</span><span class="n">hello</span><span class="o">.</span><span class="n">py</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">opsmop</span> <span class="o">--</span><span class="n">validate</span> <span class="n">opsmop</span><span class="o">-</span><span class="n">demo</span><span class="o">/</span><span class="n">content</span><span class="o">/</span><span class="n">hello</span><span class="o">.</span><span class="n">py</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="apply-mode">
 <span id="apply"></span><h2>Apply Mode<a class="headerlink" href="#apply-mode" title="Permalink to this headline">¶</a></h2>
 <p>Apply mode runs a policy, plans what changes are needed, and also runs the policy:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">opsmop</span> <span class="n">apply</span> <span class="n">opsmop</span><span class="o">-</span><span class="n">demo</span><span class="o">/</span><span class="n">content</span><span class="o">/</span><span class="n">hello</span><span class="o">.</span><span class="n">py</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">opsmop</span> <span class="o">--</span><span class="n">apply</span> <span class="n">opsmop</span><span class="o">-</span><span class="n">demo</span><span class="o">/</span><span class="n">content</span><span class="o">/</span><span class="n">hello</span><span class="o">.</span><span class="n">py</span>
 </pre></div>
 </div>
 </div>
