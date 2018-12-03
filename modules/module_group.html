@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Package Module &mdash; OpsMop  documentation</title>
+  <title>Group Module &mdash; OpsMop  documentation</title>
   
 
   
@@ -136,13 +136,13 @@
     
       <li><a href="../contents.html">Docs</a> &raquo;</li>
         
-      <li>Package Module</li>
+      <li>Group Module</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/modules/module_package.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/modules/module_group.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -156,11 +156,9 @@
            <div itemprop="articleBody">
             
   <img alt="OpsMop Logo" src="../_images/opsmop1.png" />
-<div class="section" id="package-module">
-<span id="module-package"></span><h1>Package Module<a class="headerlink" href="#package-module" title="Permalink to this headline">¶</a></h1>
-<p>The package module is used to install packages. The default provider for the operating
-system (for example, ‘apt’) is used unless the parameter ‘method’ is supplied to
-pick an alternate provider.  See <a class="reference internal" href="../advanced.html#method"><span class="std std-ref">Provider Selection</span></a>.</p>
+<div class="section" id="group-module">
+<span id="module-group"></span><h1>Group Module<a class="headerlink" href="#group-module" title="Permalink to this headline">¶</a></h1>
+<p>Manages groups. To control what users are in what groups, see <a class="reference internal" href="module_user.html#module-user"><span class="std std-ref">User Module</span></a>.</p>
 <table border="1" class="docutils" id="id1">
 <caption><span class="caption-text">Module Parameters</span><a class="headerlink" href="#id1" title="Permalink to this table">¶</a></caption>
 <colgroup>
@@ -178,29 +176,24 @@ pick an alternate provider.  See <a class="reference internal" href="../advanced
 </thead>
 <tbody valign="top">
 <tr class="row-even"><td>absent</td>
-<td>if true, remove the package</td>
+<td>if True, remove this group</td>
 <td>bool</td>
 <td>False</td>
 </tr>
-<tr class="row-odd"><td>latest</td>
-<td>if true, upgrade the package regardless of version</td>
-<td>bool</td>
-<td>False</td>
+<tr class="row-odd"><td>gid</td>
+<td>if set, use this group ID (on creation)</td>
+<td>int</td>
+<td>None</td>
 </tr>
 <tr class="row-even"><td>name</td>
-<td>the name of the package to install</td>
+<td>the name of the group</td>
 <td>str</td>
 <td>None</td>
 </tr>
-<tr class="row-odd"><td>update_cache</td>
-<td>if true, update the package cache</td>
+<tr class="row-odd"><td>system</td>
+<td>if True, specifies a system group (on creation)</td>
 <td>bool</td>
 <td>False</td>
-</tr>
-<tr class="row-even"><td>version</td>
-<td>what version to install</td>
-<td>str</td>
-<td>None</td>
 </tr>
 </tbody>
 </table>
@@ -249,25 +242,18 @@ pick an alternate provider.  See <a class="reference internal" href="../advanced
 </table>
 <div class="section" id="example-basic-example">
 <h2>Example: Basic Example<a class="headerlink" href="#example-basic-example" title="Permalink to this headline">¶</a></h2>
-<p>Installing and removing a package.</p>
+<p>Basic group operations.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">BasicExample</span><span class="p">(</span><span class="n">Role</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="nf">set_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">5150</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;badwolf&quot;</span><span class="p">)</span>
+       <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">5150</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;badwolf&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">set_resources</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">Resources</span><span class="p">(</span>
-
-            <span class="n">DebugFacts</span><span class="p">(),</span>
-
-            <span class="c1"># more provider types are coming soon.</span>
-            <span class="c1"># Package(name=&#39;pygments&#39;, method=&#39;pip&#39;),</span>
-
-            <span class="c1"># uninstall</span>
-            <span class="n">Package</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;cowsay&#39;</span><span class="p">,</span> <span class="n">absent</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
-
-            <span class="c1"># install</span>
-            <span class="n">Package</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;cowsay&#39;</span><span class="p">)</span>
+            <span class="n">Group</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;opsmgrp1&quot;</span><span class="p">),</span>
+            <span class="n">Group</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;opsmgrp2&quot;</span><span class="p">,</span> <span class="n">gid</span><span class="o">=</span><span class="mi">8008</span><span class="p">),</span>
+            <span class="n">Group</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;opsmgrp3&quot;</span><span class="p">,</span> <span class="n">system</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+            <span class="n">Group</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;opsmgrp1&quot;</span><span class="p">,</span> <span class="n">absent</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
         <span class="p">)</span>
 </pre></div>
 </div>
@@ -275,28 +261,25 @@ pick an alternate provider.  See <a class="reference internal" href="../advanced
 <div class="section" id="demo-on-github">
 <h2>Demo On GitHub<a class="headerlink" href="#demo-on-github" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><a class="reference external" href="https://github.com/opsmop/opsmop-demo/blob/master/module_docs/package.py">package.py</a></li>
+<li><a class="reference external" href="https://github.com/opsmop/opsmop-demo/blob/master/module_docs/group.py">group.py</a></li>
 </ul>
 </div>
 <div class="section" id="type-implementations">
 <h2>Type Implementations<a class="headerlink" href="#type-implementations" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><a class="reference external" href="https://github.com/opsmop/opsmop/tree/master/opsmop/types/package.py">opsmop.types.package</a></li>
+<li><a class="reference external" href="https://github.com/opsmop/opsmop/tree/master/opsmop/types/group.py">opsmop.types.group</a></li>
 </ul>
 </div>
 <div class="section" id="provider-implementations">
 <h2>Provider Implementations<a class="headerlink" href="#provider-implementations" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><a class="reference external" href="https://github.com/opsmop/opsmop/tree/master/opsmop/providers/package/apt.py">opsmop.providers.package.apt</a></li>
-<li><a class="reference external" href="https://github.com/opsmop/opsmop/tree/master/opsmop/providers/package/brew.py">opsmop.providers.package.brew</a></li>
-<li><a class="reference external" href="https://github.com/opsmop/opsmop/tree/master/opsmop/providers/package/yum.py">opsmop.providers.package.yum</a></li>
+<li><a class="reference external" href="https://github.com/opsmop/opsmop/tree/master/opsmop/providers/group/groupadd.py">opsmop.providers.group.groupadd</a></li>
 </ul>
 </div>
 <div class="section" id="related-modules">
 <h2>Related Modules<a class="headerlink" href="#related-modules" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><a class="reference internal" href="module_file.html#module-file"><span class="std std-ref">File Module</span></a></li>
-<li><a class="reference internal" href="module_service.html#module-service"><span class="std std-ref">Service Module</span></a></li>
+<li><a class="reference internal" href="module_user.html#module-user"><span class="std std-ref">User Module</span></a></li>
 </ul>
 </div>
 <div class="section" id="see-also">

@@ -39,6 +39,10 @@ pick an alternate provider.  See :ref:`method`.
       - the name of the package to install
       - str
       - None
+    * - update_cache
+      - if true, update the package cache
+      - bool
+      - False
     * - version
       - what version to install
       - str
@@ -91,6 +95,9 @@ Installing and removing a package.
     
         def set_resources(self):
             return Resources(
+    
+                DebugFacts(),
+    
                 # more provider types are coming soon.
                 # Package(name='pygments', method='pip'),
     
