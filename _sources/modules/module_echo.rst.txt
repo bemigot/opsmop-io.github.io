@@ -55,6 +55,10 @@ Unlike other modules, strings are automatically assumed to be templates.
       - signals a handler event by name
       - list
       - None
+    * - tags
+      - allows applying part of the policy
+      - list
+      - None
     * - when
       - attaches a condition to this resource
       - any

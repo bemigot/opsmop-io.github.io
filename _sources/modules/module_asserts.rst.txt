@@ -60,6 +60,10 @@ such as Eval()
       - signals a handler event by name
       - list
       - None
+    * - tags
+      - allows applying part of the policy
+      - list
+      - None
     * - when
       - attaches a condition to this resource
       - any

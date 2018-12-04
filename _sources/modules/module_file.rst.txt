@@ -86,6 +86,10 @@ The File module handles all major types of file operations in OpsMop.
       - signals a handler event by name
       - list
       - None
+    * - tags
+      - allows applying part of the policy
+      - list
+      - None
     * - when
       - attaches a condition to this resource
       - any

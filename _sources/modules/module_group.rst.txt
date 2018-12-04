@@ -66,6 +66,10 @@ Manages groups. To control what users are in what groups, see :ref:`module_user`
       - signals a handler event by name
       - list
       - None
+    * - tags
+      - allows applying part of the policy
+      - list
+      - None
     * - when
       - attaches a condition to this resource
       - any

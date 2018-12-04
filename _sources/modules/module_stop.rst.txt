@@ -56,6 +56,10 @@ on submarines, this is one way how you could do it.
       - signals a handler event by name
       - list
       - None
+    * - tags
+      - allows applying part of the policy
+      - list
+      - None
     * - when
       - attaches a condition to this resource
       - any

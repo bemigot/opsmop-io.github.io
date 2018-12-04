@@ -72,6 +72,10 @@ pick an alternate provider.  See :ref:`method`.
       - signals a handler event by name
       - list
       - None
+    * - tags
+      - allows applying part of the policy
+      - list
+      - None
     * - when
       - attaches a condition to this resource
       - any
@@ -124,6 +128,7 @@ Provider Implementations
 * `opsmop.providers.package.apt <https://github.com/opsmop/opsmop/tree/master/opsmop/providers/package/apt.py>`_
 * `opsmop.providers.package.brew <https://github.com/opsmop/opsmop/tree/master/opsmop/providers/package/brew.py>`_
 * `opsmop.providers.package.yum <https://github.com/opsmop/opsmop/tree/master/opsmop/providers/package/yum.py>`_
+* `opsmop.providers.package.dnf <https://github.com/opsmop/opsmop/tree/master/opsmop/providers/package/dnf.py>`_
 
 Related Modules
 ---------------

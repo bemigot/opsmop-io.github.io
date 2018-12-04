@@ -91,6 +91,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#conditions">Conditions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#nested-scopes">Nested Scopes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#registration">Registration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tags">Tags</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ignore-errors">Ignore Errors</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#change-reporting-control">Change Reporting Control</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#failure-status-overrides">Failure Status Overrides</a></li>
@@ -346,8 +347,28 @@ arbitrary demo but shows how it is done.</p>
 <p>Registration works well with coupled with <a class="reference internal" href="#conditionals"><span class="std std-ref">Conditions</span></a>, <a class="reference internal" href="#failed-when"><span class="std std-ref">Failure Status Overrides</span></a> and <a class="reference internal" href="#changed-when"><span class="std std-ref">Change Reporting Control</span></a>.
 Some of these examples are shown in the ‘opsmop-demo’ repo.</p>
 </div>
+<div class="section" id="tags">
+<span id="id6"></span><h2>Tags<a class="headerlink" href="#tags" title="Permalink to this headline">¶</a></h2>
+<p>OpsMop Tags are a feature where any certain resources in OpsMop can be selectively triggered without running all
+of the other resources in the policy file.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">DemoPolicy</span><span class="p">(</span><span class="n">Policy</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">set_roles</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="n">Roles</span><span class="p">(</span>
+            <span class="n">Security</span><span class="p">(</span><span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;security&#39;</span><span class="p">]),</span>
+            <span class="n">WebServer</span><span class="p">(</span><span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;webserver&#39;</span><span class="p">])</span>
+        <span class="p">)</span>
+</pre></div>
+</div>
+<p>In the above example, if the opsmop binary was invoked with “--tags=security”, only the security role
+would be processed.</p>
+<p>The special tag name ‘any’ triggers regardless of what is specified with ‘--tags’.</p>
+<p>Tags can be assigned to any resource or collection and automatically apply to all contained resources.
+This is best demonstrated by the <a class="reference external" href="https://github.com/opsmop/opsmop-demo/blob/master/content/basics.py">tags.py</a> demo in the <a class="reference external" href="https://github.com/opsmop/opsmop-demo">opsmop-demo</a> repo.</p>
+</div>
 <div class="section" id="ignore-errors">
-<span id="id6"></span><h2>Ignore Errors<a class="headerlink" href="#ignore-errors" title="Permalink to this headline">¶</a></h2>
+<span id="id8"></span><h2>Ignore Errors<a class="headerlink" href="#ignore-errors" title="Permalink to this headline">¶</a></h2>
 <p>Most commands will intentionally stop the execution of an OpsMop policy upon hitting an error. A common
 example would be Shell() return codes. This is avoidable, and quite useful in combination with the register
 command.  This is demoed in the <a class="reference internal" href="modules/module_shell.html#module-shell"><span class="std std-ref">Shell Module</span></a> documentation.</p>
@@ -415,7 +436,7 @@ to increase readability.</p>
 </div>
 </div>
 <div class="section" id="hooks">
-<span id="id7"></span><h2>Hooks<a class="headerlink" href="#hooks" title="Permalink to this headline">¶</a></h2>
+<span id="id9"></span><h2>Hooks<a class="headerlink" href="#hooks" title="Permalink to this headline">¶</a></h2>
 <p>Every single object in the OpsMop language may define some special methods. These are most useful on <em>Roles</em> and <em>Policies</em>
 but can also be used on any <em>Type</em> instance if you subclass the Type.</p>
 <div class="section" id="post">
