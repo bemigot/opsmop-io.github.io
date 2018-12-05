@@ -59,6 +59,10 @@ for directories, and not files.
       - Help
       - Kind
       - Default
+    * - changed_when
+      - if set, only signal handlers if this is true
+      - any
+      - None
     * - failed_when
       - if set, specify terms of resource application failure
       - any

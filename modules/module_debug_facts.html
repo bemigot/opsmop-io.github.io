@@ -180,37 +180,42 @@ template, or what value to check against in a conditional.</p>
 </tr>
 </thead>
 <tbody valign="top">
-<tr class="row-even"><td>failed_when</td>
+<tr class="row-even"><td>changed_when</td>
+<td>if set, only signal handlers if this is true</td>
+<td>any</td>
+<td>None</td>
+</tr>
+<tr class="row-odd"><td>failed_when</td>
 <td>if set, specify terms of resource application failure</td>
 <td>any</td>
 <td>None</td>
 </tr>
-<tr class="row-odd"><td>ignore_errors</td>
+<tr class="row-even"><td>ignore_errors</td>
 <td>proceeds in the event of most error conditions</td>
 <td>bool</td>
 <td>False</td>
 </tr>
-<tr class="row-even"><td>method</td>
+<tr class="row-odd"><td>method</td>
 <td>selects a non-default provider by name</td>
 <td>str</td>
 <td>None</td>
 </tr>
-<tr class="row-odd"><td>register</td>
+<tr class="row-even"><td>register</td>
 <td>saves the resource result into a named variable</td>
 <td>str</td>
 <td>None</td>
 </tr>
-<tr class="row-even"><td>signals</td>
+<tr class="row-odd"><td>signals</td>
 <td>signals a handler event by name</td>
 <td>list</td>
 <td>None</td>
 </tr>
-<tr class="row-odd"><td>tags</td>
+<tr class="row-even"><td>tags</td>
 <td>allows applying part of the policy</td>
 <td>list</td>
 <td>None</td>
 </tr>
-<tr class="row-even"><td>when</td>
+<tr class="row-odd"><td>when</td>
 <td>attaches a condition to this resource</td>
 <td>any</td>
 <td>None</td>

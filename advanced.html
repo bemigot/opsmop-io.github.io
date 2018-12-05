@@ -382,20 +382,16 @@ command.  This is demoed in the <a class="reference internal" href="modules/modu
 </div>
 <div class="section" id="change-reporting-control">
 <span id="changed-when"></span><h2>Change Reporting Control<a class="headerlink" href="#change-reporting-control" title="Permalink to this headline">¶</a></h2>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">This is a pending feature not quite yet in the codebase - this feature will be released shortly.</p>
-</div>
-<p>A resource will mark itself as containing changes if it performs any actions to the system.
-These changes are used to decide whether to notify <a class="reference internal" href="language.html#handlers"><span class="std std-ref">Handlers</span></a>.</p>
+<p>Normally, a resource will mark itself as containing changes if it performs any actions to the system.
+Presence of these changes are used to decide whether to notify <a class="reference internal" href="language.html#handlers"><span class="std std-ref">Handlers</span></a>.</p>
 <p>Sometimes, particularly for shell commands, this is not appropriate, and the changed status
 should possibly depend on specific return codes or output. The state can be overriden as follows:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Shell</span><span class="p">(</span><span class="s2">&quot;/bin/foo --args&quot;</span><span class="p">,</span> <span class="n">register</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">ignore_errors</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">changed_when</span><span class="o">=</span><span class="s2">&quot;&#39;changed&#39; in x.data&quot;</span><span class="p">,</span> <span class="n">notify</span><span class="o">=</span><span class="s2">&quot;some_step&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Shell</span><span class="p">(</span><span class="s2">&quot;/bin/foo --args&quot;</span><span class="p">,</span> <span class="n">register</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">changed_when</span><span class="o">=</span><span class="n">Eval</span><span class="p">(</span><span class="s2">&quot;&#39;changed&#39; in x.data&quot;</span><span class="p">),</span> <span class="n">notify</span><span class="o">=</span><span class="s2">&quot;some_step&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>If not using handlers, the change reporting isn’t too significant, but it will affect CLI output counts at
-the end of the policy execution.  Some users like their policies to report no changes when nothing really
-happened, and that’s a good practice.</p>
+<p>If not using handlers, the change reporting isn’t too significant, but is still useful to record whether or not
+the policy evaluation made any changes.</p>
+<p>If no ‘changed_when’ clause is added to the Shell resource, it will always record that it made a change.</p>
 </div>
 <div class="section" id="failure-status-overrides">
 <span id="failed-when"></span><h2>Failure Status Overrides<a class="headerlink" href="#failure-status-overrides" title="Permalink to this headline">¶</a></h2>
