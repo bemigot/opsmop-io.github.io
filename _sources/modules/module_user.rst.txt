@@ -67,6 +67,10 @@ Also see the group module for additional capabilities.
       - Help
       - Kind
       - Default
+    * - failed_when
+      - if set, specify terms of resource application failure
+      - any
+      - None
     * - ignore_errors
       - proceeds in the event of most error conditions
       - bool

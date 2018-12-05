@@ -50,6 +50,10 @@ Manages groups. To control what users are in what groups, see :ref:`module_user`
       - Help
       - Kind
       - Default
+    * - failed_when
+      - if set, specify terms of resource application failure
+      - any
+      - None
     * - ignore_errors
       - proceeds in the event of most error conditions
       - bool

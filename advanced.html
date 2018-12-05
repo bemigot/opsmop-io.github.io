@@ -399,40 +399,26 @@ happened, and that’s a good practice.</p>
 </div>
 <div class="section" id="failure-status-overrides">
 <span id="failed-when"></span><h2>Failure Status Overrides<a class="headerlink" href="#failure-status-overrides" title="Permalink to this headline">¶</a></h2>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">This is a pending feature not quite yet in the codebase - this feature will be released shortly.</p>
-</div>
-<p>By default if a command returns a fatal error, the program will halt at this step.  This is not
-always good, as sometimes, failure should depend on something other than that error status.</p>
-<p>At the most basic level, ‘failed_when’ is equivalent to ‘ignore_errors’:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Shell</span><span class="p">(</span><span class="s2">&quot;/bin/foo --args&quot;</span><span class="p">,</span> <span class="n">register</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">failed_when</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<p>By default, if a resource returns a fatal error, the program will halt at that point. What causes an error like this?
+Errors could be a non-zero exit code from the <span class="xref std std-ref">shell</span> module, or any other time a provider might return a failed result that is not
+a runtime exception.</p>
+<p>The problem is, sometimes return codes are not reliable.  Other times, return codes are not enough.</p>
+<p>Here are a few examples of controlling when a resource should be considered failed:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Shell</span><span class="p">(</span><span class="s2">&quot;/bin/foo --args&quot;</span><span class="p">,</span> <span class="n">register</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">failed_when</span><span class="o">=</span><span class="n">Eval</span><span class="p">(</span><span class="s2">&quot;x.rc != 5&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>In a more practical example, suppose we have a shell command that is programmed incorrectly and
-returns 5 on success. To deal with that, we might do this:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Shell</span><span class="p">(</span><span class="s2">&quot;/bin/foo --args&quot;</span><span class="p">,</span> <span class="n">register</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">failed_when</span><span class="o">=</span><span class="s2">&quot;x.rc != 5&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>What if we have a shell command that we should consider failed if it doesn’t contain the word “SUCCESS” in the output?
-We might do this:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Shell</span><span class="p">(</span><span class="s2">&quot;/bin/foo --args&quot;</span><span class="p">,</span> <span class="n">register</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">failed_when</span><span class="o">=</span><span class="s2">&quot;not &#39;SUCCESS&#39; in data&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Shell</span><span class="p">(</span><span class="s2">&quot;/bin/foo --args&quot;</span><span class="p">,</span> <span class="n">register</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">failed_when</span><span class="o">=</span><span class="n">Eval</span><span class="p">(</span><span class="s2">&quot;x.rc != 0 or not &#39;SUCCESS&#39; in x.data&quot;</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>It may also be clearer to save that conditional string to a class or
 package variable and use it this way:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">SUCCESS_IN_OUTPUT</span> <span class="o">=</span> <span class="s2">&quot;not &#39;SUCCESS&#39; in data&quot;</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">SUCCESS_IN_OUTPUT</span> <span class="o">=</span> <span class="n">Eval</span><span class="p">(</span><span class="s2">&quot;x.rc != 0 or not &#39;SUCCESS&#39; in x.data&quot;</span><span class="p">)</span>
 <span class="c1"># ...</span>
 <span class="k">def</span> <span class="nf">set_resources</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="c1"># ...</span>
     <span class="n">Shell</span><span class="p">(</span><span class="s2">&quot;/bin/foo --args&quot;</span><span class="p">,</span> <span class="n">register</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">failed_when</span><span class="o">=</span><span class="n">SUCCESS_IN_OUTPUT</span><span class="p">)</span>
     <span class="c1"># ...</span>
 </pre></div>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Because OpsMop is pure Python it is very easy to assign variables, so when possible do so
-to increase readability.</p>
 </div>
 </div>
 <div class="section" id="hooks">
