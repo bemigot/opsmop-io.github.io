@@ -188,11 +188,8 @@ most commonly used classes:</p>
 </pre></div>
 </div>
 <p>If you had written your own <em>Types</em>, or wanted to pull in any python library at all, you could also import them here.</p>
-<p>All <em>Policy</em> files must contain a ‘main()’ function which returns either a <em>Policy</em> object or a list of <em>Policy</em> objects.
-This main function does not need to be surrounded in the usual ‘if __name__’ pattern commonly found in Python files,
-because you should not be calling this function - the opsmop CLI (see <a class="reference internal" href="local.html#local"><span class="std std-ref">Local</span></a>) and corresponding API
-will be calling it for you.</p>
-<p>Here is a very basic Policy definition:</p>
+<p>OpsMop policies are made excutable by adding a “__main__” clause that invokes the opsmop CLI code, turning a policy
+file into an executable program. Here is a very basic Policy definition:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Hello</span><span class="p">(</span><span class="n">Policy</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="nf">set_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -201,13 +198,13 @@ will be calling it for you.</p>
     <span class="k">def</span> <span class="nf">set_roles</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">Roles</span><span class="p">(</span><span class="n">HelloRole</span><span class="p">())</span>
 
-<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-    <span class="k">return</span> <span class="n">Hello</span><span class="p">()</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">Cli</span><span class="p">(</span><span class="n">Hello</span><span class="p">())</span>
 </pre></div>
 </div>
-<p>Take note of ‘set_variables’ and ‘set_roles’.</p>
-<p><em>Roles</em> are the real units of work in OpsMop. <em>Polices</em> say what <em>Roles</em> are applied, and optionally set some
-<em>variables</em>, but <em>Roles</em> will do all the work.</p>
+<p>See <a class="reference internal" href="local.html#local"><span class="std std-ref">Local</span></a> for how this file would be executed.</p>
+<p>Take special note of ‘set_variables’ and ‘set_roles’. <em>Roles</em> are the real units of work in OpsMop.
+<em>Polices</em> say what <em>Roles</em> are applied, and optionally set some <em>variables</em>, but <em>Roles</em> will do all the work.</p>
 <p>Assigning <em>variables</em> in a <em>Policy</em> declaration is optional, but <em>Roles</em> are not.
 Why? A <em>Policy</em> without <em>Roles</em> has nothing to do!  We’ll get to <a class="reference internal" href="#roles"><span class="std std-ref">Roles</span></a> very shortly.</p>
 <p>Python developers should note that objects in OpsMop have “args, kwargs” constructors, which means

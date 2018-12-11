@@ -226,14 +226,19 @@ alias python /usr/local/bin/python3
 <div class="section" id="trying-things-out">
 <span id="first-test"></span><h2>Trying Things Out<a class="headerlink" href="#trying-things-out" title="Permalink to this headline">¶</a></h2>
 <p>The other chapters will explain opsmop in greater depth, but let’s see
-if this works:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">bin</span><span class="o">/</span><span class="n">opsmop</span> <span class="n">apply</span> <span class="o">../</span><span class="n">opsmop</span><span class="o">-</span><span class="n">demo</span><span class="o">/</span><span class="n">content</span><span class="o">/</span><span class="n">hello</span><span class="o">.</span><span class="n">py</span>
+if this works, just running from source:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">opsmop</span><span class="o">-</span><span class="n">demo</span><span class="o">/</span><span class="n">content</span>
+<span class="n">PYTHONPATH</span><span class="o">=/</span><span class="n">path</span><span class="o">/</span><span class="k">for</span><span class="o">/</span><span class="n">checkout</span><span class="o">/</span><span class="n">of</span><span class="o">/</span><span class="n">opsmop</span> <span class="n">python3</span> <span class="n">hello</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">local</span> <span class="o">--</span><span class="n">apply</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="what-about-pypi">
 <span id="pypi"></span><h2>What About PyPi?<a class="headerlink" href="#what-about-pypi" title="Permalink to this headline">¶</a></h2>
 <p>Versions of opsmop will be available in PyPi after the first release in 2019.</p>
+<p>The instructions above discuss running from source, which is useful if you are developing
+on the program.  Once installed, everything will work the same way, except PYTHONPATH
+will not need to be set.</p>
+<p>You can of course also “chmod +x” any policy file to avoid having to specify the interpreter.</p>
 </div>
 <div class="section" id="setup-problems-or-questions">
 <h2>Setup Problems or Questions?<a class="headerlink" href="#setup-problems-or-questions" title="Permalink to this headline">¶</a></h2>

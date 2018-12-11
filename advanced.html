@@ -396,7 +396,7 @@ the policy evaluation made any changes.</p>
 <div class="section" id="failure-status-overrides">
 <span id="failed-when"></span><h2>Failure Status Overrides<a class="headerlink" href="#failure-status-overrides" title="Permalink to this headline">¶</a></h2>
 <p>By default, if a resource returns a fatal error, the program will halt at that point. What causes an error like this?
-Errors could be a non-zero exit code from the <span class="xref std std-ref">shell</span> module, or any other time a provider might return a failed result that is not
+Errors could be a non-zero exit code from the <a class="reference internal" href="modules/module_shell.html#module-shell"><span class="std std-ref">Shell Module</span></a>, or any other time a provider might return a failed result that is not
 a runtime exception.</p>
 <p>The problem is, sometimes return codes are not reliable.  Other times, return codes are not enough.</p>
 <p>Here are a few examples of controlling when a resource should be considered failed:</p>

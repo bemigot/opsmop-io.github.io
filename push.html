@@ -89,7 +89,20 @@
 <li class="toctree-l1"><a class="reference internal" href="facts.html">Facts</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pull.html">Pull Mode</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Push/Orchestration Mode</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Push/Orchestration Mode</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#command-line-usage">Command Line Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#role-methods">Role Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#defaults">Defaults</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#inventory">Inventory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#toml-inventory">Toml Inventory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#other-inventory-types">Other Inventory Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#magic-inventory-variables">Magic Inventory Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#connection-trees">Connection Trees</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tuning">Tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#current-state">Current State</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#credits">Credits</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="development.html">Development</a></li>
 <li class="toctree-l1"><a class="reference internal" href="community.html">Community</a></li>
@@ -160,8 +173,114 @@
   <img alt="OpsMop Logo" src="_images/opsmop.png" />
 <div class="section" id="push-mode">
 <span id="push"></span><h1>Push Mode<a class="headerlink" href="#push-mode" title="Permalink to this headline">¶</a></h1>
-<p>Coming Soon! (But <a class="reference internal" href="pull.html#pull"><span class="std std-ref">Pull Mode</span></a> is coming first). Stop by the <a class="reference internal" href="community.html#forum"><span class="std std-ref">Forum</span></a> to share your thoughts on an ideal
-orchestration mode for OpsMop.</p>
+<p>WARNING: Push mode is under active development - this just documents current plans.
+It should be available by January 2019.</p>
+<p>OpsMop push mode is very similar to <a class="reference internal" href="local.html#local"><span class="std std-ref">Local</span></a>, but operates on multiple hosts via SSH.</p>
+<p>This is best understood while reviewing the <a class="reference external" href="https://github.com/opsmop/opsmop-demo/blob/master/content/push_demo.py">push_demo.py</a> example.</p>
+<div class="section" id="command-line-usage">
+<h2>Command Line Usage<a class="headerlink" href="#command-line-usage" title="Permalink to this headline">¶</a></h2>
+<p>Similar to <a class="reference internal" href="local.html#local"><span class="std std-ref">Local</span></a>, the opsmop command line for push mode is very simple:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">opsmop</span><span class="o">-</span><span class="n">demo</span><span class="o">/</span><span class="n">content</span>
+<span class="n">python3</span> <span class="n">filename</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">check</span> <span class="o">--</span><span class="n">push</span>
+<span class="n">python3</span> <span class="n">filename</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">apply</span> <span class="o">--</span><span class="n">push</span>
+</pre></div>
+</div>
+<p>Configuration is largely defined in the policy file.  Additional CLI flags may be added over time.</p>
+</div>
+<div class="section" id="role-methods">
+<h2>Role Methods<a class="headerlink" href="#role-methods" title="Permalink to this headline">¶</a></h2>
+<p>The following new methods are useful on each <em>Role</em> object in OpsMop when invoked in pull mode:</p>
+<p>This is in addition the the usual parts of the role, which are used in both local and push modes:</p>
+<p>If you need a review of basic language features, see <a class="reference internal" href="language.html#language"><span class="std std-ref">Language</span></a> and <a class="reference internal" href="advanced.html#advanced"><span class="std std-ref">Language Part 2</span></a>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In all computer systems, not just OpsMop, SSH connection with keys to untrusted hosts can be insecure,
+because that host can read your password. Wherever possible, you should connect by SSH key.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Usage of ssh-agent with  SSH keys is highly recommended for ease of automation, and the integrated SSH key management
+features of <cite>Vespene &lt;http://docs.vespene.io&gt;</cite> pair well with OpsMop push mode.</p>
+</div>
+</div>
+<div class="section" id="defaults">
+<h2>Defaults<a class="headerlink" href="#defaults" title="Permalink to this headline">¶</a></h2>
+<p>For values not specified on the role object, defaults are first looked for in ~/.opsmop/defaults.toml.  If that file does
+not exist, defaults are looked for in /etc/opsmop/defaults.toml.</p>
+<p>The file has the following format:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">ssh</span><span class="p">]</span>
+<span class="n">username</span> <span class="o">=</span> <span class="s2">&quot;mpdehaan&quot;</span>
+<span class="c1"># password = &quot;1234&quot;</span>
+<span class="c1"># check_host_keys = &quot;ignore&quot;</span>
+
+<span class="p">[</span><span class="n">sudo</span><span class="p">]</span>
+<span class="n">username</span> <span class="o">=</span> <span class="s2">&quot;root&quot;</span>
+<span class="c1"># password = &quot;letmein1234&quot;</span>
+
+<span class="p">[</span><span class="n">tuning</span><span class="p">]</span>
+<span class="c1"># options pending</span>
+</pre></div>
+</div>
+<p>These values are IGNORED if returned as “None” in the “sudo_as” or “connect_as” methods on the <em>Role</em> object.</p>
+</div>
+<div class="section" id="inventory">
+<h2>Inventory<a class="headerlink" href="#inventory" title="Permalink to this headline">¶</a></h2>
+<p>Pull mode requires an inventory to decide what hosts to target.  Inventory can also attach variables
+to each host (for use in <a class="reference internal" href="language.html#templates"><span class="std std-ref">Templates</span></a> or <a class="reference internal" href="advanced.html#conditionals"><span class="std std-ref">Conditions</span></a>), and there are certain special
+variables that can influence how the push mode operates.</p>
+<p>Inventory objects can be filtered, as shown above, by specifying a <a class="reference external" href="https://docs.python.org/3/library/fnmatch.html">fnmatch</a> pattern.
+For instance, an inventory can be carved down to a particular list of groups and/or hosts.</p>
+</div>
+<div class="section" id="toml-inventory">
+<h2>Toml Inventory<a class="headerlink" href="#toml-inventory" title="Permalink to this headline">¶</a></h2>
+<p>An easy method of keeping inventory in source code is the TOML Inventory, best demonstrated
+by <cite>inventory.toml &lt;https://github.com/opsmop/opsmop-demo/blob/master/content/inventory/inventory.toml&gt;</cite>.</p>
+<p>Variables can be assigned at either host or group level.</p>
+</div>
+<div class="section" id="other-inventory-types">
+<h2>Other Inventory Types<a class="headerlink" href="#other-inventory-types" title="Permalink to this headline">¶</a></h2>
+<p>Additional inventory types classes, particularly for cloud providers, would make excellent contributions to OpsMop.  If you are interested in
+adding one, stop by <cite>talk.msphere.io &lt;talk.msphere.io&gt;</cite>.</p>
+</div>
+<div class="section" id="magic-inventory-variables">
+<h2>Magic Inventory Variables<a class="headerlink" href="#magic-inventory-variables" title="Permalink to this headline">¶</a></h2>
+<p>Certain variables, when assigned in inventory, can be used to specify default values for SSH and Sudo behavior, and are used
+<em>INSTEAD</em> of the values in default.toml files if they exist.</p>
+<p>These variables are usable regardless of inventory source:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>* opsmop_host - the address to connect to
+* opsmop_ssh_username - the SSH username
+* opsmop_ssh_password - the SSH password
+* opsmop_sudo_username - the sudo username
+* opsmop_sudo_password - the sudo password
+* opsmop_via - name of the parent host (see :ref:`connection_trees`)
+</pre></div>
+</div>
+</div>
+<div class="section" id="connection-trees">
+<h2>Connection Trees<a class="headerlink" href="#connection-trees" title="Permalink to this headline">¶</a></h2>
+<p>Connection trees are an optional feature.</p>
+<p>OpsMop (via mitogen) can SSH-connect through multiple-layers of intermediate hosts, in a fan-out architecture.</p>
+<p>Here is an Example using the TOML inventory, to make it easier to understand the structure:</p>
+</div>
+<div class="section" id="tuning">
+<h2>Tuning<a class="headerlink" href="#tuning" title="Permalink to this headline">¶</a></h2>
+<p>Your ansible providers likely have many dependencies.  While opsmop does not require
+that you install these dependencies on managed nodes, if you install them, this will
+greatly speed up execution time.</p>
+</div>
+<div class="section" id="current-state">
+<h2>Current State<a class="headerlink" href="#current-state" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Push mode is an early alpha</li>
+<li>Work needs to be done to enable file transfer</li>
+<li>SELinux is not operational yet and is waiting on enhancements in mitogen</li>
+</ul>
+</div>
+<div class="section" id="credits">
+<h2>Credits<a class="headerlink" href="#credits" title="Permalink to this headline">¶</a></h2>
+<p>OpsMop SSH features are powered by <cite>mitogen &lt;https://mitogen.readthedocs.io/en/latest/&gt;</cite>.</p>
+<p>Not all of mitogen features are exposed at this point, more features can be surfaced over time.</p>
+</div>
 </div>
 
 
