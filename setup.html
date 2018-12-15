@@ -85,7 +85,9 @@
 <li class="toctree-l2"><a class="reference internal" href="#python-3">Python 3</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#python-3-on-linux-unix">Python 3 on Linux/Unix</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#python-3-on-mac-os-x">Python 3 on Mac OS X</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#git-checkout-and-dependencies">Git Checkout and Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pip-install">Pip Install</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#alternative-installing-from-source">Alternative: Installing From Source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#checkout-the-demo-repo">Checkout The Demo Repo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#trying-things-out">Trying Things Out</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#what-about-pypi">What About PyPi?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#setup-problems-or-questions">Setup Problems or Questions?</a></li>
@@ -98,8 +100,8 @@
 <li class="toctree-l1"><a class="reference internal" href="modules/modules.html">Module Index</a></li>
 <li class="toctree-l1"><a class="reference internal" href="facts.html">Facts</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pull.html">Pull Mode</a></li>
 <li class="toctree-l1"><a class="reference internal" href="push.html">Push/Orchestration Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pull.html">Pull Mode</a></li>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="development.html">Development</a></li>
 <li class="toctree-l1"><a class="reference internal" href="community.html">Community</a></li>
@@ -202,24 +204,40 @@ alias python /usr/local/bin/python3
 <p>And:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">easy_install</span><span class="o">-</span><span class="mf">3.7</span> <span class="n">virtualenv</span>
 <span class="n">virtualenv</span> <span class="n">env</span> <span class="o">-</span><span class="n">p</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">python3</span>
-</pre></div>
-</div>
-<p>And:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">source</span> <span class="n">env</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">activate</span>
+<span class="n">source</span> <span class="n">env</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">activate</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="git-checkout-and-dependencies">
-<span id="checkout"></span><h2>Git Checkout and Dependencies<a class="headerlink" href="#git-checkout-and-dependencies" title="Permalink to this headline">¶</a></h2>
-<p>Checkout both opsmop demo and the demo content:</p>
+<div class="section" id="pip-install">
+<span id="id2"></span><h2>Pip Install<a class="headerlink" href="#pip-install" title="Permalink to this headline">¶</a></h2>
+<p>On your platform, python 3 pip may be named ‘pip3’ or something like ‘pip-3.6’ or ‘pip-3.7’.
+Please make sure you use Python 3’s pip as OpsMop is a Python 3 application/library.</p>
+<p>To install OpsMop directly from pip:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">git</span><span class="o">+</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">opsmop</span><span class="o">/</span><span class="n">opsmop</span><span class="o">.</span><span class="n">git</span><span class="nd">@master</span>
+</pre></div>
+</div>
+<p>Opsmop will have official versions on PyPi in early 2019, but we still strongly suggest tracking
+the git repository. It is always intendeded to be usable, and will allow trying out new features
+immediately as they become available.</p>
+<p>To update to the latest code at any time, simply repeat the above command.</p>
+</div>
+<div class="section" id="alternative-installing-from-source">
+<span id="checkout"></span><h2>Alternative: Installing From Source<a class="headerlink" href="#alternative-installing-from-source" title="Permalink to this headline">¶</a></h2>
+<p>Checkout both opsmop repo:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">opsmop</span><span class="o">/</span><span class="n">opsmop</span><span class="o">.</span><span class="n">git</span>
-<span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">opsmop</span><span class="o">/</span><span class="n">opsmop</span><span class="o">-</span><span class="n">demo</span><span class="o">.</span><span class="n">git</span>
 </pre></div>
 </div>
-<p>Don’t forget about that demo repo!  It’s the best way to learn OpsMop.</p>
 <p>Now install python dependencies with pip:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">opsmop</span><span class="o">/</span>
 <span class="n">make</span> <span class="n">requirements</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="checkout-the-demo-repo">
+<span id="demo-repo"></span><h2>Checkout The Demo Repo<a class="headerlink" href="#checkout-the-demo-repo" title="Permalink to this headline">¶</a></h2>
+<p>The ‘opsmop-demo’ repo contains OpsMop learning examples.  Many are abstract and do not install
+real things, but they are there to teach you about the language and the tools:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">opsmop</span><span class="o">/</span><span class="n">opsmop</span><span class="o">-</span><span class="n">demo</span><span class="o">.</span><span class="n">git</span>
 </pre></div>
 </div>
 </div>

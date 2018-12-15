@@ -28,8 +28,8 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Frequently Asked Questions" href="faq.html" />
-    <link rel="prev" title="Pull Mode" href="pull.html" /> 
+    <link rel="next" title="Pull Mode" href="pull.html" />
+    <link rel="prev" title="API" href="api.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -88,21 +88,28 @@
 <li class="toctree-l1"><a class="reference internal" href="modules/modules.html">Module Index</a></li>
 <li class="toctree-l1"><a class="reference internal" href="facts.html">Facts</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pull.html">Pull Mode</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Push/Orchestration Mode</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#how-things-work">How Things Work</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#command-line-usage">Command Line Usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#role-methods">Role Methods</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#defaults">Defaults</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sudo">Sudo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#defaults-files">Defaults Files</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#inventory">Inventory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#inventory-limits-on-the-command-line">Inventory Limits on the Command Line</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#toml-inventory">Toml Inventory</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#other-inventory-types">Other Inventory Types</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#magic-inventory-variables">Magic Inventory Variables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#connection-trees">Connection Trees</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#understanding-the-fileserver">Understanding the FileServer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#advanced-tricks-rolling-updates-and-more">Advanced Tricks: Rolling Updates And More</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#tuning">Tuning</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#current-state">Current State</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#current-status">Current Status</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#logging">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#review">Review</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#credits">Credits</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="pull.html">Pull Mode</a></li>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="development.html">Development</a></li>
 <li class="toctree-l1"><a class="reference internal" href="community.html">Community</a></li>
@@ -173,25 +180,42 @@
   <img alt="OpsMop Logo" src="_images/opsmop.png" />
 <div class="section" id="push-mode">
 <span id="push"></span><h1>Push Mode<a class="headerlink" href="#push-mode" title="Permalink to this headline">¶</a></h1>
-<p>WARNING: Push mode is under active development - this just documents current plans.
-It should be available by January 2019.</p>
-<p>OpsMop push mode is very similar to <a class="reference internal" href="local.html#local"><span class="std std-ref">Local</span></a>, but operates on multiple hosts via SSH.</p>
-<p>This is best understood while reviewing the <a class="reference external" href="https://github.com/opsmop/opsmop-demo/blob/master/content/push_demo.py">push_demo.py</a> example.</p>
+<p>You should haev already read about using OpsMop in local mode (see <a class="reference internal" href="local.html#local"><span class="std std-ref">Local</span></a>) and read over the OpsMop language (see <a class="reference internal" href="language.html#language"><span class="std std-ref">Language</span></a> and <a class="reference internal" href="advanced.html#advanced"><span class="std std-ref">Language Part 2</span></a>).</p>
+<p>OpsMop’s “Push Mode” works like local mode, but targets multiple remote systems simultaneously.</p>
+<p>Push mode policies in OpsMop are just like Local policies (see <a class="reference internal" href="local.html#local"><span class="std std-ref">Local</span></a>), but require some extra functions to be implemented, though they are very
+small and easy to add.</p>
+<p>While OpsMop policy files written just for “local mode” do <em>NOT</em> contain enough information to be used
+in push mode, any push-capable policy file <em>CAN</em> be used in local mode with <em>NO</em> changes. This is a free bonus, as sometimes you may want to develop
+some automation locally as opposed to against remote systems.</p>
+<p>What a push mode example looks like is best understood after first understanding the language in local mode, and then reading
+the <a class="reference external" href="https://github.com/opsmop/opsmop-demo/blob/master/content/push_demo.py">push_demo.py</a> example.</p>
+<p>Please review this in another tab while reading the rest of the documentation.</p>
+<div class="section" id="how-things-work">
+<span id="how-push-works"></span><h2>How Things Work<a class="headerlink" href="#how-things-work" title="Permalink to this headline">¶</a></h2>
+<p>When in remote mode, it is helpful to think of remote communication, just as in local mode, as happening on a role by role basis.
+For each role, the system will remotely connect to any hosts (or groups of hosts) referenced in that role, and tell them to start evaluating
+that role.</p>
+<p>This happens asynchronously: each host is trying to execute through the role as fast as it can, rather than task by task.
+Along the way, various events occur and are sent back to the remote client, showing realtime status as configuration
+occurs.  All hosts must finish before moving on to the next role.</p>
+<p>If any host hits an error, the whole process stops with that role, and does not proceed to future roles.</p>
+</div>
 <div class="section" id="command-line-usage">
-<h2>Command Line Usage<a class="headerlink" href="#command-line-usage" title="Permalink to this headline">¶</a></h2>
-<p>Similar to <a class="reference internal" href="local.html#local"><span class="std std-ref">Local</span></a>, the opsmop command line for push mode is very simple:</p>
+<span id="push-cli"></span><h2>Command Line Usage<a class="headerlink" href="#command-line-usage" title="Permalink to this headline">¶</a></h2>
+<p>Similar to <a class="reference internal" href="local.html#local"><span class="std std-ref">Local</span></a>, the opsmop command line for push mode is short:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">opsmop</span><span class="o">-</span><span class="n">demo</span><span class="o">/</span><span class="n">content</span>
-<span class="n">python3</span> <span class="n">filename</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">check</span> <span class="o">--</span><span class="n">push</span>
-<span class="n">python3</span> <span class="n">filename</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">apply</span> <span class="o">--</span><span class="n">push</span>
+<span class="n">python3</span> <span class="n">filename</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">check</span> <span class="o">--</span><span class="n">push</span> <span class="p">[</span><span class="o">--</span><span class="n">verbose</span><span class="p">]</span>
+<span class="n">python3</span> <span class="n">filename</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">apply</span> <span class="o">--</span><span class="n">push</span> <span class="p">[</span><span class="o">--</span><span class="n">verbose</span><span class="p">]</span>
 </pre></div>
 </div>
-<p>Configuration is largely defined in the policy file.  Additional CLI flags may be added over time.</p>
+<p>Configuration is largely defined in the policy file.  There are other flags, but that’s the minimum.</p>
 </div>
 <div class="section" id="role-methods">
-<h2>Role Methods<a class="headerlink" href="#role-methods" title="Permalink to this headline">¶</a></h2>
-<p>The following new methods are useful on each <em>Role</em> object in OpsMop when invoked in pull mode:</p>
-<p>This is in addition the the usual parts of the role, which are used in both local and push modes:</p>
-<p>If you need a review of basic language features, see <a class="reference internal" href="language.html#language"><span class="std std-ref">Language</span></a> and <a class="reference internal" href="advanced.html#advanced"><span class="std std-ref">Language Part 2</span></a>.</p>
+<span id="push-role-methods"></span><h2>Role Methods<a class="headerlink" href="#role-methods" title="Permalink to this headline">¶</a></h2>
+<p>Roles in OpsMop are described in <a class="reference internal" href="language.html#roles"><span class="std std-ref">Roles</span></a>, but with additional functions added to describe both which
+hosts get contacted, and how, that are exclusively used with the ‘–push’ CLI flag.</p>
+<p>There are a few more we’ll get to later, but let’s review the most important ones. Note that not all of them
+are always required, so don’t get overwhelmed at first:</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">In all computer systems, not just OpsMop, SSH connection with keys to untrusted hosts can be insecure,
@@ -203,47 +227,100 @@ because that host can read your password. Wherever possible, you should connect 
 features of <cite>Vespene &lt;http://docs.vespene.io&gt;</cite> pair well with OpsMop push mode.</p>
 </div>
 </div>
-<div class="section" id="defaults">
-<h2>Defaults<a class="headerlink" href="#defaults" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="sudo">
+<span id="sudo-notes"></span><h2>Sudo<a class="headerlink" href="#sudo" title="Permalink to this headline">¶</a></h2>
+<p>It is worth noting that the sudo operations that happen above happen only once per role.  In fact, existing connections are reused
+between subsequent roles.</p>
+<p>The most common use of sudo is to log in as a normal account and then sudo to root, rather than allowing SSH to the root account.
+From root, it is easy to trivially execute sudo to less priveledged accounts, if needed, but this is not done with the ‘sudo_as’
+methods, you would simply just specify ‘sudo’ in front of any shell commands.</p>
+<p>Or, to put it another way, we expect ‘sudo_as’ to be used for priveledge escalation about 105% of the time.  This is why you can
+leave the ‘sudo_as’ undefined if you want, and it will just try root and no-password (or you can set a password in defaults.toml,
+which is explained below).</p>
+</div>
+<div class="section" id="defaults-files">
+<span id="push-defaults"></span><h2>Defaults Files<a class="headerlink" href="#defaults-files" title="Permalink to this headline">¶</a></h2>
 <p>For values not specified on the role object, defaults are first looked for in ~/.opsmop/defaults.toml.  If that file does
-not exist, defaults are looked for in /etc/opsmop/defaults.toml.</p>
+not exist, defaults are looked for in /etc/opsmop/defaults.toml.  If there are both files, the second is ignored.</p>
 <p>The file has the following format:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">ssh</span><span class="p">]</span>
 <span class="n">username</span> <span class="o">=</span> <span class="s2">&quot;mpdehaan&quot;</span>
 <span class="c1"># password = &quot;1234&quot;</span>
-<span class="c1"># check_host_keys = &quot;ignore&quot;</span>
+<span class="c1"># check_host_keys = &quot;ignore&quot; # or &#39;all&#39;</span>
 
 <span class="p">[</span><span class="n">sudo</span><span class="p">]</span>
 <span class="n">username</span> <span class="o">=</span> <span class="s2">&quot;root&quot;</span>
 <span class="c1"># password = &quot;letmein1234&quot;</span>
 
 <span class="p">[</span><span class="n">tuning</span><span class="p">]</span>
-<span class="c1"># options pending</span>
+<span class="n">max_workers</span> <span class="o">=</span> <span class="mi">16</span>
+
+<span class="p">[</span><span class="n">python</span><span class="p">]</span>
+<span class="c1"># this is the default for remote hosts</span>
+<span class="n">python_path</span> <span class="o">=</span> <span class="s1">&#39;/usr/bin/python3&#39;</span>
+
+<span class="p">[</span><span class="n">log</span><span class="p">]</span>
+<span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;~/.opsmop/opsmop.log&#39;</span>
+<span class="nb">format</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%(asctime)s</span><span class="s2"> </span><span class="si">%(message)s</span><span class="s2">&quot;</span>
 </pre></div>
 </div>
-<p>These values are IGNORED if returned as “None” in the “sudo_as” or “connect_as” methods on the <em>Role</em> object.</p>
+<p>These values are ignored if specified in the “sudo_as” or “connect_as” methods on the <em>Role</em> object.</p>
 </div>
 <div class="section" id="inventory">
-<h2>Inventory<a class="headerlink" href="#inventory" title="Permalink to this headline">¶</a></h2>
+<span id="push-inventory"></span><h2>Inventory<a class="headerlink" href="#inventory" title="Permalink to this headline">¶</a></h2>
 <p>Pull mode requires an inventory to decide what hosts to target.  Inventory can also attach variables
 to each host (for use in <a class="reference internal" href="language.html#templates"><span class="std std-ref">Templates</span></a> or <a class="reference internal" href="advanced.html#conditionals"><span class="std std-ref">Conditions</span></a>), and there are certain special
 variables that can influence how the push mode operates.</p>
-<p>Inventory objects can be filtered, as shown above, by specifying a <a class="reference external" href="https://docs.python.org/3/library/fnmatch.html">fnmatch</a> pattern.
+<p>Inventory objects can be filtered, as shown above and in ‘push_demo.py’, by specifying a <a class="reference external" href="https://docs.python.org/3/library/fnmatch.html">fnmatch</a> pattern.
 For instance, an inventory can be carved down to a particular list of groups and/or hosts.</p>
+<p>As detailed above, inventory is specified on each role, like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">inventory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">inventory</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">groups</span><span class="o">=</span><span class="s1">&#39;webservers&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>That’s an explicit group name.  We could also match groups starting with a pattern:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">inventory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">inventory</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">groups</span><span class="o">=</span><span class="s1">&#39;dc*&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The inventory class also allow filtering by host names, though usually you should just use groups:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">inventory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">inventory</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">hosts</span><span class="o">=</span><span class="s1">&#39;*.dc.example.com&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>And, finally, the inventory filtering supports multiple patterns:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">inventory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">inventory</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">groups</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;webservers&#39;</span><span class="p">,</span><span class="s1">&#39;dbservers&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Recall that OpsMop is pure python, so as long as you return an inventory object from this method, you can do whatever
+you want with it, including subclassing inventory.</p>
+</div>
+<div class="section" id="inventory-limits-on-the-command-line">
+<span id="inventory-limits"></span><h2>Inventory Limits on the Command Line<a class="headerlink" href="#inventory-limits-on-the-command-line" title="Permalink to this headline">¶</a></h2>
+<p>The inventory groups used can be further limited on the command line as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python3</span> <span class="n">push_demo</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">push</span> <span class="o">--</span><span class="n">apply</span> <span class="o">--</span><span class="n">limit</span><span class="o">-</span><span class="n">groups</span> <span class="s1">&#39;rack1&#39;</span>
+<span class="n">python3</span> <span class="n">push_demo</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">push</span> <span class="o">--</span><span class="n">apply</span> <span class="o">--</span><span class="n">limit</span><span class="o">-</span><span class="n">hosts</span> <span class="s1">&#39;foo.example.com&#39;</span>
+</pre></div>
+</div>
+<p>This way, it’s easy to write generic automation scripts that can target arbitrary inventory, without having to change the policy files.
+It is of course important to remember that, once again, OpsMop is pure python, and you could also do all this dynamically from within the policy file.</p>
 </div>
 <div class="section" id="toml-inventory">
-<h2>Toml Inventory<a class="headerlink" href="#toml-inventory" title="Permalink to this headline">¶</a></h2>
+<span id="id1"></span><h2>Toml Inventory<a class="headerlink" href="#toml-inventory" title="Permalink to this headline">¶</a></h2>
 <p>An easy method of keeping inventory in source code is the TOML Inventory, best demonstrated
-by <cite>inventory.toml &lt;https://github.com/opsmop/opsmop-demo/blob/master/content/inventory/inventory.toml&gt;</cite>.</p>
+by <a class="reference external" href="https://github.com/opsmop/opsmop-demo/blob/master/content/inventory/inventory.toml">inventory.toml</a>.</p>
 <p>Variables can be assigned at either host or group level.</p>
 </div>
 <div class="section" id="other-inventory-types">
-<h2>Other Inventory Types<a class="headerlink" href="#other-inventory-types" title="Permalink to this headline">¶</a></h2>
+<span id="other-inventory"></span><h2>Other Inventory Types<a class="headerlink" href="#other-inventory-types" title="Permalink to this headline">¶</a></h2>
 <p>Additional inventory types classes, particularly for cloud providers, would make excellent contributions to OpsMop.  If you are interested in
-adding one, stop by <cite>talk.msphere.io &lt;talk.msphere.io&gt;</cite>.</p>
+adding one, stop by <a class="reference external" href="talk.msphere.io">talk.msphere.io</a>.</p>
+<p>This will likely include cloud providers, querying inventory from configurations, and group membership from tags.  Once complete, setup and usage
+will be documented here.</p>
 </div>
 <div class="section" id="magic-inventory-variables">
-<h2>Magic Inventory Variables<a class="headerlink" href="#magic-inventory-variables" title="Permalink to this headline">¶</a></h2>
+<span id="id2"></span><h2>Magic Inventory Variables<a class="headerlink" href="#magic-inventory-variables" title="Permalink to this headline">¶</a></h2>
 <p>Certain variables, when assigned in inventory, can be used to specify default values for SSH and Sudo behavior, and are used
 <em>INSTEAD</em> of the values in default.toml files if they exist.</p>
 <p>These variables are usable regardless of inventory source:</p>
@@ -253,33 +330,109 @@ adding one, stop by <cite>talk.msphere.io &lt;talk.msphere.io&gt;</cite>.</p>
 * opsmop_sudo_username - the sudo username
 * opsmop_sudo_password - the sudo password
 * opsmop_via - name of the parent host (see :ref:`connection_trees`)
+* opsmop_python_path - the path to python 3 on the remote system (defaults to /usr/bin/python3)
 </pre></div>
 </div>
+<p>Variables can be set on  hosts or groups.  Setting them on groups is usually preferred where possible to reduce duplication, though obviously
+this doesn’t make sense for ‘opsmop_host’.</p>
 </div>
 <div class="section" id="connection-trees">
-<h2>Connection Trees<a class="headerlink" href="#connection-trees" title="Permalink to this headline">¶</a></h2>
-<p>Connection trees are an optional feature.</p>
+<span id="id3"></span><h2>Connection Trees<a class="headerlink" href="#connection-trees" title="Permalink to this headline">¶</a></h2>
+<p>Connection trees are an optional feature supported by the underlying library “mitogen” that we use for SSH communications
+(help is needed testing them!).</p>
 <p>OpsMop (via mitogen) can SSH-connect through multiple-layers of intermediate hosts, in a fan-out architecture.</p>
 <p>Here is an Example using the TOML inventory, to make it easier to understand the structure:</p>
 </div>
+<div class="section" id="understanding-the-fileserver">
+<span id="push-fileserver"></span><h2>Understanding the FileServer<a class="headerlink" href="#understanding-the-fileserver" title="Permalink to this headline">¶</a></h2>
+<p>OpsMop provides files to servers that need them through the SSHd channel, also courtesy of the mitogen library.</p>
+<p>To prevent a rogue host from requesting files that it should not have access to, the file serving features of OpsMop in push mode
+are ‘opt-in’.</p>
+<p>By default, it is possible to reference any paths relative to the main policy file, as featured in ‘push_demo.py’, and those
+files “just work”.</p>
+<p>To access other paths, a method can be added to the change what paths are served for that role:</p>
+<p>“.” in this case, always means the path of the policy file being executed on the command line.  If any other paths are given,
+they should be referenced as absolute paths by any resources that use them, as shown above.  If an ‘allow_fileserving_paths’
+method is not found on the Role, there is also an opportunity to override the default path (‘.’) by defining a method on the Policy
+class.</p>
+<p>The basic takeaway here is that each Role has fine grained control over what files may be served up.</p>
+<p>When the paths are added to the role, checksumming is performed to avoid transferring any files that do not need to be transferred.</p>
+<p>To avoid excessive checksumming, and also for security reasons, a set of patterns to be included and excluded from FileServing
+is available on the policy object.  The defaults are largely sensible for most applications:</p>
+<p>You may ask why this is important.  Part of the reason is we don’t want to allow a rogue host SSHd or Python to request files it should
+not have access to, or to allow accidental errors from users sending sensitive files to untrusted hosts.  The other part is we want to avoid
+calculating checksums for files we are unlikely to serve up.</p>
+</div>
+<div class="section" id="advanced-tricks-rolling-updates-and-more">
+<span id="push-advanced-tricks"></span><h2>Advanced Tricks: Rolling Updates And More<a class="headerlink" href="#advanced-tricks-rolling-updates-and-more" title="Permalink to this headline">¶</a></h2>
+<p>While less commonly needed in cloud-enabled scenarios where “blue-green” deployments are common, the scenario of rolling updates
+is a good one to use to describe many of the advanced features of OpsMop push mode.  These features are not, however, limited to
+rolling update capabilities.</p>
+<p>In a rolling update, suppose we have 100 hosts connected to a physical load balancer.  What we want to do is contact 10 hosts
+at a time, and before updating them, take them out of a load balanced pool.  If they succeed with their updates, we want to put
+them back into that load balanced pool.</p>
+<p>The OpsMop role might look like this:</p>
+<p>As you can see, there are a lot of details to this example, but full control is provided.  Interaction with any piece of hardware, database, or system - including
+waiting on external locks, is completely possible <em>without</em> needing to rely on extra modules.</p>
+<p>While this type of workflow mostly makes sense for a rolling updates with hardware load balancers, the “before_connect” and “after_connect” hooks are completely generic
+and can be used for any purpose.</p>
+<p>Similarly, the serial control affects how many hosts are going to be processed at any one time, and can be useful when controlling load on a package updates. For instance, if you
+had 3000 hosts, it might be a bad idea to let them all hit your package mirror at once.</p>
+<p>The serial control also provides a nice failsafe - if there are errors in a serial batch, it can prevent the rest of the hosts from being taken out by a failure during the policy
+application.  There is <em>always</em> a default value for “serial” in OpsMop, but the default is currently hard coded to do 80 roles a time.  This can easily be made configurable
+in future releases.</p>
+</div>
 <div class="section" id="tuning">
-<h2>Tuning<a class="headerlink" href="#tuning" title="Permalink to this headline">¶</a></h2>
+<span id="push-tuning"></span><h2>Tuning<a class="headerlink" href="#tuning" title="Permalink to this headline">¶</a></h2>
+<p>The SSH implementation is already very fast, but there are a few things you can do to boost performance.</p>
 <p>Your ansible providers likely have many dependencies.  While opsmop does not require
 that you install these dependencies on managed nodes, if you install them, this will
 greatly speed up execution time.</p>
+<p>These include python packages: jinja2, toml, dill, colorama, and PyYAML.</p>
+<p>If not installed, the module code for these are copied over once per each push execution.</p>
 </div>
-<div class="section" id="current-state">
-<h2>Current State<a class="headerlink" href="#current-state" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li>Push mode is an early alpha</li>
-<li>Work needs to be done to enable file transfer</li>
-<li>SELinux is not operational yet and is waiting on enhancements in mitogen</li>
-</ul>
+<div class="section" id="current-status">
+<span id="push-status"></span><h2>Current Status<a class="headerlink" href="#current-status" title="Permalink to this headline">¶</a></h2>
+<p>Push mode is still new, and can use help testing in all manner of configurations, including in high-
+performance, high-host-count, and high-latency scenarios.  However, most features are already implemented
+and this is completely usable today.</p>
+<p>1. SELinux (enforcing) support is not operational yet and is waiting on enhancements in mitogen. You should
+be able to switch selinux to permissive mode.  Non-SELinux distributions (Debian, Ubuntu, Arch, etc)
+are of course not effected.</p>
+<p>2. Connections to hosts are conducted in a threadpool with a default of 16 threaded workers (see <a class="reference internal" href="#push-defaults"><span class="std std-ref">Defaults Files</span></a>). If you have a large
+number of hosts there may be some lag for the very first time they are contacted that will not occur in subsequent
+roles. A future forks flag like “-j4” should allow this to use additional CPUs by dividing the list of hosts up
+between processors.</p>
+</div>
+<div class="section" id="logging">
+<h2>Logging<a class="headerlink" href="#logging" title="Permalink to this headline">¶</a></h2>
+<p>Sometimes it is easier to understand a problem with a configuration policy when viewing the remote log from the perspective of a local
+deploy.</p>
+<p>To do this, simply login to the remote system and cat ~/.opsmop/opsmop.log</p>
+<p>The output will contain the exact output as if the configuration was run locally, with timestamps.  The file is automatically logrotated
+so you do not need to worry about it growing too large.  The log file path can be changed in defaults.toml.</p>
+</div>
+<div class="section" id="review">
+<span id="id4"></span><h2>Review<a class="headerlink" href="#review" title="Permalink to this headline">¶</a></h2>
+<p>All of the features of local mode are usuable in push mode so it helps to master them.  Be sure to review useful features documented in <a class="reference internal" href="language.html#language"><span class="std std-ref">Language</span></a>
+and <a class="reference internal" href="advanced.html#advanced"><span class="std std-ref">Language Part 2</span></a>.</p>
+<p>You will find that while configuration management use cases are the ones that most immediately come to mind, many other tricks
+and useful admin utilities can be implemented in OpsMop.</p>
+<p>For instance, it is possible to combine <a class="reference internal" href="advanced.html#hooks-should-process-when"><span class="std std-ref">should_process_when()</span></a> with <a class="reference internal" href="facts.html#file-tests"><span class="std std-ref">FileTests</span></a> to write a push mode script that does
+something to systems only if they have a particular package installed.</p>
+<p>Another example is you could use the “def serial()” method, set to 1 coupled with <a class="reference internal" href="advanced.html#extra-vars"><span class="std std-ref">CLI Extra Variables</span></a>, to make a very basic distributed “cat” that made
+use of OpsMop inventory.</p>
+<p>What other combinations can you think of?</p>
 </div>
 <div class="section" id="credits">
 <h2>Credits<a class="headerlink" href="#credits" title="Permalink to this headline">¶</a></h2>
-<p>OpsMop SSH features are powered by <cite>mitogen &lt;https://mitogen.readthedocs.io/en/latest/&gt;</cite>.</p>
-<p>Not all of mitogen features are exposed at this point, more features can be surfaced over time.</p>
+<p>Much of the support for push mode in OpsMop comes from the libraries underpinning the implementation, and we would be remiss to not give them
+due credit for makings these features much easier to implement.</p>
+<p>OpsMop SSH features, including sudo support, file transfer, dependency transfers, remote error handling, and multi-tier connections
+are all powered by <a class="reference external" href="https://mitogen.readthedocs.io/en/latest/">mitogen</a>.</p>
+<p>Additionally, heavy use is made of <a class="reference external" href="https://pypi.org/project/dill/">dill</a> for serialization of python objects.</p>
+<p>The asynchronous connections benefit strongly from <a class="reference external" href="https://docs.python.org/3/library/concurrent.futures.html">concurrent futures</a>, a great
+improvement on the multiprocessing layer.</p>
 </div>
 </div>
 
@@ -291,10 +444,10 @@ greatly speed up execution time.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="faq.html" class="btn btn-neutral float-right" title="Frequently Asked Questions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="pull.html" class="btn btn-neutral float-right" title="Pull Mode" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="pull.html" class="btn btn-neutral" title="Pull Mode" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="api.html" class="btn btn-neutral" title="API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

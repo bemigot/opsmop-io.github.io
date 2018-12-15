@@ -96,14 +96,15 @@
 <li class="toctree-l2"><a class="reference internal" href="#change-reporting-control">Change Reporting Control</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#failure-status-overrides">Failure Status Overrides</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#hooks">Hooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#cli-extra-variables">CLI Extra Variables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#next-steps">Next Steps</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="modules/modules.html">Module Index</a></li>
 <li class="toctree-l1"><a class="reference internal" href="facts.html">Facts</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pull.html">Pull Mode</a></li>
 <li class="toctree-l1"><a class="reference internal" href="push.html">Push/Orchestration Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pull.html">Pull Mode</a></li>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="development.html">Development</a></li>
 <li class="toctree-l1"><a class="reference internal" href="community.html">Community</a></li>
@@ -322,6 +323,10 @@ prior to doing a ‘register’ call (see <a class="reference internal" href="#r
 and you don’t have to express the default from within a template.  This tip also works for general templating
 advice.</p>
 </div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">See <a class="reference internal" href="#hooks-should-process-when"><span class="std std-ref">should_process_when()</span></a> for another way to express conditionals on a <em>Role</em>.</p>
+</div>
 </div>
 <div class="section" id="nested-scopes">
 <span id="id3"></span><h2>Nested Scopes<a class="headerlink" href="#nested-scopes" title="Permalink to this headline">¶</a></h2>
@@ -435,15 +440,32 @@ demonstrate invalidating the facts cache (see <a class="reference internal" href
 <p>A pre method would be called prior to evaluating a role in either check or apply mode.</p>
 <p>The most trivial use of pre might be to print a quick message when entering a role, without relying on <a class="reference internal" href="modules/module_echo.html#module-echo"><span class="std std-ref">Echo Module</span></a>.</p>
 </div>
-<div class="section" id="should-execute-when">
-<span id="hooks-should-execute-when"></span><h3>should_execute_when()<a class="headerlink" href="#should-execute-when" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="should-process-when">
+<span id="hooks-should-process-when"></span><h3>should_process_when()<a class="headerlink" href="#should-process-when" title="Permalink to this headline">¶</a></h3>
 <p>This is powerful. This method is called to decide whether a resource should be executed at all.</p>
 <p>In the example <cite>user_facts.py &lt;https://github.com/opsmop/opsmop-demo/blob/master/content/user_facts.py&gt;</cite>
-we cleverly use should_execute_when() to implement feature flags - a given <em>Role</em> skips entirely when a fact is not set.
+we cleverly use should_process_when() to implement feature flags - a given <em>Role</em> skips entirely when a fact is not set.
 This is also an easy way to make a role that only runs on a certain platform.  Thus OS specific parts of a multi-OS deployment
 can be split up into different roles, while still retaining common roles in other parts.</p>
 <p>(See also <a class="reference internal" href="facts.html#facts"><span class="std std-ref">Facts</span></a>).</p>
 </div>
+</div>
+<div class="section" id="cli-extra-variables">
+<span id="extra-vars"></span><h2>CLI Extra Variables<a class="headerlink" href="#cli-extra-variables" title="Permalink to this headline">¶</a></h2>
+<p>It is possible (both for ref:<cite>local</cite> and <a class="reference internal" href="push.html#push"><span class="std std-ref">Push Mode</span></a>) to specify extra variables on the command line.  These appear in templates as well as conditionals, and override
+any variable value in OpsMop.</p>
+<p>Examples:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python3</span> <span class="n">deploy</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">apply</span> <span class="o">--</span><span class="n">push</span> <span class="o">--</span><span class="n">extra</span><span class="o">-</span><span class="nb">vars</span> <span class="s2">&quot;version=1.2.3.4 package=foo&quot;</span>
+
+<span class="n">python3</span> <span class="n">deploy</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">apply</span> <span class="o">--</span><span class="n">push</span> <span class="o">--</span><span class="n">extra</span><span class="o">-</span><span class="nb">vars</span> <span class="nd">@vespene</span><span class="o">.</span><span class="n">json</span>
+</pre></div>
+</div>
+<p>Using the “&#64;” symbol allows variables to be loaded from a file.  “.json”, “.toml”, and “.yaml” files are all readable, assuming they have the appropriate extensions.</p>
+<p>This feature is ideally suited for integration with <a class="reference external" href="http://docs.vespene.io/">Vespene</a> when taking advantage of <a class="reference external" href="http://docs.vespene.io/launch_questions.html">Vespene Launch Questions</a>
+to provide a friendly, accessed controlled web console for all kinds of IT automation tasks. Vespene generates a JSON file called “vespene.json” automatically in each build root, containing all the
+variables set up in UI and supplied by the user.</p>
+<p>If you happen to use another CI/CD server or operations GUI, similar concepts will also work to inject variable values into your scripts. The other way to provide
+variable data is <a class="reference internal" href="push.html#push-inventory"><span class="std std-ref">Inventory</span></a>.</p>
 </div>
 <div class="section" id="next-steps">
 <h2>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">¶</a></h2>

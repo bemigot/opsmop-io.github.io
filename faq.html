@@ -29,7 +29,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Development Guide" href="development.html" />
-    <link rel="prev" title="Push Mode" href="push.html" /> 
+    <link rel="prev" title="Pull Mode" href="pull.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -88,8 +88,8 @@
 <li class="toctree-l1"><a class="reference internal" href="modules/modules.html">Module Index</a></li>
 <li class="toctree-l1"><a class="reference internal" href="facts.html">Facts</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pull.html">Pull Mode</a></li>
 <li class="toctree-l1"><a class="reference internal" href="push.html">Push/Orchestration Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pull.html">Pull Mode</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">FAQ</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#how-did-you-get-to-be-so-awesome">How Did You Get To Be So Awesome?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#how-is-opsmop-different-from-x">How Is OpsMop Different From X?</a></li>
@@ -107,10 +107,9 @@
 <li class="toctree-l2"><a class="reference internal" href="#are-you-going-to-do-windows">Are you going to do Windows?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#are-you-going-to-do-cloud-management">Are you going to do Cloud Management?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#are-you-going-to-manage-network-devices">Are you going to manage Network Devices?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#are-you-going-to-support-rolling-updates">Are you going to support Rolling Updates?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#do-you-support-rolling-updates">Do you support Rolling Updates?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#what-s-the-audience-for-this-tool">What’s The Audience For This Tool?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#other-questions-or-bug-reports">Other Questions or Bug Reports</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#what-s-the-roadmap">What’s The Roadmap?</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="development.html">Development</a></li>
@@ -189,8 +188,8 @@
 </div>
 <div class="section" id="how-is-opsmop-different-from-x">
 <h2>How Is OpsMop Different From X?<a class="headerlink" href="#how-is-opsmop-different-from-x" title="Permalink to this headline">¶</a></h2>
-<p>Ok, the one question I don’t like.  You’ll have to look for yourself.</p>
-<p>OpsMop contains the features documentated on this web site. The other tool has features documented on the other tool web site.
+<p>Ok, the one question I don’t like.  I wrote this thing, so  you’ll want to look for yourself!
+OpsMop contains the features documentated on this web site. The other tool has features documented on the other tool web site.
 Some of the features are different or work differently!</p>
 <p>You might like the language of one thing more than the other. Pick that thing.</p>
 <p>If you like where we are going and want to hop on board, we’d love to have you.</p>
@@ -212,7 +211,7 @@ OpsMop strongly believes in pragmatism. It is unlikely you will need to signal f
 </pre></div>
 </div>
 <p>Easy enough.</p>
-<p>The “name” parameter might take an array in the near future, but what’s wrong with the shell command?  Nothing, really.</p>
+<p>The “name” parameter should take an array in the near future, but what’s wrong with the shell command?  Nothing, really.</p>
 </div>
 <div class="section" id="are-there-going-to-be-new-language-features">
 <h2>Are There Going To Be New Language Features?<a class="headerlink" href="#are-there-going-to-be-new-language-features" title="Permalink to this headline">¶</a></h2>
@@ -224,11 +223,7 @@ codebase and we would love that.</p>
 </div>
 <div class="section" id="push-vs-pull-vs-local-what-does-opsmop-do">
 <h2>Push vs Pull vs Local - What Does OpsMop Do?<a class="headerlink" href="#push-vs-pull-vs-local-what-does-opsmop-do" title="Permalink to this headline">¶</a></h2>
-<p>Right now, OpsMop is local only - but not for long.</p>
-<p>Pull modes will come out next (soon), followed shortly thereafter by a powerful push-mode orchestrator
-capable of multi-tier application in very specific orderings.</p>
-<p>Eveything will be super configurable, rigorously engineered, and very fast.</p>
-<p>Each will rely on opsmop and other tools in a stackable way and should be extremely pluggable, and also fast.</p>
+<p>Right now, OpsMop is <a class="reference internal" href="local.html#local"><span class="std std-ref">Local</span></a> and <a class="reference internal" href="push.html#push"><span class="std std-ref">Push Mode</span></a> (SSH) only - but highly-pluggable pull modes will be added soon.</p>
 </div>
 <div class="section" id="i-have-a-develoment-question">
 <h2>I Have A Develoment Question?<a class="headerlink" href="#i-have-a-develoment-question" title="Permalink to this headline">¶</a></h2>
@@ -240,7 +235,7 @@ free to stop by the forum listed on <a class="reference internal" href="communit
 <p>In order to maintain an extremely high standard of quality, I would hope to see OpsMop stop at around 50 or so modules
 in the core distribution. In some cases, modules may be merged.  Each module can have different provider implementations, and in
 some cases like Package, I would not hold any limits to accepting modules for every language distribution (pip, npm, etc) on
-providers, just types.</p>
+providers, just types.  So effectively this could approach 100 “modules”.</p>
 <p>What we end up with is a toolbox that contains what is enough for 95% of the use cases out there, and allow the other 5%
 to be performed easily, either by calling a script or using a custom non-tree module.</p>
 <p>Just to ensure strong upkeep, we are unlikely to include modules that are difficult to test, including modules for paid services
@@ -268,7 +263,7 @@ recommend other solutions (like CloudFormation or Terraform or python scripting 
 <div class="section" id="can-you-write-modules-in-any-language">
 <h2>Can You Write Modules In Any Language?<a class="headerlink" href="#can-you-write-modules-in-any-language" title="Permalink to this headline">¶</a></h2>
 <p>Nope! You have to use Python 3.</p>
-<p>You could technically write a bridge module though, but it’s not something we want for the core program, as we think
+<p>You could technically write a bridge module, but it’s not something we want for the core program, as we think
 there is a very strong reason for everybody collaborating around using the same language.</p>
 <p>OpsMop modules take advantage of a lot of features for code reuse.  We also minimize forking to
 maintain execution speed.</p>
@@ -277,11 +272,11 @@ and return code, which you can still of course do, either.</p>
 </div>
 <div class="section" id="how-do-i-do-complicated-thing-without-a-module">
 <h2>How Do I Do (Complicated Thing Without A Module)<a class="headerlink" href="#how-do-i-do-complicated-thing-without-a-module" title="Permalink to this headline">¶</a></h2>
-<p>There really needs to be a Script module feature to make this easier soon, but if you don’t feel like writing a type &amp; provider, OpsMop can always
+<p>There really needs to be a Script module feature to make this easier very soon, but if you don’t feel like writing a type &amp; provider, OpsMop can always
 push a script:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">File</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;/opt/opsmop/&quot;</span><span class="p">,</span> <span class="n">directory</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
 <span class="n">File</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;/opt/opsmop/setup.sh&quot;</span><span class="p">,</span> <span class="n">from_file</span><span class="o">=</span><span class="s2">&quot;files/setup.sh&quot;</span><span class="p">),</span>
-<span class="n">Script</span><span class="p">(</span><span class="s2">&quot;bash /opt/opsmop/setup.sh&quot;</span><span class="p">)</span>
+<span class="n">Shell</span><span class="p">(</span><span class="s2">&quot;bash /opt/opsmop/setup.sh&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Just return 0 on success and non-zero on failure.</p>
@@ -319,16 +314,17 @@ such as CloudFormation on AWS, or Terraform.</p>
 network and active monitoring.  This is simply not a good fit for our architecture. OpsMop’s policies will describe a local system,
 and then the orchestration features to come may describe a collection of systems and the orders of application across those systems.</p>
 </div>
-<div class="section" id="are-you-going-to-support-rolling-updates">
-<h2>Are you going to support Rolling Updates?<a class="headerlink" href="#are-you-going-to-support-rolling-updates" title="Permalink to this headline">¶</a></h2>
-<p>Maybe? We would encourage most folks to adopt Immutable Systems for cloud based deployments, and get into a red/green, blue/black, chartreuse/magenta
-type deployment pattern that does not involve rolling updates over a load balancer.  However, this isn’t out of question, because some of the
-fine grained control to do this is useful in implementing Canary deployments, which some people are interested in.</p>
+<div class="section" id="do-you-support-rolling-updates">
+<h2>Do you support Rolling Updates?<a class="headerlink" href="#do-you-support-rolling-updates" title="Permalink to this headline">¶</a></h2>
+<p>Yes, see <a class="reference internal" href="push.html#push-advanced-tricks"><span class="std std-ref">Advanced Tricks: Rolling Updates And More</span></a>.</p>
+<p>We would encourage most folks to adopt Immutable Systems for cloud based deployments, and get into a red/green, blue/black, chartreuse/magenta
+type deployment pattern that does not involve rolling updates over a load balancer where you can, but the push mode orchestrator is exceptionally
+flexible and is designed for this sort of thing.</p>
 </div>
 <div class="section" id="what-s-the-audience-for-this-tool">
 <h2>What’s The Audience For This Tool?<a class="headerlink" href="#what-s-the-audience-for-this-tool" title="Permalink to this headline">¶</a></h2>
 <p>Basically the audience for OpsMop should be the people that like OpsMop’s current direction or where they like where it is going. OpsMop
-should be a good fit for image preparation, management of stateful servers, deploying clouds themselves, and ad-hoc management tasks
+should be a good fit for image preparation, management of stateful servers, deploying clouds on physical hardware, and ad-hoc management tasks
 of all kinds.</p>
 <p>Many people want a CM tool to describe image build state, because it is hard to reuse and manage complex bash scripts for describing
 image configurations.  Many people wish to apply configuration change to update their images on boot, and in this case, a pull-based
@@ -345,11 +341,6 @@ discussion, code, and docs.</p>
 <h2>Other Questions or Bug Reports<a class="headerlink" href="#other-questions-or-bug-reports" title="Permalink to this headline">¶</a></h2>
 <p>See <a class="reference internal" href="community.html#community"><span class="std std-ref">Community</span></a> for forum and GitHub information.</p>
 </div>
-<div class="section" id="what-s-the-roadmap">
-<h2>What’s The Roadmap?<a class="headerlink" href="#what-s-the-roadmap" title="Permalink to this headline">¶</a></h2>
-<p>For some short term ideas, see TODO.md in the main checkout.  This is always subject to change and we don’t
-commit to any specific gameplan - good ideas always get to come first!</p>
-</div>
 </div>
 
 
@@ -363,7 +354,7 @@ commit to any specific gameplan - good ideas always get to come first!</p>
         <a href="development.html" class="btn btn-neutral float-right" title="Development Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="push.html" class="btn btn-neutral" title="Push Mode" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="pull.html" class="btn btn-neutral" title="Pull Mode" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
