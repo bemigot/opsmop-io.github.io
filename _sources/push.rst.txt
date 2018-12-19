@@ -6,7 +6,7 @@
 Push Mode
 ---------
 
-You should haev already read about using OpsMop in local mode (see :ref:`local`) and read over the OpsMop language (see :ref:`language` and :ref:`advanced`).
+You should have already read about using OpsMop in local mode (see :ref:`local`) and read over the OpsMop language (see :ref:`language` and :ref:`advanced`).
 
 OpsMop's "Push Mode" works like local mode, but targets multiple remote systems simultaneously.
 
