@@ -89,15 +89,12 @@
 <li class="toctree-l1"><a class="reference internal" href="facts.html">Facts</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="push.html">Push/Orchestration Mode</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pull.html">Pull Mode</a></li>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Development</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#adding-new-providers">Adding New Providers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#writing-new-types">Writing New Types</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#adding-custom-facts">Adding Custom Facts</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#adding-custom-lookups">Adding Custom Lookups</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#custom-callbacks">Custom Callbacks</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#roadmap">Roadmap</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#see-also">See Also</a></li>
 </ul>
 </li>
@@ -180,7 +177,7 @@ need to implement a new provider.</p>
 <dt>The best provider to copy when writing your own provider would be looking at the providers for</dt>
 <dd><a class="reference internal" href="modules/module_shell.html#module-shell"><span class="std std-ref">Shell Module</span></a> or <a class="reference internal" href="modules/module_package.html#module-package"><span class="std std-ref">Package Module</span></a> - they are both simple and illustrative.</dd>
 </dl>
-<p>See <a class="reference internal" href="advanced.html#method"><span class="std std-ref">Provider Selection</span></a> for how to pick a provider inside  your policy file, rather than relying on the default.  By supplying the method
+<p>See <a class="reference internal" href="advanced.html#method"><span class="std std-ref">Module Provider Selection</span></a> for how to pick a provider inside  your policy file, rather than relying on the default.  By supplying the method
 parameter, you can easily attach any provider class to an existing type.</p>
 <p>Should you want to make your new provider the default for a particular OS though, that requires a tiny amount more work -
 subclassing the Type itself.  (See <a class="reference internal" href="#new-types"><span class="std std-ref">Writing New Types</span></a>)</p>
@@ -200,54 +197,13 @@ only import this one file.</p>
 </div>
 <div class="section" id="adding-custom-facts">
 <span id="custom-facts"></span><h2>Adding Custom Facts<a class="headerlink" href="#adding-custom-facts" title="Permalink to this headline">¶</a></h2>
-<p>The code for facts (see <a class="reference internal" href="facts.html#facts"><span class="std std-ref">Facts</span></a>) is in <a class="reference external" href="https://github.com/opsmop/opsmop/blob/master/opsmop/facts/facts.py">opsmop.facts.facts.Fact</a></p>
-<p>If you write your own fact classes, you should make it available to template namespace by calling set:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">set_resources</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">Resources</span><span class="p">(</span>
-         <span class="c1"># ...</span>
-         <span class="n">Set</span><span class="p">(</span><span class="n">site_facts</span><span class="o">=</span><span class="n">AcmeLabsCustomFacts</span><span class="p">())</span>
-         <span class="c1"># ...</span>
-    <span class="p">)</span>
-</pre></div>
-</div>
-<p>A future feature for custom facts in /etc/opsmop/facts.d is also pending development, which will allow string, JSON, or YAML facts as well as executable
-facts to be written in any language. See <a class="reference internal" href="facts.html#facts"><span class="std std-ref">Facts</span></a></p>
-</div>
-<div class="section" id="adding-custom-lookups">
-<span id="lookups"></span><h2>Adding Custom Lookups<a class="headerlink" href="#adding-custom-lookups" title="Permalink to this headline">¶</a></h2>
-<p>Lookup Values are subclasses of <a class="reference external" href="https://github.com/opsmop/opsmop/blob/master/opsmop/lookups/lookup.py">opsmop.lookups.Lookup</a>, and are functions
-that are lazy-evaluated at check or apply stage.  Ok, it’s not exactly true they are functions. They are black-magic metaclass stuff. But eventually
-they are functions!</p>
-<p>They are also easy to write, and you don’t need to know anything about Python metaclasses to do it.</p>
-<p>Take a look at any of the subclasses in the ‘opsmop.lookups’ directory.</p>
-<p>Examples of core Lookups include Eval() for string evaluation and T() for <a class="reference internal" href="language.html#templates"><span class="std std-ref">Templates</span></a>.</p>
-<p>An example of a future custom type might be a ‘Etcd’ or ‘Consul’ or even DNS record lookup plugin - and something like this would be something we’d gladly include in
-the core distribution (probably then creating an opsmop.lookups package).</p>
-<p>Such a plugin could (and probably should) also memoize the value to prevent repeated computations.</p>
-<p>A quick reminder, lookups aren’t automatically available inside Jinja2, and to do that, use set:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">set_resources</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">Resources</span><span class="p">(</span>
-         <span class="c1"># ...</span>
-         <span class="nb">set</span><span class="p">(</span><span class="n">ff01</span><span class="o">=</span><span class="n">CustomFeatureFlagLookup</span><span class="p">(</span><span class="s1">&#39;ff01&#39;</span><span class="p">))</span>
-         <span class="c1"># ..</span>
-    <span class="p">)</span>
-</pre></div>
-</div>
+<p>The code for facts (see <a class="reference internal" href="facts.html#facts"><span class="std std-ref">Facts</span></a>) is in <a class="reference external" href="https://github.com/opsmop/opsmop/blob/master/opsmop/facts/">opsmop.facts.facts.Fact</a> and they are just
+simple classes that are made available to templates and regular python conditionals.</p>
 </div>
 <div class="section" id="custom-callbacks">
 <span id="callbacks"></span><h2>Custom Callbacks<a class="headerlink" href="#custom-callbacks" title="Permalink to this headline">¶</a></h2>
-<p>CLI output is driven by a callback plugin, as shown in <a class="reference external" href="https://github.com/opsmop/opsmop/blob/master/opsmop/client/callbacks.py">opsmop.client.callbacks</a>.</p>
-<p>You can easily customize OpsMop by replacing it with another plugin, potentially a subclass.</p>
-<p>Using a new callback would require subclassing cli.py and a new bin/opsmop, which is just a thin layer over cli.py
-We can easily consider reading the callback name from an environment variable or a CLI parameter as a feature upgrade.</p>
-<p>Future plans for <a class="reference internal" href="pull.html#pull"><span class="std std-ref">Pull Mode</span></a> and <a class="reference internal" href="push.html#push"><span class="std std-ref">Push Mode</span></a> will also feature different types of callback classes or additional callbacks.</p>
-</div>
-<div class="section" id="roadmap">
-<span id="id1"></span><h2>Roadmap<a class="headerlink" href="#roadmap" title="Permalink to this headline">¶</a></h2>
-<p>While OpsMop has a fluid roadmap, at this stage of development TODO.md is illustrative of some near-term features.
-We want the best ideas at the moment to win, and a lot of our development time will also be devoted to shepherding
-incoming pull requests and ideas from folks like yourself.</p>
-<p>If you have questions (or would like to help with something specific, stop by the <a class="reference internal" href="community.html#forum"><span class="std std-ref">Forum</span></a>.</p>
+<p>CLI output is driven by callback plugins, as shown in <a class="reference external" href="https://github.com/opsmop/opsmop/blob/master/opsmop/callbacks/">opsmop.client.callbacks</a>.</p>
+<p>You can easily customize OpsMop by replacing or augmenting callback plugins.</p>
 </div>
 <div class="section" id="see-also">
 <h2>See Also<a class="headerlink" href="#see-also" title="Permalink to this headline">¶</a></h2>

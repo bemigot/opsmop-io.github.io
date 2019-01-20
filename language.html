@@ -86,9 +86,8 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Language</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#policy">Policy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#roles">Roles</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#types">Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#integrated-module-library">Integrated Module Library</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#handlers">Handlers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#variables">Variables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#templates">Templates</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#in-summary">In Summary</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#next-steps">Next Steps</a></li>
@@ -99,7 +98,6 @@
 <li class="toctree-l1"><a class="reference internal" href="facts.html">Facts</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="push.html">Push/Orchestration Mode</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pull.html">Pull Mode</a></li>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="development.html">Development</a></li>
 <li class="toctree-l1"><a class="reference internal" href="community.html">Community</a></li>
@@ -170,8 +168,9 @@
   <img alt="OpsMop Logo" src="_images/opsmop.png" />
 <div class="section" id="language">
 <span id="id1"></span><h1>Language<a class="headerlink" href="#language" title="Permalink to this headline">¶</a></h1>
-<p>OpsMop configuration policies use a Python 3 DSL, or “Domain Specific Language”.  Really this is not a new
-language, but an idiomatic way of using Python.</p>
+<p>OpsMop policy files are just Python 3 scripts that contain a <em>Policy</em> defintion and <em>Roles</em> subclasses.  Roles describe what code to run on different hosts
+in the OpsMop inventory.  If run locally, they apply to the local system, though push mode (see <a class="reference internal" href="push.html#push"><span class="std std-ref">Push Mode</span></a>) will apply them to remote
+systems via SSH.</p>
 <p>You’ve hopefully already read “<a class="reference internal" href="local.html#local"><span class="std std-ref">Local</span></a>” to understand what the command line commands are
 and are ready to see what the language is about.</p>
 <p>In another tab, please open <a class="reference external" href="https://github.com/opsmop/opsmop-demo/tree/master/content">the opsmop-demo repository</a>. In particular, see
@@ -204,20 +203,20 @@ file into an executable program. Here is a very basic Policy definition:</p>
 </div>
 <p>See <a class="reference internal" href="local.html#local"><span class="std std-ref">Local</span></a> for how this file would be executed.</p>
 <p>Take special note of ‘set_variables’ and ‘set_roles’. <em>Roles</em> are the real units of work in OpsMop.
-<em>Polices</em> say what <em>Roles</em> are applied, and optionally set some <em>variables</em>, but <em>Roles</em> will do all the work.</p>
+<em>Policies</em> say what <em>Roles</em> are applied, and optionally set some <em>variables</em>, but <em>Roles</em> will do all the work.</p>
 <p>Assigning <em>variables</em> in a <em>Policy</em> declaration is optional, but <em>Roles</em> are not.
 Why? A <em>Policy</em> without <em>Roles</em> has nothing to do!  We’ll get to <a class="reference internal" href="#roles"><span class="std std-ref">Roles</span></a> very shortly.</p>
 <p>Python developers should note that objects in OpsMop have “args, kwargs” constructors, which means
 you can pass a list of <em>Roles</em> to the Roles() collection instead of listing them all inside the constructor.
 This means you can dynamically return a list of <em>Roles</em> from arbitrary code very easily:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">set_roles</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="n">roles</span> <span class="o">=</span> <span class="p">[</span> <span class="n">HelloRole</span><span class="p">()</span> <span class="p">]</span>
-    <span class="k">return</span> <span class="n">Roles</span><span class="p">(</span><span class="o">**</span><span class="n">roles_list</span><span class="p">)</span>
+    <span class="n">roles_list</span> <span class="o">=</span> <span class="p">[</span> <span class="n">HelloRole</span><span class="p">()</span> <span class="p">]</span>
+    <span class="k">return</span> <span class="n">Roles</span><span class="p">(</span><span class="o">*</span><span class="n">roles_list</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>That example is critical to the purpose of OpsMop!  While some configuration management systems mostly
 are for humans writing content for them, any point in OpsMop can be grafted cleverly into software.
-It is a cyborg automation system. So if you wanted to source your <em>Roles</em> (or <a class="reference internal" href="#types"><span class="std std-ref">Types</span></a>) by talking to another system, you can do that.
+It is a cyborg automation system. So if you wanted to source your <em>Roles</em> (or <a class="reference internal" href="#types"><span class="std std-ref">Integrated Module Library</span></a>) by talking to another system, you can do that.
 You aren’t limited to just using constructs provided by the Opsmop system.</p>
 <p>Sidenote: If you pass key=value arguments to a <em>Role</em> or <em>Policy</em>, it has the effect of also creating some variables, and this
 is automatically possible for all <em>Policies</em> and <em>Roles</em>. Behold: parameterized values!</p>
@@ -235,125 +234,56 @@ is automatically possible for all <em>Policies</em> and <em>Roles</em>. Behold: 
     <span class="k">def</span> <span class="nf">set_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">dict</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">set_resources</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">Resources</span><span class="p">(</span>
-            <span class="n">File</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;/tmp/foo.txt&quot;</span><span class="p">,</span> <span class="n">from_file</span><span class="o">=</span><span class="s2">&quot;files/foo.cfg&quot;</span><span class="p">)</span>
-        <span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">set_handlers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">Handlers</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">File</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;/tmp/foo.txt&quot;</span><span class="p">,</span> <span class="n">from_file</span><span class="o">=</span><span class="s2">&quot;files/foo.cfg&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Here we are doing something pretty basic, copying a file (see <a class="reference internal" href="modules/module_file.html#module-file"><span class="std std-ref">File Module</span></a>).</p>
-<p>Notice that we define resources in <em>Roles</em>, but you can’t assign a resource to a <em>Policy</em> directly. Opsmop mandates
-the usage of <em>Roles</em> as a mechanism of organization, but you can of course still only have one <em>Role</em> in a <em>Policy</em> you want.
-How fine grained should <em>Roles</em> be?  It doesn’t matter.
-Most frequently a <em>Role</em> would describe an application deployment, but it might also describe something like a common security configuration,
-setting up a user’s account (using parameterized <em>Roles</em>), and more.</p>
-<p>Parameterized <em>Roles</em> just involve passing key=value arguments to the <em>Role</em> constructor. Just to quickly
-demo what this idea might look like, take a look at this:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">HelloPolicy</span><span class="p">(</span><span class="n">Policy</span><span class="p">):</span>
-
-    <span class="k">def</span> <span class="nf">set_roles</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">role</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">apps</span> <span class="o">=</span> <span class="p">[</span> <span class="n">AppOne</span><span class="p">(),</span> <span class="n">AppTwo</span><span class="p">()</span> <span class="p">]</span>
-        <span class="c1"># these might come from a config file, up to you!</span>
-        <span class="n">users</span> <span class="o">=</span> <span class="p">[</span> <span class="n">UserRole</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;mpdehaan&#39;</span><span class="p">),</span> <span class="n">UserRole</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;you&#39;</span><span class="p">)</span> <span class="p">]</span>
-        <span class="n">roles</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">users</span><span class="p">)</span>
-        <span class="n">roles</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">apps</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">Roles</span><span class="p">(</span><span class="n">roles</span><span class="p">)</span>
-</pre></div>
+<p>The main function of each role can run arbitrary code, but here we are using the built-in <a class="reference internal" href="modules/module_file.html#module-file"><span class="std std-ref">File Module</span></a> to copy a file over.</p>
+<p>If used locally, this is just a copy from a relative location, but if used in <a class="reference internal" href="push.html#push"><span class="std std-ref">Push Mode</span></a> mode, the file would be transferred remotely.
+The <a class="reference internal" href="modules/modules.html#modules"><span class="std std-ref">OpsMop Module Index</span></a> system in OpsMop is completely optional, but these powerful resources extend OpsMop into a full configuration and deployment system.</p>
 </div>
-<p>Ok, so we’ve also introduced another method called ‘set_handlers’ and haven’t explained it.  More on that in a bit.
-<a class="reference internal" href="#handlers"><span class="std std-ref">Handlers</span></a> will be introduced a little bit later in this chapter.</p>
-</div>
-<div class="section" id="types">
-<span id="id5"></span><h2>Types<a class="headerlink" href="#types" title="Permalink to this headline">¶</a></h2>
-<p>As shown above, the set_resources() method on a <em>Role</em> returns a collection of resource <em>Types</em>.
-We casually call them <em>Resources</em>, but technically the <em>Policy</em> and <em>Roles</em> are also subclasses of
-<em>Resource</em>. <em>Types</em> are something much more specific.</p>
-<p>What are <em>Types</em>?</p>
-<p>OpsMop modules are implemented in two parts: <em>Types</em> and <em>Providers</em>. <em>Types</em>, like “File()” above
-describe a configuration intent - what we want to do to the system.</p>
-<p><em>Providers</em> are implementations of the ‘how’, and work using the parameters passed to the <em>Providers</em>.
-If writing OpsMop DSL language, you will be using <em>Types</em>. <em>Providers</em> are the beneveloent configuration
-spirits running behind the scenes. <em>Types</em> are what actually make the changes to systems happen.</p>
+<div class="section" id="integrated-module-library">
+<span id="types"></span><h2>Integrated Module Library<a class="headerlink" href="#integrated-module-library" title="Permalink to this headline">¶</a></h2>
+<p>As shown above, the classes like “File” are “Types” in the OpsMop standard module library.</p>
+<p>For users familiar with “classical” configuration management, these modules provide <em>optional</em> declarative, model-based configuration and
+deployment features on top of the OpsMop control framework.</p>
+<p>These OpsMop modules are implemented in two parts: <em>Types</em> and <em>Providers</em>. <em>Types</em>, like “File()” above
+describe a configuration intent - what we want to do to the system. <em>Providers</em> are the implementation.</p>
 <p>Here is another example of a File <em>Type</em>, this time not copying a file, but merely
 adjusting metadata:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">set_resources</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">Resources</span><span class="p">(</span>
-        <span class="n">File</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;/tmp/foo.txt&quot;</span><span class="p">,</span> <span class="n">owner</span><span class="o">=</span><span class="s1">&#39;root&#39;</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="s1">&#39;wheel&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mh">0x755</span><span class="p">)</span>
-    <span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">File</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;/tmp/foo.txt&quot;</span><span class="p">,</span> <span class="n">owner</span><span class="o">=</span><span class="s1">&#39;root&#39;</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="s1">&#39;wheel&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mh">0x755</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Here we are using the same <em>File</em> resource as above, but using a few more parameters.</p>
 <p>For those interested in <a class="reference internal" href="development.html#development"><span class="std std-ref">Development Guide</span></a>, when you browse the <a class="reference internal" href="modules/modules.html#modules"><span class="std std-ref">OpsMop Module Index</span></a>, each module page
 will link to the <em>Type</em> and <em>Provider</em> code (for all <em>Providers</em>) on GitHub.  This makes it easy to understand
 what a <em>Type</em> and <em>Provider</em> does.</p>
-<p>While we are new and still refactoring things, we value exceptually clean code, and it is encouraged that <em>Types</em> and <em>Providers</em> rely on
-other classes and inheritance to keep their implementations especially clean and readable.</p>
-<p>It is important to know that not all <em>Types</em> have just one <em>Provider</em> implementation.  For instance a <em>Package</em> could be installed
-by yum, apt, or maybe pip or npm.  For details on how that works, see <a class="reference internal" href="advanced.html#method"><span class="std std-ref">Provider Selection</span></a>.</p>
-<p>The <a class="reference internal" href="modules/modules.html#modules"><span class="std std-ref">OpsMop Module Index</span></a> documentation shows all of the <em>Types</em> available in the core distribution.  Currently, this list is small
+<p>Not all <em>Types</em> have just one <em>Provider</em> implementation.  For instance a <em>Package</em> could be installed
+by yum, apt, or maybe pip or npm.  For details on how that works, see <a class="reference internal" href="advanced.html#method"><span class="std std-ref">Module Provider Selection</span></a>.</p>
+<p>The <a class="reference internal" href="modules/modules.html#modules"><span class="std std-ref">OpsMop Module Index</span></a> documentation shows all of the <em>Types</em> available in the core distribution.  Currently, this list is somewhat small
 as OpsMop is under early (but extremely rapid) development.  Adding a new <em>Type</em> and <em>Provider</em> can often be done very quickly
-thanks to the object model behind OpsMop.</p>
+thanks to the object model behind OpsMop. It is easy to write your own.</p>
 <p>When you review the module documentation, you will also see many common parameters exist on all <em>Types</em>, driving such features as conditionals, variable registration, and more.
 These will be described in <a class="reference internal" href="advanced.html#advanced"><span class="std std-ref">Language Part 2</span></a> and also demoed and featured in the <a class="reference internal" href="modules/modules.html#modules"><span class="std std-ref">OpsMop Module Index</span></a> documentation.  All <a class="reference internal" href="modules/modules.html#modules"><span class="std std-ref">OpsMop Module Index</span></a> documentation is actually
 executable in the demo repo, and this will help you understand <em>Types</em> and <em>Providers</em> as you try them out.</p>
 </div>
 <div class="section" id="handlers">
-<span id="id6"></span><h2>Handlers<a class="headerlink" href="#handlers" title="Permalink to this headline">¶</a></h2>
-<p><em>Roles</em> can also declare <em>Handlers</em>. The <em>Handlers</em> section is just like the regular <em>Resources</em> section, except that <em>Handlers</em> run only when the system is
-are changed by OpsMop. When OpsMop evaluates a <em>Type</em>, it determines a plan for that <em>Type</em> (in check or apply mode), and then
-executes that plan (if in apply mode).</p>
-<p>For example, if a <em>Type</em> talks about a file needing to have certain modes, and the config file also has incorrect content, the plan would involve creating
-the config file, but also adjusting the modes. Replacing a config file is a good example of an event that would need to trigger restarting a <em>Service</em>.  That’s the whole
-purpose of <em>Handlers</em> - causing actions only when changes occur.</p>
-<p>If actions are to be taken, all <em>Handlers</em> that match the given signaled names will fire
-at the end of <em>Role</em> evaluation.</p>
-<p>This probably makes better sense with an example. Here is a change being notified by a ‘signal’ from a resource:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">set_resources</span><span class="p">():</span>
-    <span class="k">return</span> <span class="n">Resources</span><span class="p">(</span>
-        <span class="n">File</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;/etc/foo.conf&quot;</span><span class="p">,</span> <span class="n">from_template</span><span class="o">=</span><span class="s2">&quot;templates/foo.conf.j2&quot;</span><span class="p">,</span> <span class="n">signals</span><span class="o">=</span><span class="s2">&quot;restart_foo&quot;</span><span class="p">)</span>
-    <span class="p">)</span>
-
-<span class="k">def</span> <span class="nf">set_handlers</span><span class="p">():</span>
-    <span class="k">return</span> <span class="n">Handlers</span><span class="p">(</span>
+<span id="id5"></span><h2>Handlers<a class="headerlink" href="#handlers" title="Permalink to this headline">¶</a></h2>
+<p>Unlike some other configuration management systems, OpsMop module events are treated differently.</p>
+<p>If a provider decides it needs to change the system (whether in dry-run mode or not), it will let you know.  This can be used to do things like restart
+services when files change, and so on.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">File</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;/etc/foo.conf&quot;</span><span class="p">,</span> <span class="n">from_template</span><span class="o">=</span><span class="s2">&quot;templates/foo.conf.j2&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">changed</span><span class="p">():</span>
         <span class="n">Service</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="n">restarted</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-    <span class="p">)</span>
 </pre></div>
 </div>
 <p>In the above example, if the file was different on disk than what the template wanted, we would
 restart service ‘foo’. If the file was already correct, the service would not be restarted.</p>
 <p>See also <a class="reference internal" href="modules/module_file.html#module-file"><span class="std std-ref">File Module</span></a> and <a class="reference internal" href="modules/module_service.html#module-service"><span class="std std-ref">Service Module</span></a>.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Currently one <em>Role</em> cannot define <em>Handlers</em> for events signaled by another <em>Role</em>.  They are tightly
-namespaced and this is considered a feature.</p>
-</div>
-</div>
-<div class="section" id="variables">
-<h2>Variables<a class="headerlink" href="#variables" title="Permalink to this headline">¶</a></h2>
-<p>The method ‘set_variables’ on a <em>Resource</em> or a <em>Role</em> can define <em>variables</em>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">set_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>We have also shown some examples above of parameterizing <em>Roles</em> and <em>Policies</em> when they are instantiated.</p>
-<p>While simply returning a dict is fine, it’s also possible to consult any external system for loading
-up those variables.  This is, of course, a completely live Python program!  If you prefer to keep your
-variables in CSV or JSON or YAML or XML files - a database - or to fetch them from a REST call, it is always
-up to you.  This is why the set_variables() method is a overrideable function and not just a variable assignment.</p>
-<p>These variables are best showcased with a more involved example, so now that you know variables are things, read on,
-and in a bit prepare to dig into the example on <a class="reference internal" href="advanced.html#var-scoping"><span class="std std-ref">Variable Scoping</span></a>, which goes fully in on all the different
-places variables can be set.</p>
-<p><a class="reference internal" href="facts.html#facts"><span class="std std-ref">Facts</span></a> are also another way to get dynamic information into the system. Technically, ref:<cite>facts</cite> are not variables,
-they are really functions - but they are like variables that are always accessible in templates and conditionals.
-You will see more about facts as you browse the examples in the ‘opsmop-demo’ repository.  Facts also play a very
-strong role in <em>Provider</em> selection, as detailed in <a class="reference internal" href="advanced.html#method"><span class="std std-ref">Provider Selection</span></a>.</p>
 </div>
 <div class="section" id="templates">
-<span id="id7"></span><h2>Templates<a class="headerlink" href="#templates" title="Permalink to this headline">¶</a></h2>
+<span id="id6"></span><h2>Templates<a class="headerlink" href="#templates" title="Permalink to this headline">¶</a></h2>
 <p>The most common (but not only) way to use variables in OpsMop are with templates.</p>
 <p>Templates take <em>variables</em> and inject them into strings. Because Templates apply to not just
 the <a class="reference internal" href="modules/module_file.html#module-file"><span class="std std-ref">File Module</span></a>, but also other parts of OpsMop, they warrant a section in the language guide.</p>
@@ -367,58 +297,32 @@ templating language that has quite a few capabilities beyond simple substitution
 </pre></div>
 </div>
 <p>There are also conditionals, loops, and more.</p>
-<p>The most common way of using templating is the <a class="reference internal" href="modules/module_file.html#module-file"><span class="std std-ref">File Module</span></a>:</p>
+<p>The most common way of using templating is the <a class="reference internal" href="modules/module_file.html#module-file"><span class="std std-ref">File Module</span></a>.  In the following example variables come from either
+the “set_variables” function or program scope.</p>
 <p>It is important to understand templating in OpsMop works differently than in some other config systems. It is more explicit.
 To avoid ambiguity, OpsMop does not automatically template every string. Only a few certain utility modules automatically assume their inputs are templates.
 One is <a class="reference internal" href="modules/module_echo.html#module-echo"><span class="std std-ref">Echo Module</span></a>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">set_resources</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">Resources</span><span class="p">(</span>
-        <span class="n">Echo</span><span class="p">(</span><span class="s2">&quot;My name is {{ name }}&quot;</span><span class="p">)</span>
-    <span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">Echo</span><span class="p">(</span><span class="s2">&quot;My name is {{ name }}&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>To explictly template a string for some other parameter, we need to use ‘T()’:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">set_resources</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">Resources</span><span class="p">(</span>
-        <span class="n">Package</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;foo&quot;</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="n">T</span><span class="p">(</span><span class="s2">&quot;{{ major }}.{{ minor }}&quot;</span><span class="p">))</span>
-    <span class="p">)</span>
-</pre></div>
-</div>
-<p>Any variable in the current scope is available to ‘T()’.
-However, all in-scope python variables are actually not.  To make them available to OpsMop you would need to add
-them to the local scope.  This is also a design-consideration and part of OpsMop wanting to be explicit and unambigious:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">set_resources</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="n">foo_version</span><span class="o">=</span><span class="s2">&quot;8.67.5309&quot;</span>
-    <span class="k">return</span> <span class="n">Resources</span><span class="p">(</span>
-        <span class="n">Set</span><span class="p">(</span><span class="n">foo_version</span><span class="o">=</span><span class="n">foo_version</span><span class="p">),</span>
-        <span class="n">Package</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;foo&quot;</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="n">foo_version</span><span class="p">)</span>
-    <span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">Package</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;foo&quot;</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="n">T</span><span class="p">(</span><span class="s2">&quot;{{ major }}.{{ minor }}&quot;</span><span class="p">))</span>
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Use of an undefined variable in a template will intentionally cause an error.
 This can be handled by using filters in <em>Jinja2</em> if you need to supply a default.
-This feature, while it may seem annoying, is actually a very good thing - you don’t
+This feature, while it may seem annoying, is actually a good thing - you don’t
 want an installation to continue with an improperly configured config file, when
 certain values are mysteriously blank.</p>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p>Because template expressions are late binding, they will push some type-checking that would
-normally happen at validation to ‘check’ or ‘apply’ stages to runtime evaluation. To review,
-see <a class="reference internal" href="local.html#local"><span class="std std-ref">Local</span></a>. For example, if this
-file was missing, it might not be determined until halfway through the evaluation of a policy:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">File</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;/etc/foo.cfg&quot;</span><span class="p">,</span> <span class="n">from_file</span><span class="o">=</span><span class="n">T</span><span class="p">(</span><span class="s2">&quot;files/{{ platform }}.cfg&quot;</span><span class="p">))</span>
-</pre></div>
-</div>
-<p class="last">This is usually completely safe if you understand all possible values of the variable. In the worst case,
-it will produce a runtime error if the file could not be found.</p>
 </div>
 </div>
 <div class="section" id="in-summary">
 <h2>In Summary<a class="headerlink" href="#in-summary" title="Permalink to this headline">¶</a></h2>
-<p><em>Policies</em>, <em>Roles</em>, <em>Types</em>, and <em>Handlers</em> - along with <em>Variables</em> and <em>Templates</em> - make up the key concepts of OpsMop.</p>
+<p><em>Policies</em>, <em>Roles</em>, and <em>Types</em> - along with <em>Variables</em> and <em>Templates</em> - make up the key concepts of OpsMop.</p>
 <p>There are many advanced language features available, which you should skim to get a feel of what is possible beyond
 the simple examples here. See <a class="reference internal" href="advanced.html#advanced"><span class="std std-ref">Language Part 2</span></a> next.</p>
 <p>If you have not done so already, the ‘opsmop-demo’ repository is an excellent resource for learning

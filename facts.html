@@ -98,7 +98,6 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="push.html">Push/Orchestration Mode</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pull.html">Pull Mode</a></li>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="development.html">Development</a></li>
 <li class="toctree-l1"><a class="reference internal" href="community.html">Community</a></li>
@@ -177,19 +176,14 @@
 <li>UserFacts</li>
 <li>FileTests</li>
 </ul>
-<p>All facts can be used in <a class="reference internal" href="advanced.html#conditionals"><span class="std std-ref">Conditions</span></a>, <a class="reference internal" href="advanced.html#hooks"><span class="std std-ref">Hooks</span></a> as well as <a class="reference internal" href="language.html#templates"><span class="std std-ref">Templates</span></a> - in fact, they are just Python
+<p>All facts can be used in functions, as well as <a class="reference internal" href="language.html#templates"><span class="std std-ref">Templates</span></a> - they are just Python
 instances with functions, so you can use them anywhere.</p>
 <p>Here’s a basic example from <a class="reference internal" href="#platform"><span class="std std-ref">Platform</span></a>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">set_resources</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="n">darwin</span> <span class="o">=</span> <span class="p">(</span><span class="n">Platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Darwin&quot;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">Resources</span><span class="p">(</span>
-        <span class="n">Echo</span><span class="p">(</span><span class="s2">&quot;My platform is {{ Plaform.system() }}&quot;</span><span class="p">),</span>
-        <span class="n">Echo</span><span class="p">(</span><span class="s2">&quot;This is OS X.&quot;</span><span class="p">,</span> <span class="n">when</span><span class="o">=</span><span class="n">darwin</span><span class="p">)</span>
-    <span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">system</span> <span class="o">=</span> <span class="n">Platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span>
+    <span class="n">Echo</span><span class="p">(</span><span class="s2">&quot;My platform is {{ system }}&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Or as we showcased in <a class="reference internal" href="advanced.html#hooks"><span class="std std-ref">Hooks</span></a>, it’s also easy to attach a conditional to a whole <em>Role</em>, or even a <em>Policy</em>.  For most
-use cases, we definitely prefer this format:</p>
 <div class="section" id="platform">
 <span id="id2"></span><h2>Platform<a class="headerlink" href="#platform" title="Permalink to this headline">¶</a></h2>
 <p>Platform Facts tell you something about the OS or Machine you are running on.</p>
@@ -232,36 +226,19 @@ See <a class="reference internal" href="development.html#development"><span clas
 </tr>
 </tbody>
 </table>
-<p>Example:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">LinuxSetup</span><span class="p">(</span><span class="n">Role</span><span class="p">):</span>
-
-    <span class="k">def</span> <span class="nf">should_process_when</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">Platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;Darwin&quot;</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">set_resources</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="c1"># ...</span>
-</pre></div>
-</div>
-<p>Example:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Foo</span><span class="p">(</span><span class="n">Role</span><span class="p">):</span>
 
-
-    <span class="k">def</span> <span class="nf">set_resources</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">darwin</span> <span class="o">=</span> <span class="p">(</span><span class="n">Platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Darwin&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">Resources</span><span class="p">(</span>
-            <span class="c1"># ...</span>
-            <span class="n">Echo</span><span class="p">(</span><span class="s2">&quot;this only runs on OS X&quot;</span><span class="p">,</span> <span class="n">when</span><span class="o">=</span><span class="n">darwin</span><span class="p">)</span>
-            <span class="c1">#..</span>
-        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">darwin</span><span class="p">:</span>
+            <span class="n">Echo</span><span class="p">(</span><span class="s2">&quot;this only runs on OS X&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Example (Jinja2 template):</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Foo</span><span class="p">(</span><span class="n">Role</span><span class="p">):</span>
 
-    <span class="k">def</span> <span class="nf">set_resources</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">Resources</span><span class="p">(</span>
-            <span class="n">File</span><span class="p">(</span><span class="s2">&quot;/etc/foo.cfg&quot;</span><span class="p">,</span> <span class="n">from_template</span><span class="o">=</span><span class="s2">&quot;templates/foo.cfg.j2&quot;</span><span class="p">),</span>
-        <span class="p">)</span>
+    <span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">File</span><span class="p">(</span><span class="s2">&quot;/etc/foo.cfg&quot;</span><span class="p">,</span> <span class="n">from_template</span><span class="o">=</span><span class="s2">&quot;templates/foo.cfg.j2&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Here is a Jinja2 template example:</p>
@@ -308,11 +285,9 @@ with great power comes great responsibility.</p>
 <p>Example:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">FooRole</span><span class="p">(</span><span class="n">Role</span><span class="p">):</span>
 
-    <span class="k">def</span> <span class="nf">should_process_when</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">Chaos</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mf">0.25</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">set_resources</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="c1"># ...</span>
+    <span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">Chaos</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mf">0.25</span><span class="p">:</span>
+            <span class="c1"># ...</span>
 </pre></div>
 </div>
 <p>Or in a Jinja2 template:</p>
@@ -372,18 +347,9 @@ or integers.</p>
 <p>If you are ok with an early file check, here is a shell command that only runs if a file does
 not exist.  However, it is important to note this runs as soon as the object is constructed,
 which might be wrong:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">set_resources</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">Resources</span><span class="p">(</span>
-        <span class="n">Shell</span><span class="p">(</span><span class="s2">&quot;/bin/foo&quot;</span><span class="p">,</span> <span class="n">when</span><span class="o">=</span><span class="p">(</span><span class="ow">not</span> <span class="n">FileTests</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;/blarg/foo&quot;</span><span class="p">)))</span>
-    <span class="p">)</span>
-</pre></div>
-</div>
-<p>Here is an improved late binding example:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">set_resources</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="n">exists</span> <span class="o">=</span> <span class="n">Eval</span><span class="p">(</span><span class="s1">&#39;not FileTests.exists(&quot;/blarg/foo&quot;)&#39;</span><span class="p">)</span>
-    <span class="n">resources</span> <span class="o">=</span> <span class="n">Resources</span><span class="p">(</span>
-        <span class="n">Shell</span><span class="p">(</span><span class="s2">&quot;/bin/foo&quot;</span><span class="p">,</span> <span class="n">when</span><span class="o">=</span><span class="n">not_exists</span><span class="p">),</span>
-    <span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">FileTests</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;/blarg/foo&quot;</span><span class="p">):</span>
+        <span class="n">Shell</span><span class="p">(</span><span class="s2">&quot;/bin/foo&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>And of course technically you can still do these checks within Jinja2, but it’s a little
@@ -392,12 +358,6 @@ hard to think of a use case for that:</p>
 <span class="n">flag</span><span class="o">=</span><span class="kc">True</span>
 <span class="p">{</span><span class="o">%</span> <span class="n">endif</span> <span class="o">%</span><span class="p">}</span>
 </pre></div>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Many older configuration management systems have implemented existance tests specifically
-on a command or exec resource.  In OpsMop, file existance (or absence, or status, or … anything)
-can gate the evaluation of any resource.</p>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>

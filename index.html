@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>It’s OpsMop! &mdash; OpsMop  documentation</title>
+  <title>About OpsMop &mdash; OpsMop  documentation</title>
   
 
   
@@ -81,17 +81,13 @@
               <p class="caption"><span class="caption-text">Intro</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">About</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#uses">Uses</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#features">Features</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#run-modes">Run Modes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#project-values">Project Values</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#operating-systems">Operating Systems</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#status">Status</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#schedule">Schedule</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#license">License</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#github">GitHub</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id1">Forum</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#twitter">Twitter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#support-and-engineering-contracts-available">Support and Engineering Contracts Available</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="setup.html">Setup Guide</a></li>
@@ -102,7 +98,6 @@
 <li class="toctree-l1"><a class="reference internal" href="facts.html">Facts</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="push.html">Push/Orchestration Mode</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pull.html">Pull Mode</a></li>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="development.html">Development</a></li>
 <li class="toctree-l1"><a class="reference internal" href="community.html">Community</a></li>
@@ -151,7 +146,7 @@
     
       <li><a href="contents.html">Docs</a> &raquo;</li>
         
-      <li>It’s OpsMop!</li>
+      <li>About OpsMop</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -171,59 +166,29 @@
            <div itemprop="articleBody">
             
   <img alt="OpsMop Logo" src="_images/opsmop.png" />
-<div class="section" id="it-s-opsmop">
-<h1>It’s OpsMop!<a class="headerlink" href="#it-s-opsmop" title="Permalink to this headline">¶</a></h1>
-<p>Cleanup on Datacenter Aisle 3!</p>
-<p>OpsMop is a next-generation, no-compromise automation system from <a class="reference external" href="http://michaeldehaan.net">Michael DeHaan</a>.</p>
-<div class="section" id="uses">
-<h2>Uses<a class="headerlink" href="#uses" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li>Web-scale configuration management of all Linux/Unix systems</li>
-<li>Application deployment</li>
-<li>Immutable systems build definition</li>
-<li>Maintaining stateful services such as database and messaging platforms</li>
-<li>Automating one-off tasks &amp; processes</li>
-<li>Deployment and management of the undercloud</li>
-</ul>
-</div>
-<div class="section" id="features">
-<h2>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li>Python 3 DSL</li>
-<li>Declarative resource model with imperative capabilities</li>
-<li>Type / Provider plugin seperation</li>
-<li>Implicit ordering (with handler notification)</li>
-<li>Formalized “Plan” vs “Apply” evaluation stages</li>
-<li>Early validation prior to runtime</li>
-<li>Programatically scoped variables</li>
-<li>Strong object-orientation</li>
-</ul>
-<p>See <a class="reference internal" href="language.html#language"><span class="std std-ref">Language</span></a> and <a class="reference internal" href="advanced.html#advanced"><span class="std std-ref">Language Part 2</span></a>.</p>
-</div>
-<div class="section" id="run-modes">
-<h2>Run Modes<a class="headerlink" href="#run-modes" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li>Separate validate, check (“dry-run”), and apply modes</li>
-<li><a class="reference internal" href="local.html#local"><span class="std std-ref">Local</span></a></li>
-<li><a class="reference internal" href="pull.html#pull"><span class="std std-ref">Pull Mode</span></a> pluggable transports (soon)</li>
-<li><a class="reference internal" href="push.html#push"><span class="std std-ref">Push Mode</span></a> configuration with multi-tier addressing (soon)</li>
-<li>All aim for exceptional runtime speed</li>
-</ul>
-</div>
-<div class="section" id="project-values">
-<h2>Project Values<a class="headerlink" href="#project-values" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li>Minimalism</li>
-<li>Flexibility</li>
-<li>Language design</li>
-<li>Code quality</li>
-<li>Speed</li>
-<li>Applied Experience</li>
-</ul>
-</div>
+<div class="section" id="about-opsmop">
+<h1>About OpsMop<a class="headerlink" href="#about-opsmop" title="Permalink to this headline">¶</a></h1>
+<p>OpsMop is an extremely-efficient agentless distributed SSH control plane for all manner of computing tasks, created and led by
+<a class="reference external" href="http://michaeldehaan.net">Michael DeHaan</a>.</p>
+<p>OpsMop works off a (pluggable) inventory of systems/nodes, and then allows running
+arbitrary tasks, represented by Python functions, against those systems.</p>
+<p>Any python dependencies used are transferred automatically, and reports are provided on a host by host basis of successes and failures.
+Thanks to a clean API and pluggable callback classes, input from any external system, and output to other external systems is trivial.</p>
+<p>While not limited to host configuration and application deployment, OpsMop also includes a strong model-based class library, that can be easily
+mixed in with standard Python functions.  Common industry features such as installing packages, file transfer, templates, and starting
+OS services are supported without requiring installation of any permament management agents.</p>
+<p>OpsMop allows for addressing different tiers of machines at different orders, including controls
+over how many instances to address at once.  Modelling of complex orchestration behaviors, including rolling updates involving
+physical or cloud-based load balancers, is also trivial.  Further, multiple-levels of bastion hosts are supported,
+allowing for highly-efficient fanout topologies.</p>
+<p>Most tools in this space are built around particular use cases related to systems configuration.  Instead, OpsMop allows for full programmability,
+so it can easily interact with arbitrary software systems at any point in time, rather than constraining the user along particular language
+and use-case guide-rails. Use cases are not limited to configuration or application deployment, but can be completely open ended.  While not designed
+for a particular audience, OpsMop is especiallly appropriate within large and distributed datacenter environments, particularly in verticals such as
+finance, render farms, retail installations, IOT, vending, telephony, and edge computing.</p>
 <div class="section" id="operating-systems">
 <h2>Operating Systems<a class="headerlink" href="#operating-systems" title="Permalink to this headline">¶</a></h2>
-<p>Supported:</p>
+<p>Supported control platforms and targets:</p>
 <ul class="simple">
 <li>Linux</li>
 <li>BSD</li>
@@ -232,25 +197,9 @@
 </div>
 <div class="section" id="status">
 <h2>Status<a class="headerlink" href="#status" title="Permalink to this headline">¶</a></h2>
-<p>Alpha.  Entirely usable for local configuration, with a limited module set.</p>
-<p>Initial plugin versions are now available, and we’re providing extensive help to new contributors
-and users this December.</p>
-<p>Push and pull modes are also in active development at this time.</p>
+<p>Beta.</p>
 <p>Share language feedback, thoughts, and experiences on the <a class="reference external" href="https://talk.msphere.io">forum</a>.</p>
 <p>See also: <a class="reference internal" href="development.html#development"><span class="std std-ref">Development Guide</span></a> and <a class="reference internal" href="community.html#community"><span class="std std-ref">Community</span></a></p>
-</div>
-<div class="section" id="schedule">
-<h2>Schedule<a class="headerlink" href="#schedule" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li>Open for pull requests and bug reports starting December 1.</li>
-<li>December will be devoted almost exclusively to plugin development, helping new contributors, and small language tweaks</li>
-<li>Pull mode likely debuts in December 2018.</li>
-<li>Documentated language features will be locked in and largely stable by January 2019</li>
-<li>First ‘tagged’ stable release in early Feburary 2019, but master branch usage is always encouraged</li>
-</ul>
-<p>If you like where this is going, now is the time to join up with thoughts
-and potentially code. Read over <a class="reference internal" href="community.html#community"><span class="std std-ref">Community</span></a> and <a class="reference internal" href="development.html#development"><span class="std std-ref">Development Guide</span></a> for details
-and we would be glad to have you!</p>
 </div>
 <div class="section" id="license">
 <h2>License<a class="headerlink" href="#license" title="Permalink to this headline">¶</a></h2>
@@ -276,6 +225,10 @@ and we would be glad to have you!</p>
 <ul class="simple">
 <li><a class="reference external" href="https://twitter.com/opsmop">&#64;opsmop</a></li>
 </ul>
+</div>
+<div class="section" id="support-and-engineering-contracts-available">
+<h2>Support and Engineering Contracts Available<a class="headerlink" href="#support-and-engineering-contracts-available" title="Permalink to this headline">¶</a></h2>
+<p>Please contact &lt;<a class="reference external" href="mailto:michael&#37;&#52;&#48;michaeldehaan&#46;net">mailto:michael<span>&#64;</span>michaeldehaan<span>&#46;</span>net</a>&gt;Michael DeHaan&lt;/A&gt; for details.</p>
 </div>
 </div>
 

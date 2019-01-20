@@ -28,7 +28,7 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Pull Mode" href="pull.html" />
+    <link rel="next" title="Frequently Asked Questions" href="faq.html" />
     <link rel="prev" title="API" href="api.html" /> 
 
   
@@ -105,11 +105,9 @@
 <li class="toctree-l2"><a class="reference internal" href="#tuning">Tuning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#current-status">Current Status</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#logging">Logging</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#review">Review</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#credits">Credits</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="pull.html">Pull Mode</a></li>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="development.html">Development</a></li>
 <li class="toctree-l1"><a class="reference internal" href="community.html">Community</a></li>
@@ -180,10 +178,9 @@
   <img alt="OpsMop Logo" src="_images/opsmop.png" />
 <div class="section" id="push-mode">
 <span id="push"></span><h1>Push Mode<a class="headerlink" href="#push-mode" title="Permalink to this headline">¶</a></h1>
-<p>You should have already read about using OpsMop in local mode (see <a class="reference internal" href="local.html#local"><span class="std std-ref">Local</span></a>) and read over the OpsMop language (see <a class="reference internal" href="language.html#language"><span class="std std-ref">Language</span></a> and <a class="reference internal" href="advanced.html#advanced"><span class="std std-ref">Language Part 2</span></a>).</p>
 <p>OpsMop’s “Push Mode” works like local mode, but targets multiple remote systems simultaneously.</p>
-<p>Push mode policies in OpsMop are just like Local policies (see <a class="reference internal" href="local.html#local"><span class="std std-ref">Local</span></a>), but require some extra functions to be implemented, though they are very
-small and easy to add.</p>
+<p>Push mode policies in OpsMop are just like Local policies (see <a class="reference internal" href="local.html#local"><span class="std std-ref">Local</span></a>), and only require some very small extra
+functions to be implemented.</p>
 <p>While OpsMop policy files written just for “local mode” do <em>NOT</em> contain enough information to be used
 in push mode, any push-capable policy file <em>CAN</em> be used in local mode with <em>NO</em> changes. This is a free bonus, as sometimes you may want to develop
 some automation locally as opposed to against remote systems.</p>
@@ -268,8 +265,8 @@ not exist, defaults are looked for in /etc/opsmop/defaults.toml.  If there are b
 </div>
 <div class="section" id="inventory">
 <span id="push-inventory"></span><h2>Inventory<a class="headerlink" href="#inventory" title="Permalink to this headline">¶</a></h2>
-<p>Pull mode requires an inventory to decide what hosts to target.  Inventory can also attach variables
-to each host (for use in <a class="reference internal" href="language.html#templates"><span class="std std-ref">Templates</span></a> or <a class="reference internal" href="advanced.html#conditionals"><span class="std std-ref">Conditions</span></a>), and there are certain special
+<p>Push mode requires an inventory to decide what hosts to target.  Inventory can also attach variables
+to each host (for use in <a class="reference internal" href="language.html#templates"><span class="std std-ref">Templates</span></a> or <span class="xref std std-ref">conditionals</span>), and there are certain special
 variables that can influence how the push mode operates.</p>
 <p>Inventory objects can be filtered, as shown above and in ‘push_demo.py’, by specifying a <a class="reference external" href="https://docs.python.org/3/library/fnmatch.html">fnmatch</a> pattern.
 For instance, an inventory can be carved down to a particular list of groups and/or hosts.</p>
@@ -385,7 +382,7 @@ in future releases.</p>
 <div class="section" id="tuning">
 <span id="push-tuning"></span><h2>Tuning<a class="headerlink" href="#tuning" title="Permalink to this headline">¶</a></h2>
 <p>The SSH implementation is already very fast, but there are a few things you can do to boost performance.</p>
-<p>Your ansible providers likely have many dependencies.  While opsmop does not require
+<p>Your opsmop providers likely have python library dependencies.  While opsmop does not require
 that you install these dependencies on managed nodes, if you install them, this will
 greatly speed up execution time.</p>
 <p>These include python packages: jinja2, toml, dill, colorama, and PyYAML.</p>
@@ -393,16 +390,15 @@ greatly speed up execution time.</p>
 </div>
 <div class="section" id="current-status">
 <span id="push-status"></span><h2>Current Status<a class="headerlink" href="#current-status" title="Permalink to this headline">¶</a></h2>
-<p>Push mode is still new, and can use help testing in all manner of configurations, including in high-
+<p>Push mode is still a little new, and can use help testing in all manner of configurations, including in high-
 performance, high-host-count, and high-latency scenarios.  However, most features are already implemented
 and this is completely usable today.</p>
 <p>1. SELinux (enforcing) support is not operational yet and is waiting on enhancements in mitogen. You should
 be able to switch selinux to permissive mode.  Non-SELinux distributions (Debian, Ubuntu, Arch, etc)
 are of course not effected.</p>
-<p>2. Connections to hosts are conducted in a threadpool with a default of 16 threaded workers (see <a class="reference internal" href="#push-defaults"><span class="std std-ref">Defaults Files</span></a>). If you have a large
-number of hosts there may be some lag for the very first time they are contacted that will not occur in subsequent
-roles. A future forks flag like “-j4” should allow this to use additional CPUs by dividing the list of hosts up
-between processors.</p>
+<p>2. Connecting to new hosts (but not the actual management operations) are conducted in a threadpool with a default of 16 threaded workers (see <a class="reference internal" href="#push-defaults"><span class="std std-ref">Defaults Files</span></a>). If you have a large
+number of hosts there may be some lag for the very first time they are contacted that will not occur in subsequent roles.
+A future forks flag like “-j4” should allow this to use additional CPUs by dividing the list of hosts up between processors.</p>
 </div>
 <div class="section" id="logging">
 <h2>Logging<a class="headerlink" href="#logging" title="Permalink to this headline">¶</a></h2>
@@ -411,18 +407,6 @@ deploy.</p>
 <p>To do this, simply login to the remote system and cat ~/.opsmop/opsmop.log</p>
 <p>The output will contain the exact output as if the configuration was run locally, with timestamps.  The file is automatically logrotated
 so you do not need to worry about it growing too large.  The log file path can be changed in defaults.toml.</p>
-</div>
-<div class="section" id="review">
-<span id="id4"></span><h2>Review<a class="headerlink" href="#review" title="Permalink to this headline">¶</a></h2>
-<p>All of the features of local mode are usuable in push mode so it helps to master them.  Be sure to review useful features documented in <a class="reference internal" href="language.html#language"><span class="std std-ref">Language</span></a>
-and <a class="reference internal" href="advanced.html#advanced"><span class="std std-ref">Language Part 2</span></a>.</p>
-<p>You will find that while configuration management use cases are the ones that most immediately come to mind, many other tricks
-and useful admin utilities can be implemented in OpsMop.</p>
-<p>For instance, it is possible to combine <a class="reference internal" href="advanced.html#hooks-should-process-when"><span class="std std-ref">should_process_when()</span></a> with <a class="reference internal" href="facts.html#file-tests"><span class="std std-ref">FileTests</span></a> to write a push mode script that does
-something to systems only if they have a particular package installed.</p>
-<p>Another example is you could use the “def serial()” method, set to 1 coupled with <a class="reference internal" href="advanced.html#extra-vars"><span class="std std-ref">CLI Extra Variables</span></a>, to make a very basic distributed “cat” that made
-use of OpsMop inventory.</p>
-<p>What other combinations can you think of?</p>
 </div>
 <div class="section" id="credits">
 <h2>Credits<a class="headerlink" href="#credits" title="Permalink to this headline">¶</a></h2>
@@ -444,7 +428,7 @@ improvement on the multiprocessing layer.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="pull.html" class="btn btn-neutral float-right" title="Pull Mode" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="faq.html" class="btn btn-neutral float-right" title="Frequently Asked Questions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="api.html" class="btn btn-neutral" title="API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
