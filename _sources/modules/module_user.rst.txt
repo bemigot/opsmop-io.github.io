@@ -68,11 +68,11 @@ Also see the group module for additional capabilities.
       - Kind
       - Default
     * - changed_when
-      - if set, only signal handlers if this is true
+      - accepts a lambda to determine if a state change should be recorded, whose parameter is the provider result
       - any
       - None
     * - failed_when
-      - if set, specify terms of resource application failure
+      - similar to ignore_errors but accepts a lambda function whose parameter is the provider result
       - any
       - None
     * - ignore_errors
@@ -82,18 +82,6 @@ Also see the group module for additional capabilities.
     * - method
       - selects a non-default provider by name
       - str
-      - None
-    * - register
-      - saves the resource result into a named variable
-      - str
-      - None
-    * - signals
-      - signals a handler event by name
-      - list
-      - None
-    * - tags
-      - allows applying part of the policy
-      - list
       - None
     * - when
       - attaches a condition to this resource

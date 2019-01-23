@@ -93,7 +93,6 @@
 <li class="toctree-l2"><a class="reference internal" href="#command-line-usage">Command Line Usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#role-methods">Role Methods</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#sudo">Sudo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#defaults-files">Defaults Files</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#inventory">Inventory</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#inventory-limits-on-the-command-line">Inventory Limits on the Command Line</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#toml-inventory">Toml Inventory</a></li>
@@ -226,47 +225,18 @@ features of <cite>Vespene &lt;http://docs.vespene.io&gt;</cite> pair well with O
 </div>
 <div class="section" id="sudo">
 <span id="sudo-notes"></span><h2>Sudo<a class="headerlink" href="#sudo" title="Permalink to this headline">¶</a></h2>
-<p>It is worth noting that the sudo operations that happen above happen only once per role.  In fact, existing connections are reused
+<p>It is worth noting that the sudo operations that happen above happen only once per role.  SSH connections, however, are reused
 between subsequent roles.</p>
 <p>The most common use of sudo is to log in as a normal account and then sudo to root, rather than allowing SSH to the root account.
 From root, it is easy to trivially execute sudo to less priveledged accounts, if needed, but this is not done with the ‘sudo_as’
 methods, you would simply just specify ‘sudo’ in front of any shell commands.</p>
-<p>Or, to put it another way, we expect ‘sudo_as’ to be used for priveledge escalation about 105% of the time.  This is why you can
-leave the ‘sudo_as’ undefined if you want, and it will just try root and no-password (or you can set a password in defaults.toml,
-which is explained below).</p>
-</div>
-<div class="section" id="defaults-files">
-<span id="push-defaults"></span><h2>Defaults Files<a class="headerlink" href="#defaults-files" title="Permalink to this headline">¶</a></h2>
-<p>For values not specified on the role object, defaults are first looked for in ~/.opsmop/defaults.toml.  If that file does
-not exist, defaults are looked for in /etc/opsmop/defaults.toml.  If there are both files, the second is ignored.</p>
-<p>The file has the following format:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">ssh</span><span class="p">]</span>
-<span class="n">username</span> <span class="o">=</span> <span class="s2">&quot;mpdehaan&quot;</span>
-<span class="c1"># password = &quot;1234&quot;</span>
-<span class="c1"># check_host_keys = &quot;ignore&quot; # or &#39;all&#39;</span>
-
-<span class="p">[</span><span class="n">sudo</span><span class="p">]</span>
-<span class="n">username</span> <span class="o">=</span> <span class="s2">&quot;root&quot;</span>
-<span class="c1"># password = &quot;letmein1234&quot;</span>
-
-<span class="p">[</span><span class="n">tuning</span><span class="p">]</span>
-<span class="n">max_workers</span> <span class="o">=</span> <span class="mi">16</span>
-
-<span class="p">[</span><span class="n">python</span><span class="p">]</span>
-<span class="c1"># this is the default for remote hosts</span>
-<span class="n">python_path</span> <span class="o">=</span> <span class="s1">&#39;/usr/bin/python3&#39;</span>
-
-<span class="p">[</span><span class="n">log</span><span class="p">]</span>
-<span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;~/.opsmop/opsmop.log&#39;</span>
-<span class="nb">format</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%(asctime)s</span><span class="s2"> </span><span class="si">%(message)s</span><span class="s2">&quot;</span>
-</pre></div>
-</div>
-<p>These values are ignored if specified in the “sudo_as” or “connect_as” methods on the <em>Role</em> object.</p>
+<p>Or, to put it another way, we expect ‘sudo_as’ to be used for priveledge escalation most of the time.  This is why you can
+leave the ‘sudo_as’ undefined if you want, and it will just try root and no-password.</p>
 </div>
 <div class="section" id="inventory">
 <span id="push-inventory"></span><h2>Inventory<a class="headerlink" href="#inventory" title="Permalink to this headline">¶</a></h2>
 <p>Push mode requires an inventory to decide what hosts to target.  Inventory can also attach variables
-to each host (for use in <a class="reference internal" href="language.html#templates"><span class="std std-ref">Templates</span></a> or <span class="xref std std-ref">conditionals</span>), and there are certain special
+to each host (for use in <a class="reference internal" href="language.html#templates"><span class="std std-ref">Templates</span></a> or conditionals), and there are certain special
 variables that can influence how the push mode operates.</p>
 <p>Inventory objects can be filtered, as shown above and in ‘push_demo.py’, by specifying a <a class="reference external" href="https://docs.python.org/3/library/fnmatch.html">fnmatch</a> pattern.
 For instance, an inventory can be carved down to a particular list of groups and/or hosts.</p>
@@ -396,7 +366,7 @@ and this is completely usable today.</p>
 <p>1. SELinux (enforcing) support is not operational yet and is waiting on enhancements in mitogen. You should
 be able to switch selinux to permissive mode.  Non-SELinux distributions (Debian, Ubuntu, Arch, etc)
 are of course not effected.</p>
-<p>2. Connecting to new hosts (but not the actual management operations) are conducted in a threadpool with a default of 16 threaded workers (see <a class="reference internal" href="#push-defaults"><span class="std std-ref">Defaults Files</span></a>). If you have a large
+<p>2. Connecting to new hosts (but not the actual management operations) are conducted in a threadpool with a default of 16 threaded workers. If you have a large
 number of hosts there may be some lag for the very first time they are contacted that will not occur in subsequent roles.
 A future forks flag like “-j4” should allow this to use additional CPUs by dividing the list of hosts up between processors.</p>
 </div>
@@ -406,7 +376,8 @@ A future forks flag like “-j4” should allow this to use additional CPUs by d
 deploy.</p>
 <p>To do this, simply login to the remote system and cat ~/.opsmop/opsmop.log</p>
 <p>The output will contain the exact output as if the configuration was run locally, with timestamps.  The file is automatically logrotated
-so you do not need to worry about it growing too large.  The log file path can be changed in defaults.toml.</p>
+so you do not need to worry about it growing too large.</p>
+<p>This path should be configurable in the future.</p>
 </div>
 <div class="section" id="credits">
 <h2>Credits<a class="headerlink" href="#credits" title="Permalink to this headline">¶</a></h2>

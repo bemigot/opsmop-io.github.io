@@ -44,11 +44,11 @@ expressions "T()" to pass variables in for execution.
       - Kind
       - Default
     * - changed_when
-      - if set, only signal handlers if this is true
+      - accepts a lambda to determine if a state change should be recorded, whose parameter is the provider result
       - any
       - None
     * - failed_when
-      - if set, specify terms of resource application failure
+      - similar to ignore_errors but accepts a lambda function whose parameter is the provider result
       - any
       - None
     * - ignore_errors
@@ -58,18 +58,6 @@ expressions "T()" to pass variables in for execution.
     * - method
       - selects a non-default provider by name
       - str
-      - None
-    * - register
-      - saves the resource result into a named variable
-      - str
-      - None
-    * - signals
-      - signals a handler event by name
-      - list
-      - None
-    * - tags
-      - allows applying part of the policy
-      - list
       - None
     * - when
       - attaches a condition to this resource
@@ -93,24 +81,20 @@ of this policy with an error.
         def set_variables(self):
             return dict(a=1, b=5150, c="badwolf")
     
-        def set_resources(self):
+        def main(self):
     
-            return Resources(
+            # here is an example of running a command and saving the output and return code
+            date = Shell("date | cut -f1 -d ' '")
+            Echo("today is {{ date.data }} and the return code was {{ date.rc }}")
     
-                # here is an example of running a command and saving the output and return code
-                Shell("date | cut -f1 -d ' '", register='date'),
-                Echo("today is {{ date.data }} and the return code was {{ date.rc }}"),
+            # you can ignore return codes like this
+            Shell("/bin/false", ignore_errors=True),
     
-                # you can ignore return codes like this
-                Shell("/bin/false", ignore_errors=True),
+            # or like this - soon
+            Shell("/bin/false", failed_when=lambda x: x.rc != 42)
     
-                # or like this - soon
-                # Shell("/bin/false", failed_when=Eval('a > b')),
-    
-                # you can use variables in shell commands like this:
-                Shell(T("echo {{ a }} {{ b }} {{ c }}")),
-    
-            )
+            # you can use variables in shell commands like this:
+            Shell(T("echo {{ a }} {{ b }} {{ c }}"))
     
 
 Demo On GitHub

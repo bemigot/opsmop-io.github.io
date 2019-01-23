@@ -51,11 +51,11 @@ Manages groups. To control what users are in what groups, see :ref:`module_user`
       - Kind
       - Default
     * - changed_when
-      - if set, only signal handlers if this is true
+      - accepts a lambda to determine if a state change should be recorded, whose parameter is the provider result
       - any
       - None
     * - failed_when
-      - if set, specify terms of resource application failure
+      - similar to ignore_errors but accepts a lambda function whose parameter is the provider result
       - any
       - None
     * - ignore_errors
@@ -65,18 +65,6 @@ Manages groups. To control what users are in what groups, see :ref:`module_user`
     * - method
       - selects a non-default provider by name
       - str
-      - None
-    * - register
-      - saves the resource result into a named variable
-      - str
-      - None
-    * - signals
-      - signals a handler event by name
-      - list
-      - None
-    * - tags
-      - allows applying part of the policy
-      - list
       - None
     * - when
       - attaches a condition to this resource
@@ -99,13 +87,11 @@ Basic group operations.
         def set_variables(self):
            return dict(a=1, b=5150, c="badwolf")
     
-        def set_resources(self):
-            return Resources(
-                Group(name="opsmgrp1"),
-                Group(name="opsmgrp2", gid=8008),
-                Group(name="opsmgrp3", system=True),
-                Group(name="opsmgrp1", absent=True)
-            )
+        def main(self):
+            Group(name="opsmgrp1")
+            Group(name="opsmgrp2", gid=8008)
+            Group(name="opsmgrp3", system=True)
+            Group(name="opsmgrp1", absent=True)
     
     
     

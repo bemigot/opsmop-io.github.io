@@ -41,6 +41,10 @@ The File module handles all major types of file operations in OpsMop.
       - path to a source Jinja2 template
       - str
       - None
+    * - from_url
+      - url to a source file
+      - str
+      - None
     * - group
       - group name
       - str
@@ -71,11 +75,11 @@ The File module handles all major types of file operations in OpsMop.
       - Kind
       - Default
     * - changed_when
-      - if set, only signal handlers if this is true
+      - accepts a lambda to determine if a state change should be recorded, whose parameter is the provider result
       - any
       - None
     * - failed_when
-      - if set, specify terms of resource application failure
+      - similar to ignore_errors but accepts a lambda function whose parameter is the provider result
       - any
       - None
     * - ignore_errors
@@ -85,18 +89,6 @@ The File module handles all major types of file operations in OpsMop.
     * - method
       - selects a non-default provider by name
       - str
-      - None
-    * - register
-      - saves the resource result into a named variable
-      - str
-      - None
-    * - signals
-      - signals a handler event by name
-      - list
-      - None
-    * - tags
-      - allows applying part of the policy
-      - list
       - None
     * - when
       - attaches a condition to this resource
@@ -122,13 +114,11 @@ of Jinja2 templates
         def set_variables(self):
             return dict(a=1, b=5150, c="badwolf")
     
-        def set_resources(self):
-            return Resources(
-                # for template language and variable scoping information, please consult the language docs
-                Debug(),
-                File(name="/tmp/opsmop-demo/foo1.txt", from_template="templates/foo.txt.j2"),
-                Shell("cat /tmp/opsmop-demo/foo1.txt")
-            )
+        def main(self):
+            # for template language and variable scoping information, please consult the language docs
+            File(name="/tmp/opsmop-demo/foo1.txt", from_template="templates/foo.txt.j2")
+            Shell("cat /tmp/opsmop-demo/foo1.txt")
+    
     
     
 
@@ -143,12 +133,11 @@ Copying a file with owner, permission, and mode
     
     class CopyExample(Role):
     
-        def set_resources(self):
-            return Resources(
-                 # owner/group/mode can be used with any of these forms, just showing one example here
-                 File(name="/tmp/opsmop-demo/foo2.txt", from_file="files/foo.txt", owner=USERNAME, mode=0x755),
-                 Shell("cat /tmp/opsmop-demo/foo2.txt")
-            )
+        def main(self):
+    
+            # owner/group/mode can be used with any of these forms, just showing one example here
+            File(name="/tmp/opsmop-demo/foo2.txt", from_file="files/foo.txt", owner=USERNAME, mode=0x755)
+            Shell("cat /tmp/opsmop-demo/foo2.txt")
     
 
 Example: Copy From String
@@ -165,14 +154,30 @@ For very small files, this is also possible
         def set_variables(self):
             return dict(a=2, b=2112, c="darmok")
     
-        def set_resources(self):
-            return Resources(
-                 Debug(),
-                 File(name="/tmp/opsmop-demo/foo3.txt", from_content="Happy Birthday"),
-                 Shell("cat /tmp/opsmop-demo/foo3.txt"),
-                 File(name="/tmp/opsmop-demo/foo4.txt", from_content=T("Template test! a={{ a}}")),
-                 Shell("cat /tmp/opsmop-demo/foo4.txt")
-            )
+        def main(self):
+    
+            File(name="/tmp/opsmop-demo/foo3.txt", from_content="Happy Birthday")
+            Shell("cat /tmp/opsmop-demo/foo3.txt")
+            File(name="/tmp/opsmop-demo/foo4.txt", from_content=T("Template test! a={{ a}}"))
+            Shell("cat /tmp/opsmop-demo/foo4.txt")
+    
+
+Example: Downloading a File
+---------------------------
+
+
+Grabbing a file from a web location
+
+.. code-block:: python
+
+    
+    class FromUrlExample(Role):
+    
+    
+        def main(self):
+    
+            src = "https://raw.githubusercontent.com/opsmop/opsmop/master/README.md"
+            File(name="/tmp/opsmop-demo/foo5.txt", from_url=src, overwrite=False)
     
 
 Example: Deleting a File
@@ -186,14 +191,9 @@ Ensure that a file does not exist
     
     class AbsentExample(Role):
     
-        def set_resources(self):
-            return Resources(
-                 File(name="/tmp/opsmop-demo/foo4.txt", absent=True),
-                 Shell("ls /tmp/opsmop-demo/foo4.txt", ignore_errors=True),
-                 # the file is already deleted so this next step is a no-op
-                 File(name="/tmp/opsmop-demo/foo4.txt", absent=True),
-            )
-    
+        def main(self):
+            File(name="/tmp/opsmop-demo/foo4.txt", absent=True)
+            Shell("ls /tmp/opsmop-demo/foo4.txt", ignore_errors=True)
     
 
 Demo On GitHub

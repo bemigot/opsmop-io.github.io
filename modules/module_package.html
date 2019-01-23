@@ -87,7 +87,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../facts.html">Facts</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api.html">API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../push.html">Push/Orchestration Mode</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../pull.html">Pull Mode</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../development.html">Development</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../community.html">Community</a></li>
@@ -160,7 +159,7 @@
 <span id="module-package"></span><h1>Package Module<a class="headerlink" href="#package-module" title="Permalink to this headline">¶</a></h1>
 <p>The package module is used to install packages. The default provider for the operating
 system (for example, ‘apt’) is used unless the parameter ‘method’ is supplied to
-pick an alternate provider.  See <a class="reference internal" href="../advanced.html#method"><span class="std std-ref">Provider Selection</span></a>.</p>
+pick an alternate provider.  See <a class="reference internal" href="../advanced.html#method"><span class="std std-ref">Module Provider Selection</span></a>.</p>
 <table border="1" class="docutils" id="id1">
 <caption><span class="caption-text">Module Parameters</span><a class="headerlink" href="#id1" title="Permalink to this table">¶</a></caption>
 <colgroup>
@@ -221,12 +220,12 @@ pick an alternate provider.  See <a class="reference internal" href="../advanced
 </thead>
 <tbody valign="top">
 <tr class="row-even"><td>changed_when</td>
-<td>if set, only signal handlers if this is true</td>
+<td>accepts a lambda to determine if a state change should be recorded, whose parameter is the provider result</td>
 <td>any</td>
 <td>None</td>
 </tr>
 <tr class="row-odd"><td>failed_when</td>
-<td>if set, specify terms of resource application failure</td>
+<td>similar to ignore_errors but accepts a lambda function whose parameter is the provider result</td>
 <td>any</td>
 <td>None</td>
 </tr>
@@ -240,22 +239,7 @@ pick an alternate provider.  See <a class="reference internal" href="../advanced
 <td>str</td>
 <td>None</td>
 </tr>
-<tr class="row-even"><td>register</td>
-<td>saves the resource result into a named variable</td>
-<td>str</td>
-<td>None</td>
-</tr>
-<tr class="row-odd"><td>signals</td>
-<td>signals a handler event by name</td>
-<td>list</td>
-<td>None</td>
-</tr>
-<tr class="row-even"><td>tags</td>
-<td>allows applying part of the policy</td>
-<td>list</td>
-<td>None</td>
-</tr>
-<tr class="row-odd"><td>when</td>
+<tr class="row-even"><td>when</td>
 <td>attaches a condition to this resource</td>
 <td>any</td>
 <td>None</td>
@@ -270,20 +254,16 @@ pick an alternate provider.  See <a class="reference internal" href="../advanced
     <span class="k">def</span> <span class="nf">set_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">5150</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;badwolf&quot;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">set_resources</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">Resources</span><span class="p">(</span>
+    <span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-            <span class="n">DebugFacts</span><span class="p">(),</span>
+        <span class="c1"># explicit package provider selection works like this</span>
+        <span class="c1"># Package(name=&#39;cowsay&#39;, method=&#39;yum&#39;)</span>
 
-            <span class="c1"># more provider types are coming soon.</span>
-            <span class="c1"># Package(name=&#39;pygments&#39;, method=&#39;pip&#39;),</span>
+        <span class="c1"># uninstall</span>
+        <span class="n">Package</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;cowsay&#39;</span><span class="p">,</span> <span class="n">absent</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 
-            <span class="c1"># uninstall</span>
-            <span class="n">Package</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;cowsay&#39;</span><span class="p">,</span> <span class="n">absent</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
-
-            <span class="c1"># install</span>
-            <span class="n">Package</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;cowsay&#39;</span><span class="p">)</span>
-        <span class="p">)</span>
+        <span class="c1"># install</span>
+        <span class="n">Package</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;cowsay&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>

@@ -232,19 +232,32 @@ to improve readability.</p>
 </div>
 <div class="section" id="variable-scoping">
 <span id="var-scoping"></span><h2>Variable Scoping<a class="headerlink" href="#variable-scoping" title="Permalink to this headline">¶</a></h2>
-<p>OpsMop uses variables in both templates and conditionals.</p>
-<p>We’ve already talked a little bit about variables, and knowledge of variables weighs in on
-future sections and nearly everything in OpsMop.</p>
-<p>It is important to not confuse Python variables with OpsMop variables.  To transfer a Python class variable
-or global variable into OpsMop template space, use <a class="reference internal" href="modules/module_set.html#module-set"><span class="std std-ref">Set Module</span></a>.</p>
-<p>OpsMop has a very simple to understand variable system based on the
-concept of scope.  Variables defined at outer scopes are always available further
-down, but changing a variable inside a scope does not effect the value at the outer scope.
-These variables are ‘scope-local’.</p>
+<p>This section talks about how variables win out over one another, when variables are defined at multiple levels.</p>
+<p>OpsMop uses variables in both templates (like <a class="reference internal" href="modules/module_file.html#module-file"><span class="std std-ref">File Module</span></a> or <a class="reference internal" href="modules/module_echo.html#module-echo"><span class="std std-ref">Echo Module</span></a>) and conditionals.</p>
 <p>In the opsmop-demo repository, <a class="reference external" href="https://github.com/opsmop/opsmop-demo/blob/master/content/var_scoping.py">var_scoping.py</a> demonstrates
 the various variable scopes in OpsMop.</p>
-<p>Because this is a long example, we’ll refer you to GitHub and ask you to read and perhaps run the example. In browsing
-the source, you will understand more about what is possible with variable scopes.</p>
+<p>In the following list, the LAST variable listed wins out.</p>
+<ol class="arabic simple">
+<li>Any variables defined in inventory on a group (<a class="reference internal" href="push.html#push"><span class="std std-ref">Push Mode</span></a> only)</li>
+<li>Any variables defined in inventory on a host (<a class="reference internal" href="push.html#push"><span class="std std-ref">Push Mode</span></a> only)</li>
+<li>Any variables defined on the resource itself, such as a parameter passed into a role or policy object, including those defined
+inside the ‘set_variables’ function.</li>
+<li>Any variables in local python scope inside the main function</li>
+<li>Any variables sent to –extra-vars (see <a class="reference internal" href="#extra-vars"><span class="std std-ref">CLI Extra Variables</span></a>)</li>
+</ol>
+<p>If you ever need to access a variable inside a function (not a template), you can do this, <em>regardless</em> of the scope in which it is defined,
+and you are guaranteed to always get the right value:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>def main(self):</dt>
+<dd><dl class="first last docutils">
+<dt>if self.vars.x &gt; 2:</dt>
+<dd>print(self.vars.x)</dd>
+</dl>
+</dd>
+</dl>
+</div></blockquote>
+<p>The GitHub example demo linked above is the best way to see these concepts linked together in practice.</p>
 </div>
 <div class="section" id="conditions">
 <span id="eval"></span><h2>Conditions<a class="headerlink" href="#conditions" title="Permalink to this headline">¶</a></h2>
@@ -256,6 +269,8 @@ which are pieces of information OpsMop can return about the target system.</p>
     <span class="n">Shell</span><span class="p">(</span><span class="s2">&quot;reboot&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>As listed above in <a class="reference internal" href="#var-scoping"><span class="std std-ref">Variable Scoping</span></a>, usage of “self.vars.x” can be used to access a variable, even if it is not defined in local
+scope.</p>
 </div>
 <div class="section" id="registration">
 <span id="id1"></span><h2>Registration<a class="headerlink" href="#registration" title="Permalink to this headline">¶</a></h2>
@@ -297,24 +312,17 @@ Presence of these changes are used to decide whether to notify <a class="referen
 should possibly depend on specific return codes or output. The state can be overriden as follows:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="n">cmd</span> <span class="o">=</span> <span class="n">Shell</span><span class="p">(</span><span class="s2">&quot;/bin/foo --args&quot;</span><span class="p">,</span> <span class="n">changed_when</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s1">&#39;changed&#39;</span> <span class="ow">in</span> <span class="n">x</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">cmd</span><span class="o">.</span><span class="n">changed</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">cmd</span><span class="o">.</span><span class="n">changed</span><span class="p">:</span>
         <span class="n">Service</span><span class="p">(</span><span class="s2">&quot;blippy&quot;</span><span class="p">,</span> <span class="n">restarted</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Changed reporting control isn’t really required, because you could also write things like this:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">..</span> <span class="n">code</span><span class="o">-</span><span class="n">block</span><span class="p">::</span> <span class="n">python</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">cmd</span> <span class="o">=</span> <span class="n">Shell</span><span class="p">(</span><span class="s2">&quot;/bin/foo --args&quot;</span><span class="p">,</span> <span class="n">changed_when</span><span class="o">=</span><span class="n">changed_test</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">&quot;changed&quot;</span> <span class="ow">in</span> <span class="n">cmd</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+        <span class="n">Service</span><span class="p">(</span><span class="s2">&quot;blippy&quot;</span><span class="p">,</span> <span class="n">restarted</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<blockquote>
-<div><dl class="docutils">
-<dt>def main(self):</dt>
-<dd><p class="first">cmd = Shell(“/bin/foo –args”, register=”x”, changed_when=changed_test)
-if “changed” in cmd.data:</p>
-<blockquote class="last">
-<div>Service(“blippy”, restarted=True)</div></blockquote>
-</dd>
-</dl>
-</div></blockquote>
 <p>This is cleaner, but will result in potentially misleading output in the OpsMop command line tool.</p>
 </div>
 <div class="section" id="cli-extra-variables">

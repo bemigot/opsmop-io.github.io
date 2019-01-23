@@ -15,20 +15,20 @@ General
 
     * - Name
       - Purpose
-    * - :ref:`Directory <module_directory>`
-      - creates directories, removes them, and modifies metadata
-    * - :ref:`File <module_file>`
-      - copies files, changes modes, renders templates, deletes files, slices, dices
-    * - :ref:`Group <module_group>`
-      - manages user groups
     * - :ref:`Package <module_package>`
       - installs, removes, and upgrades packages
     * - :ref:`Service <module_service>`
       - starts/stops and enables/disables services
-    * - :ref:`Shell <module_shell>`
-      - runs arbitrary shell commands, with feeling
     * - :ref:`User <module_user>`
       - manages user accounts
+    * - :ref:`Shell <module_shell>`
+      - runs arbitrary shell commands, with feeling
+    * - :ref:`File <module_file>`
+      - copies files, changes modes, renders templates, deletes files, slices, dices
+    * - :ref:`Group <module_group>`
+      - manages user groups
+    * - :ref:`Directory <module_directory>`
+      - creates directories, removes them, and modifies metadata
 
 
 Special
@@ -38,18 +38,8 @@ Special
 
     * - Name
       - Purpose
-    * - :ref:`Asserts <module_asserts>`
-      - fails policy application when certain conditions are not true
-    * - :ref:`Debug <module_debug>`
-      - shows the values of lots of variables at once
-    * - :ref:`DebugFacts <module_debug_facts>`
-      - shows the values of lots of variables at once
     * - :ref:`Echo <module_echo>`
       - prints strings and status to the user
-    * - :ref:`Set <module_set>`
-      - adds variables into the OpsMop namespace
-    * - :ref:`Stop <module_stop>`
-      - stop aborts an execution, sharing a specific message
 
 
 Something Missing ?

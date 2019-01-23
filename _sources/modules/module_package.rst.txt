@@ -57,11 +57,11 @@ pick an alternate provider.  See :ref:`method`.
       - Kind
       - Default
     * - changed_when
-      - if set, only signal handlers if this is true
+      - accepts a lambda to determine if a state change should be recorded, whose parameter is the provider result
       - any
       - None
     * - failed_when
-      - if set, specify terms of resource application failure
+      - similar to ignore_errors but accepts a lambda function whose parameter is the provider result
       - any
       - None
     * - ignore_errors
@@ -71,18 +71,6 @@ pick an alternate provider.  See :ref:`method`.
     * - method
       - selects a non-default provider by name
       - str
-      - None
-    * - register
-      - saves the resource result into a named variable
-      - str
-      - None
-    * - signals
-      - signals a handler event by name
-      - list
-      - None
-    * - tags
-      - allows applying part of the policy
-      - list
       - None
     * - when
       - attaches a condition to this resource
@@ -105,20 +93,17 @@ Installing and removing a package.
         def set_variables(self):
             return dict(a=1, b=5150, c="badwolf")
     
-        def set_resources(self):
-            return Resources(
+        def main(self):
     
-                DebugFacts(),
+            # explicit package provider selection works like this
+            # Package(name='cowsay', method='yum')
     
-                # more provider types are coming soon.
-                # Package(name='pygments', method='pip'),
+            # uninstall
+            Package(name='cowsay', absent=True)
     
-                # uninstall
-                Package(name='cowsay', absent=True),
+            # install
+            Package(name='cowsay')
     
-                # install
-                Package(name='cowsay')
-            )
     
     
     
